@@ -25,14 +25,22 @@
       max-width: 960px;
       width: 100%;
       box-sizing: border-box;
+      text-align: center;
     }
 
     h1 {
       font-weight: 700;
-      font-size: 2.8rem;
-      margin-bottom: 30px;
-      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 5px;
       color: #1a202c;
+      line-height: 1.1;
+    }
+
+    #data-oggi {
+      font-weight: 500;
+      font-size: 1.1rem;
+      color: #4a5568;
+      margin-bottom: 30px;
     }
 
     table {
@@ -40,6 +48,7 @@
       border-collapse: separate;
       border-spacing: 0 15px;
       table-layout: auto;
+      text-align: left;
     }
 
     thead {
@@ -47,7 +56,6 @@
     }
 
     thead th {
-      text-align: left;
       padding: 15px 20px;
       font-weight: 600;
       font-size: 0.95rem;
@@ -95,11 +103,21 @@
     /* Responsive per schermi piccoli */
     @media (max-width: 600px) {
       body {
-        padding: 20px 10px; /* meno padding esterno per smartphone */
+        padding: 20px 10px;
       }
 
       main {
-        padding: 20px 15px; /* meno padding interno */
+        padding: 20px 15px;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+        margin-bottom: 3px;
+      }
+
+      #data-oggi {
+        font-size: 1rem;
+        margin-bottom: 20px;
       }
 
       table, thead, tbody, th, td, tr {
@@ -125,7 +143,7 @@
         font-size: 0.95rem;
         border: none;
         display: flex;
-        justify-content: flex-start; /* allinea a sinistra */
+        justify-content: flex-start;
         align-items: center;
         border-bottom: 1px solid #d1d5db;
         white-space: normal;
@@ -152,6 +170,8 @@
 <body>
   <main>
     <h1>Programma di Oggi</h1>
+    <div id="data-oggi"></div>
+
     <table>
       <thead>
         <tr>
@@ -168,6 +188,16 @@
   </main>
 
   <script>
+    // Inserisce la data odierna in formato gg/mm/aaaa
+    function formatDate(date) {
+      const d = date.getDate().toString().padStart(2, '0');
+      const m = (date.getMonth() + 1).toString().padStart(2, '0');
+      const y = date.getFullYear();
+      return `${d}/${m}/${y}`;
+    }
+
+    document.getElementById('data-oggi').textContent = formatDate(new Date());
+
     const JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
 
     fetch(JSON_URL)
