@@ -78,7 +78,7 @@
 
   <script>
     // Usa proxy CORS per aggirare blocchi di Google
-    const CSV_URL = 'https://cors-anywhere.herokuapp.com/https://docs.google.com/spreadsheets/d/1g9VTtw7FZlJESXIpLd26NlJJ-7laqld6X4WvXh26hxY/pub?output=csv';
+    const CSV_URL = 'https://google-sheet-proxy.assistenza-efd.workers.dev/?not_in_iframe=true';
 
     function csvToArray(csv, delimiter = ',') {
       const lines = csv.trim().split('\n');
