@@ -31,7 +31,7 @@
     #azienda {
       font-weight: 700;
       font-size: 1.4rem;
-      color: #1a2a54; /* blu notte */
+      color: #1a2a54;
       text-transform: uppercase;
       margin-bottom: 15px;
       letter-spacing: 2px;
@@ -109,7 +109,6 @@
       border-bottom-right-radius: 15px;
     }
 
-    /* Responsive per schermi piccoli */
     @media (max-width: 600px) {
       body {
         padding: 20px 10px;
@@ -178,6 +177,16 @@
         white-space: nowrap;
         flex-shrink: 0;
       }
+
+      /* ✅ Centratura del messaggio di caricamento */
+      tbody td[colspan] {
+        text-align: center !important;
+        justify-content: center;
+        display: flex;
+        border-bottom: none;
+        font-style: italic;
+        color: #777;
+      }
     }
   </style>
 </head>
@@ -221,6 +230,11 @@
       .then(data => {
         const tbody = document.getElementById('programma-body');
         tbody.innerHTML = '';
+
+        if (data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#999;">Nessun dato disponibile.</td></tr>`;
+          return;
+        }
 
         data.forEach(row => {
           const tr = document.createElement('tr');
