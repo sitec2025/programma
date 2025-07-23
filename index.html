@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Programma di Oggi</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Programma di Oggi</h1>
+
+  <table id="programma">
+    <thead>
+      <tr>
+        <th>Cantiere</th>
+        <th>Luogo</th>
+        <th>Lavorazioni</th>
+        <th>Collaboratori</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- I dati verranno inseriti qui -->
+    </tbody>
+  </table>
+
+  <script src="programma.js"></script>
+  <script>
+    const tbody = document.querySelector('#programma tbody');
+    dataProgramma.forEach(item => {
+      const tr = document.createElement('tr');
+      ['cantiere', 'luogo', 'lavorazioni', 'collaboratori'].forEach(field => {
+        const td = document.createElement('td');
+        td.textContent = item[field];
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  </script>
+</body>
+</html>
