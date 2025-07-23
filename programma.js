@@ -10,5 +10,11 @@ const dataProgramma = [
     luogo: "Milano",
     lavorazioni: "Installazione impianti",
     collaboratori: "Marco, Giulia"
+  },
+  {
+    cantiere: "Cantiere C",
+    luogo: "Firenze",
+    lavorazioni: "Ristrutturazione interna",
+    collaboratori: "Luca, Elena, Matteo"
   }
 ];
