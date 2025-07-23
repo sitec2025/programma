@@ -178,14 +178,19 @@
         flex-shrink: 0;
       }
 
-      /* ✅ Centratura del messaggio di caricamento */
+      /* ✅ CORREZIONE per messaggio di caricamento centrato */
       tbody td[colspan] {
+        display: block;
         text-align: center !important;
-        justify-content: center;
-        display: flex;
-        border-bottom: none;
+        padding: 15px;
         font-style: italic;
         color: #777;
+        border: none;
+      }
+
+      tbody td[colspan]::before {
+        display: none;
+        content: "";
       }
     }
   </style>
@@ -213,7 +218,6 @@
   </main>
 
   <script>
-    // Inserisce la data odierna in formato gg/mm/aaaa
     function formatDate(date) {
       const d = date.getDate().toString().padStart(2, '0');
       const m = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -232,7 +236,7 @@
         tbody.innerHTML = '';
 
         if (data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#999;">Nessun dato disponibile.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="5">Nessun dato disponibile.</td></tr>`;
           return;
         }
 
