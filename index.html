@@ -194,10 +194,11 @@
           <th>Luogo</th>
           <th>Lavorazioni</th>
           <th>Collaboratori</th>
+          <th>Mezzo</th>
         </tr>
       </thead>
       <tbody id="programma-body">
-        <tr><td colspan="4" style="text-align:center; color:#999;">Caricamento dati...</td></tr>
+        <tr><td colspan="5" style="text-align:center; color:#999;">Caricamento dati...</td></tr>
       </tbody>
     </table>
   </main>
@@ -229,6 +230,7 @@
             <td data-label="Luogo">${row.Luogo || ''}</td>
             <td data-label="Lavorazioni">${row.Lavorazioni || ''}</td>
             <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
+            <td data-label="Mezzo">${row.Mezzo || ''}</td>
           `;
 
           tbody.appendChild(tr);
@@ -236,7 +238,7 @@
       })
       .catch(err => {
         const tbody = document.getElementById('programma-body');
-        tbody.innerHTML = `<tr><td colspan="4" style="color:red; text-align:center;">Errore: ${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore: ${err.message}</td></tr>`;
       });
   </script>
 </body>
