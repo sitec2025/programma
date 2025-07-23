@@ -1,6 +1,5 @@
 const dataProgramma = [
-
-{
+  {
     cantiere: "Cantiere A",
     luogo: "Torino",
     lavorazioni: "Montaggio ponteggi",
