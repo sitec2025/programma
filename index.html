@@ -6,7 +6,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    /* Stili base moderni */
     body {
       margin: 0; padding: 40px 20px;
       font-family: 'Poppins', sans-serif;
@@ -78,8 +77,8 @@
   </main>
 
   <script>
-    // Inserisci qui il link CSV che ottieni da Google Sheets
-    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRs6DxXJ-PnEk19vmHQVYgCxpfixtxaZUxAOX0G4NhXOx9LeZjAVeaMZClMF-DCSCAwnYzCt982ejTY/pub?output=csv';
+    // Usa proxy CORS per aggirare blocchi di Google
+    const CSV_URL = 'https://cors-anywhere.herokuapp.com/https://docs.google.com/spreadsheets/d/1g9VTtw7FZlJESXIpLd26NlJJ-7laqld6X4WvXh26hxY/pub?output=csv';
 
     function csvToArray(csv, delimiter = ',') {
       const lines = csv.trim().split('\n');
@@ -94,9 +93,8 @@
       .then(csvText => {
         const data = csvToArray(csvText);
         const tbody = document.getElementById('programma-body');
-        tbody.innerHTML = ''; // svuota loading
+        tbody.innerHTML = '';
 
-        // data[0] è header, da riga 1 i dati
         data.slice(1).forEach(row => {
           const tr = document.createElement('tr');
           row.forEach(cell => {
