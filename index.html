@@ -4,27 +4,113 @@
   <meta charset="UTF-8" />
   <title>Programma di Oggi</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* Stili base moderni */
+    body {
+      margin: 0; padding: 40px 20px;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #eef2f7, #ffffff);
+      color: #2c3e50;
+      display: flex; justify-content: center; min-height: 100vh;
+    }
+    main {
+      background: white; padding: 40px 50px; border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(44,62,80,0.12);
+      max-width: 960px; width: 100%; overflow-x: auto;
+    }
+    h1 {
+      font-weight: 700; font-size: 2.8rem; margin-bottom: 30px;
+      text-align: center; letter-spacing: 1px; color: #1a202c;
+    }
+    table {
+      width: 100%; border-collapse: separate; border-spacing: 0 15px;
+      min-width: 700px;
+    }
+    thead th {
+      text-align: left; padding: 15px 20px; font-weight: 600;
+      font-size: 0.95rem; color: #4a5568; text-transform: uppercase;
+      letter-spacing: 0.1em; border-bottom: 2px solid #cbd5e0;
+      user-select: none;
+    }
+    tbody tr {
+      background: #f7fafc; border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(44,62,80,0.07);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    tbody tr:hover {
+      background: #e0e7ff;
+      box-shadow: 0 8px 20px rgba(67,56,202,0.25);
+      transform: translateY(-3px);
+    }
+    tbody td {
+      padding: 18px 20px; color: #2d3748; font-weight: 500; font-size: 1rem;
+    }
+    tbody tr td:first-child {
+      border-top-left-radius: 15px; border-bottom-left-radius: 15px;
+    }
+    tbody tr td:last-child {
+      border-top-right-radius: 15px; border-bottom-right-radius: 15px;
+    }
+    @media (max-width: 720px) {
+      main { padding: 30px 20px; }
+      h1 { font-size: 2rem; }
+      table { min-width: 100%; }
+    }
+  </style>
 </head>
 <body>
   <main>
     <h1>Programma di Oggi</h1>
-    <div class="table-wrapper">
-      <table id="programma">
-        <thead>
-          <tr>
-            <th>Cantiere</th>
-            <th>Luogo</th>
-            <th>Lavorazioni</th>
-            <th>Collaboratori</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Cantiere</th>
+          <th>Luogo</th>
+          <th>Lavorazioni</th>
+          <th>Collaboratori</th>
+        </tr>
+      </thead>
+      <tbody id="programma-body">
+        <tr><td colspan="4" style="text-align:center; color:#999;">Caricamento dati...</td></tr>
+      </tbody>
+    </table>
   </main>
 
-  <script src="programma.js"></script>
   <script>
-    const tbody = document.querySelector('#programma tbody');
+    // Inserisci qui il link CSV che ottieni da Google Sheets
+    const CSV_URL = 'https://docs.google.com/spreadsheets/d/1g9VTtw7FZlJESXIpLd26NlJJ-7laqld6X4WvXh26hxY/pub?output=csv';
+
+    function csvToArray(csv, delimiter = ',') {
+      const lines = csv.trim().split('\n');
+      return lines.map(line => line.split(delimiter));
+    }
+
+    fetch(CSV_URL)
+      .then(res => {
+        if (!res.ok) throw new Error('Errore nel caricamento del foglio');
+        return res.text();
+      })
+      .then(csvText => {
+        const data = csvToArray(csvText);
+        const tbody = document.getElementById('programma-body');
+        tbody.innerHTML = ''; // svuota loading
+
+        // data[0] è header, da riga 1 i dati
+        data.slice(1).forEach(row => {
+          const tr = document.createElement('tr');
+          row.forEach(cell => {
+            const td = document.createElement('td');
+            td.textContent = cell;
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        const tbody = document.getElementById('programma-body');
+        tbody.innerHTML = `<tr><td colspan="4" style="color:red; text-align:center;">${err.message}</td></tr>`;
+      });
+  </script>
+</body>
+</html>
