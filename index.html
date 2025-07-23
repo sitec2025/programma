@@ -7,54 +7,122 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
-      margin: 0; padding: 40px 20px;
+      margin: 0;
+      padding: 40px 20px;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #eef2f7, #ffffff);
       color: #2c3e50;
-      display: flex; justify-content: center; min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
     }
+
     main {
-      background: white; padding: 40px 50px; border-radius: 20px;
+      background: white;
+      padding: 40px 50px;
+      border-radius: 20px;
       box-shadow: 0 15px 40px rgba(44,62,80,0.12);
-      max-width: 960px; width: 100%; overflow-x: auto;
+      max-width: 960px;
+      width: 100%;
     }
+
     h1 {
-      font-weight: 700; font-size: 2.8rem; margin-bottom: 30px;
-      text-align: center; letter-spacing: 1px; color: #1a202c;
+      font-weight: 700;
+      font-size: 2.8rem;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #1a202c;
     }
+
     table {
-      width: 100%; border-collapse: separate; border-spacing: 0 15px;
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 15px;
       min-width: 700px;
     }
+
+    thead {
+      background: #f0f4f8;
+    }
+
     thead th {
-      text-align: left; padding: 15px 20px; font-weight: 600;
-      font-size: 0.95rem; color: #4a5568; text-transform: uppercase;
-      letter-spacing: 0.1em; border-bottom: 2px solid #cbd5e0;
+      text-align: left;
+      padding: 15px 20px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #4a5568;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-bottom: 2px solid #cbd5e0;
       user-select: none;
     }
+
     tbody tr {
-      background: #f7fafc; border-radius: 15px;
+      background: #f7fafc;
+      border-radius: 15px;
       box-shadow: 0 4px 10px rgba(44,62,80,0.07);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
+
     tbody tr:hover {
       background: #e0e7ff;
       box-shadow: 0 8px 20px rgba(67,56,202,0.25);
       transform: translateY(-3px);
     }
+
     tbody td {
-      padding: 18px 20px; color: #2d3748; font-weight: 500; font-size: 1rem;
+      padding: 18px 20px;
+      color: #2d3748;
+      font-weight: 500;
+      font-size: 1rem;
+      vertical-align: top;
     }
+
     tbody tr td:first-child {
-      border-top-left-radius: 15px; border-bottom-left-radius: 15px;
+      border-top-left-radius: 15px;
+      border-bottom-left-radius: 15px;
     }
+
     tbody tr td:last-child {
-      border-top-right-radius: 15px; border-bottom-right-radius: 15px;
+      border-top-right-radius: 15px;
+      border-bottom-right-radius: 15px;
     }
-    @media (max-width: 720px) {
-      main { padding: 30px 20px; }
-      h1 { font-size: 2rem; }
-      table { min-width: 100%; }
+
+    /* Responsive: da 600px in giù trasformo la tabella in "cards" */
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+      }
+      thead tr {
+        display: none; /* Nascondo intestazione tabella */
+      }
+      tbody tr {
+        margin-bottom: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(44,62,80,0.1);
+        background: #f7fafc;
+        padding: 20px;
+      }
+      tbody td {
+        padding: 10px 15px;
+        font-size: 0.95rem;
+        border: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #d1d5db;
+      }
+      tbody td:last-child {
+        border-bottom: none;
+      }
+      tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #4a5568;
+        flex-basis: 40%;
+        white-space: nowrap;
+      }
     }
   </style>
 </head>
@@ -87,12 +155,15 @@
 
         data.forEach(row => {
           const tr = document.createElement('tr');
+
+          // Ogni td ha data-label per l'accessibilità e stile mobile
           tr.innerHTML = `
-            <td>${row.Cantiere || ''}</td>
-            <td>${row.Luogo || ''}</td>
-            <td>${row.Lavorazioni || ''}</td>
-            <td>${row.Collaboratori || ''}</td>
+            <td data-label="Cantiere">${row.Cantiere || ''}</td>
+            <td data-label="Luogo">${row.Luogo || ''}</td>
+            <td data-label="Lavorazioni">${row.Lavorazioni || ''}</td>
+            <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
           `;
+
           tbody.appendChild(tr);
         });
       })
