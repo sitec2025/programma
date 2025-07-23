@@ -38,7 +38,9 @@
       width: 100%;
       border-collapse: separate;
       border-spacing: 0 15px;
-      min-width: 700px;
+      /* rimuovo min-width per mobile */
+      /* min-width: 700px; */
+      table-layout: auto;
     }
 
     thead {
@@ -55,6 +57,7 @@
       letter-spacing: 0.1em;
       border-bottom: 2px solid #cbd5e0;
       user-select: none;
+      white-space: normal;
     }
 
     tbody tr {
@@ -76,6 +79,8 @@
       font-weight: 500;
       font-size: 1rem;
       vertical-align: top;
+      white-space: normal;
+      word-wrap: break-word;
     }
 
     tbody tr td:first-child {
@@ -112,6 +117,8 @@
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid #d1d5db;
+        white-space: normal;
+        word-wrap: break-word;
       }
       tbody td:last-child {
         border-bottom: none;
@@ -156,7 +163,6 @@
         data.forEach(row => {
           const tr = document.createElement('tr');
 
-          // Ogni td ha data-label per l'accessibilità e stile mobile
           tr.innerHTML = `
             <td data-label="Cantiere">${row.Cantiere || ''}</td>
             <td data-label="Luogo">${row.Luogo || ''}</td>
