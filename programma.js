@@ -1,4 +1,3 @@
-const dataProgramma = [
   {
     cantiere: "Cantiere A",
     luogo: "Torino",
