@@ -1,256 +1,349 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <title>Programma di Oggi</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Programma di Oggi</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+<style>
+  body {
+    margin: 0;
+    padding: 40px 20px;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #eef2f7, #ffffff);
+    color: #2c3e50;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  main {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(44,62,80,0.12);
+    max-width: 1200px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #azienda {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #1a2a54;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    text-align: center;
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: 2.2rem;
+    margin-bottom: 5px;
+    color: #1a202c;
+    text-align: center;
+  }
+
+  #toolbar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 30px 0 20px;
+    gap: 15px;
+    position: relative;
+  }
+
+  #search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #search-input {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e0;
+    font-size: 1rem;
+    width: 250px;
+  }
+
+  #settings-icon {
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #4a5568;
+    user-select: none;
+  }
+
+  #filter-popup {
+    position: absolute;
+    top: 45px;
+    left: 280px;
+    background: white;
+    border: 1px solid #cbd5e0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 15px;
+    width: 220px;
+    display: none;
+    z-index: 10;
+    font-size: 0.95rem;
+  }
+
+  #filter-popup label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #4a5568;
+  }
+
+  #filter-popup select {
+    width: 100%;
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e0;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  /* BARRA DEI GIORNI */
+  #date-strip {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 0 25px;
+    gap: 8px;
+    justify-content: flex-start;
+    user-select: none;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE 10+ */
+  }
+  /* Nascondo scrollbar su Chrome, Safari e Opera */
+  #date-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .date-button {
+    flex: 0 0 auto;
+    background: #f1f5f9;
+    padding: 6px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    min-width: 75px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+    margin: 0;
+    user-select: none;
+  }
+
+  .date-button .day-name {
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .date-button .day-date {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .date-button:hover,
+  .date-button.selected {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(67, 56, 202, 0.15);
+  }
+
+  /* OGGI - più piccolo, evidenziato, spazi uguali */
+  .date-button.today {
+    background-color: #a3bffa;
+    color: #1a202c;
+    font-weight: 700;
+    transform: scale(1); /* NO zoom più grande */
+    box-shadow: 0 4px 10px rgba(67, 56, 202, 0.3);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+    text-align: left;
+  }
+
+  thead th {
+    background: #f0f4f8;
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #4a5568;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom: 2px solid #cbd5e0;
+  }
+
+  tbody tr {
+    background: #f7fafc;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(44,62,80,0.07);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  tbody tr:hover {
+    background: #e0e7ff;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(67,56,202,0.25);
+  }
+
+  tbody td {
+    padding: 18px 20px;
+    font-size: 1rem;
+    color: #2d3748;
+    vertical-align: top;
+  }
+
+  tbody tr td:first-child {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+  }
+
+  tbody tr td:last-child {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+
+  /* RESPONSIVE */
+
+  @media (max-width: 768px) {
     body {
-      margin: 0;
-      padding: 40px 20px;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #eef2f7, #ffffff);
-      color: #2c3e50;
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
+      padding: 20px 10px;
     }
 
     main {
-      background: white;
-      padding: 40px 30px;
-      border-radius: 20px;
-      box-shadow: 0 15px 40px rgba(44,62,80,0.12);
-      max-width: 1200px;
-      width: 100%;
-      box-sizing: border-box;
+      padding: 30px 15px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(44,62,80,0.1);
     }
 
     #azienda {
-      font-weight: 700;
-      font-size: 1.4rem;
-      color: #1a2a54;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      letter-spacing: 2px;
-      text-align: center;
+      font-size: 1.1rem;
     }
 
     h1 {
-      font-weight: 700;
-      font-size: 2.2rem;
-      margin-bottom: 5px;
-      color: #1a202c;
-      text-align: center;
+      font-size: 1.6rem;
+      margin-bottom: 10px;
     }
 
     #toolbar {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      margin: 30px 0 20px;
-      gap: 15px;
-      position: relative;
-    }
-
-    #search-container {
-      display: flex;
-      align-items: center;
+      flex-wrap: wrap;
       gap: 10px;
+      margin: 20px 0 15px;
     }
 
     #search-input {
-      padding: 10px 15px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e0;
-      font-size: 1rem;
-      width: 250px;
-    }
-
-    #settings-icon {
-      cursor: pointer;
-      font-size: 1.5rem;
-      color: #4a5568;
-      user-select: none;
+      width: 100%;
+      max-width: 300px;
     }
 
     #filter-popup {
-      position: absolute;
-      top: 45px;
-      left: 280px;
-      background: white;
-      border: 1px solid #cbd5e0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      padding: 15px;
-      width: 220px;
-      display: none;
-      z-index: 10;
-      font-size: 0.95rem;
+      left: auto;
+      right: 15px;
+      top: 50px;
+      width: 180px;
+      font-size: 0.9rem;
     }
 
-    #filter-popup label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: #4a5568;
-    }
-
-    #filter-popup select {
-      width: 100%;
-      padding: 6px 8px;
-      border-radius: 6px;
-      border: 1px solid #cbd5e0;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
+    /* Barra giorni - più piccola su mobile */
     #date-strip {
-      display: flex;
-      gap: 15px;  /* ridotto da 40px */
-      justify-content: center;
-      padding: 10px 0 25px;
-      align-items: flex-end;
-      user-select: none;
-      overflow: visible;
+      padding: 8px 0 20px;
+      gap: 6px;
     }
 
     .date-button {
-      background: #f1f5f9;
-      padding: 8px 20px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 500;
-      min-width: 90px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      font-size: 0.85rem;
-      margin: 0 8px; /* ridotto da 20px */
+      min-width: 60px;
+      padding: 5px 10px;
+      font-size: 0.75rem;
     }
 
     .date-button .day-name {
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-bottom: 6px;
+      font-size: 0.65rem;
+      margin-bottom: 3px;
     }
 
     .date-button .day-date {
-      font-size: 1.05rem;
-      font-weight: 700;
+      font-size: 0.85rem;
     }
 
-    .date-button:hover,
-    .date-button.selected {
-      transform: scale(1.15);
-      box-shadow: 0 4px 12px rgba(67, 56, 202, 0.2);
-    }
-
-    .date-button.today {
-      background-color: #c3dafe;
-      color: #1a202c;
-      font-weight: 700;
-      transform: scale(1.7);
-      z-index: 2;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0 15px;
-      text-align: left;
-    }
-
+    /* Tabella: testo e padding ridotti */
     thead th {
-      background: #f0f4f8;
-      padding: 15px 20px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: #4a5568;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      border-bottom: 2px solid #cbd5e0;
-    }
-
-    tbody tr {
-      background: #f7fafc;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(44,62,80,0.07);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    tbody tr:hover {
-      background: #e0e7ff;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(67,56,202,0.25);
+      font-size: 0.85rem;
+      padding: 12px 10px;
     }
 
     tbody td {
-      padding: 18px 20px;
-      font-size: 1rem;
-      color: #2d3748;
-      vertical-align: top;
+      padding: 14px 10px;
+      font-size: 0.9rem;
     }
+  }
 
-    tbody tr td:first-child {
-      border-top-left-radius: 15px;
-      border-bottom-left-radius: 15px;
+  @media (max-width: 400px) {
+    #search-input {
+      max-width: 100%;
     }
-
-    tbody tr td:last-child {
-      border-top-right-radius: 15px;
-      border-bottom-right-radius: 15px;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <main>
-    <div id="azienda">SITEC IMPIANTI SRL</div>
-    <h1>Programma Giornaliero</h1>
+<main>
+  <div id="azienda">SITEC IMPIANTI SRL</div>
+  <h1>Programma Giornaliero</h1>
 
-    <div id="toolbar">
-      <div id="search-container">
-        <input type="text" id="search-input" placeholder="Cerca...">
-        <span id="settings-icon" title="Filtri">⚙️</span>
-      </div>
-      <div id="filter-popup">
-        <label for="filter-collaboratori">Filtra per Collaboratori:</label>
-        <select id="filter-collaboratori">
-          <option value="">Tutti</option>
-          <!-- Opzioni aggiunte dinamicamente -->
-        </select>
-      </div>
+  <div id="toolbar">
+    <div id="search-container">
+      <input type="text" id="search-input" placeholder="Cerca...">
+      <span id="settings-icon" title="Filtri">⚙️</span>
     </div>
+    <div id="filter-popup">
+      <label for="filter-collaboratori">Filtra per Collaboratori:</label>
+      <select id="filter-collaboratori">
+        <option value="">Tutti</option>
+      </select>
+    </div>
+  </div>
 
-    <div id="date-strip"></div>
+  <div id="date-strip"></div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Cantiere</th>
-          <th>Luogo</th>
-          <th>Lavorazioni</th>
-          <th>Collaboratori</th>
-          <th>Mezzo</th>
-        </tr>
-      </thead>
-      <tbody id="programma-body">
-        <tr><td colspan="5" style="text-align:center; color:#999;">Caricamento dati...</td></tr>
-      </tbody>
-    </table>
-  </main>
+  <table>
+    <thead>
+      <tr>
+        <th>Cantiere</th>
+        <th>Luogo</th>
+        <th>Lavorazioni</th>
+        <th>Collaboratori</th>
+        <th>Mezzo</th>
+      </tr>
+    </thead>
+    <tbody id="programma-body">
+      <tr><td colspan="5" style="text-align:center; color:#999;">Caricamento dati...</td></tr>
+    </tbody>
+  </table>
+</main>
 
-  <script>
-    const JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
+<script>
+  const JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
 
-    const today = new Date();
-    const strip = document.getElementById('date-strip');
-    const range = 5;
-    let currentDateString = today.toISOString().split('T')[0];
+  const today = new Date();
+  const strip = document.getElementById('date-strip');
+  const range = 7; // 7 giorni prima e 7 dopo
+  let currentDateString = today.toISOString().split('T')[0];
 
-    // Costruisci la barra dei giorni
+  // Funzione per creare la barra dei giorni
+  function buildDateStrip() {
+    strip.innerHTML = ''; // pulisco
+
     for (let i = -range; i <= range; i++) {
       const d = new Date(today);
       d.setDate(today.getDate() + i);
@@ -274,114 +367,118 @@
 
       strip.appendChild(btn);
     }
+  }
 
-    // Gestione selezione giorno
-    strip.addEventListener('click', e => {
-      const target = e.target.closest('.date-button');
-      if (target) {
-        document.querySelectorAll('.date-button').forEach(b => b.classList.remove('selected'));
-        target.classList.add('selected');
-        currentDateString = target.dataset.date;
-        loadProgramma(currentDateString);
-        clearFilters();
-      }
-    });
+  buildDateStrip();
 
-    // Carica i dati da Google Sheets per la data selezionata
-    async function loadProgramma(dateString) {
-      try {
-        const res = await fetch(`${JSON_URL}?data=${dateString}`);
-        const data = await res.json();
-
-        const tbody = document.getElementById('programma-body');
-        tbody.innerHTML = '';
-
-        if (data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
-          populateCollaboratori([]);
-          return;
-        }
-
-        data.forEach(row => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td data-label="Cantiere">${row.Cantiere || ''}</td>
-            <td data-label="Luogo">${row.Luogo || ''}</td>
-            <td data-label="Lavorazioni">${row.Lavorazioni || ''}</td>
-            <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
-            <td data-label="Mezzo">${row.Mezzo || ''}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-
-        populateCollaboratori(data);
-        applyFilters();
-      } catch (err) {
-        document.getElementById('programma-body').innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore: ${err.message}</td></tr>`;
-      }
+  // Gestione selezione giorno
+  strip.addEventListener('click', e => {
+    const target = e.target.closest('.date-button');
+    if (target) {
+      document.querySelectorAll('.date-button').forEach(b => b.classList.remove('selected'));
+      target.classList.add('selected');
+      currentDateString = target.dataset.date;
+      loadProgramma(currentDateString);
+      clearFilters();
     }
+  });
 
-    // Popola il filtro collaboratori con i valori unici
-    function populateCollaboratori(data) {
-      const select = document.getElementById('filter-collaboratori');
-      const allCollaboratori = data.flatMap(row => row.Collaboratori ? row.Collaboratori.split(',').map(c => c.trim()) : []);
-      const uniqueCollaboratori = [...new Set(allCollaboratori)].sort();
+  // Carica i dati da Google Sheets per la data selezionata
+  async function loadProgramma(dateString) {
+    try {
+      const res = await fetch(`${JSON_URL}?data=${dateString}`);
+      const data = await res.json();
 
-      // Rimuovi tutte le opzioni tranne "Tutti"
-      select.querySelectorAll('option:not([value=""])').forEach(opt => opt.remove());
+      const tbody = document.getElementById('programma-body');
+      tbody.innerHTML = '';
 
-      uniqueCollaboratori.forEach(collab => {
-        const option = document.createElement('option');
-        option.value = collab;
-        option.textContent = collab;
-        select.appendChild(option);
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
+        populateCollaboratori([]);
+        return;
+      }
+
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td data-label="Cantiere">${row.Cantiere || ''}</td>
+          <td data-label="Luogo">${row.Luogo || ''}</td>
+          <td data-label="Lavorazioni">${row.Lavorazioni || ''}</td>
+          <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
+          <td data-label="Mezzo">${row.Mezzo || ''}</td>
+        `;
+        tbody.appendChild(tr);
       });
 
-      select.value = '';
+      populateCollaboratori(data);
+      applyFilters();
+    } catch (err) {
+      document.getElementById('programma-body').innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore: ${err.message}</td></tr>`;
     }
+  }
 
-    // Applica i filtri a tabella
-    function applyFilters() {
-      const filterText = document.getElementById('search-input').value.toLowerCase();
-      const filterCollab = document.getElementById('filter-collaboratori').value.toLowerCase();
+  // Popola il filtro collaboratori con i valori unici
+  function populateCollaboratori(data) {
+    const select = document.getElementById('filter-collaboratori');
+    const allCollaboratori = data.flatMap(row => row.Collaboratori ? row.Collaboratori.split(',').map(c => c.trim()) : []);
+    const uniqueCollaboratori = [...new Set(allCollaboratori)].sort();
 
-      document.querySelectorAll('#programma-body tr').forEach(row => {
-        const cellsText = Array.from(row.children).map(td => td.textContent.toLowerCase());
-        const textMatch = cellsText.some(text => text.includes(filterText));
+    // Rimuovo tutte le opzioni tranne "Tutti"
+    select.querySelectorAll('option:not([value=""])').forEach(opt => opt.remove());
 
-        const collabText = row.children[3]?.textContent.toLowerCase() || '';
-        const collabMatch = filterCollab === '' || collabText.split(',').map(c => c.trim()).includes(filterCollab);
-
-        row.style.display = (textMatch && collabMatch) ? '' : 'none';
-      });
-    }
-
-    // Reset filtri di ricerca
-    function clearFilters() {
-      document.getElementById('search-input').value = '';
-      document.getElementById('filter-collaboratori').value = '';
-    }
-
-    // Toggle popup filtro
-    document.getElementById('settings-icon').addEventListener('click', () => {
-      const popup = document.getElementById('filter-popup');
-      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    uniqueCollaboratori.forEach(collab => {
+      const option = document.createElement('option');
+      option.value = collab;
+      option.textContent = collab;
+      select.appendChild(option);
     });
 
-    // Applica filtro al cambiare selezione o testo ricerca
-    document.getElementById('filter-collaboratori').addEventListener('change', applyFilters);
-    document.getElementById('search-input').addEventListener('input', applyFilters);
+    select.value = '';
+  }
 
-    // Chiudi popup cliccando fuori
-    document.addEventListener('click', e => {
-      const popup = document.getElementById('filter-popup');
-      const icon = document.getElementById('settings-icon');
-      if (!popup.contains(e.target) && e.target !== icon) {
-        popup.style.display = 'none';
-      }
+  // Applica i filtri alla tabella
+  function applyFilters() {
+    const filterText = document.getElementById('search-input').value.toLowerCase();
+    const filterCollab = document.getElementById('filter-collaboratori').value.toLowerCase();
+
+    document.querySelectorAll('#programma-body tr').forEach(row => {
+      const cellsText = Array.from(row.children).map(td => td.textContent.toLowerCase());
+      const textMatch = cellsText.some(text => text.includes(filterText));
+
+      const collabText = row.children[3]?.textContent.toLowerCase() || '';
+      const collabMatch = filterCollab === '' || collabText.split(',').map(c => c.trim()).includes(filterCollab);
+
+      row.style.display = (textMatch && collabMatch) ? '' : 'none';
     });
+  }
 
-    loadProgramma(currentDateString);
-  </script>
+  // Reset filtri di ricerca
+  function clearFilters() {
+    document.getElementById('search-input').value = '';
+    document.getElementById('filter-collaboratori').value = '';
+  }
+
+  // Toggle popup filtro
+  document.getElementById('settings-icon').addEventListener('click', () => {
+    const popup = document.getElementById('filter-popup');
+    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+  });
+
+  // Applica filtro al cambiare selezione o testo ricerca
+  document.getElementById('filter-collaboratori').addEventListener('change', applyFilters);
+  document.getElementById('search-input').addEventListener('input', applyFilters);
+
+  // Chiudi popup cliccando fuori
+  document.addEventListener('click', e => {
+    const popup = document.getElementById('filter-popup');
+    const icon = document.getElementById('settings-icon');
+    if (!popup.contains(e.target) && e.target !== icon) {
+      popup.style.display = 'none';
+    }
+  });
+
+  // Carico il programma per oggi al caricamento pagina
+  loadProgramma(currentDateString);
+</script>
 </body>
 </html>
