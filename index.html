@@ -25,6 +25,7 @@
       max-width: 1200px;
       width: 100%;
       box-sizing: border-box;
+      text-align: center;
     }
 
     #azienda {
@@ -34,7 +35,6 @@
       text-transform: uppercase;
       margin-bottom: 10px;
       letter-spacing: 2px;
-      text-align: center;
     }
 
     h1 {
@@ -42,16 +42,23 @@
       font-size: 2.2rem;
       margin-bottom: 5px;
       color: #1a202c;
-      text-align: center;
+    }
+
+    #current-date {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #4a5568;
+      margin-bottom: 30px;
+      user-select: none;
     }
 
     #toolbar {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      margin: 30px 0;
-      flex-wrap: wrap;
-      gap: 20px;
+      margin-bottom: 30px;
+      gap: 15px;
+      position: relative;
     }
 
     #search-container {
@@ -70,80 +77,79 @@
 
     #settings-icon {
       cursor: pointer;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       color: #4a5568;
-    }
-
-    #filter-popup {
-      display: none;
-    }
-
-    /* Barra giorni */
-    #date-strip {
-      display: flex;
-      overflow-x: auto;
-      gap: 0; /* zero gap per margini uniformi */
-      padding: 0;
-      margin-bottom: 20px;
-      justify-content: flex-start;
-      scrollbar-width: none; /* Firefox */
-      border-radius: 0 0 15px 15px;
-      border: 1px solid #e2e8f0;
-      background: #fff;
       user-select: none;
-    }
-    #date-strip::-webkit-scrollbar {
-      display: none; /* Chrome, Safari e Opera */
-    }
-
-    .date-button {
-      flex: 1 0 14.28%; /* 7 giorni uguali larghezza */
-      box-sizing: border-box;
-      border-right: 1px solid #e2e8f0;
-      padding: 14px 0;
-      cursor: pointer;
-      text-align: center;
-      font-weight: 500;
-      font-size: 0.95rem;
-      color: #4a5568;
-      display: flex;
-      flex-direction: column;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      user-select: none;
+      background: #f7fafc;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      transition: background-color 0.2s ease;
     }
-    .date-button:last-child {
-      border-right: none; /* togli bordo all'ultimo */
+    #settings-icon:hover {
+      background-color: #e2e8f0;
     }
 
-    .date-button .day-name {
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-      text-transform: capitalize;
+    /* Popup filtro migliorato per mobile */
+    #filter-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 15px 40px rgba(44,62,80,0.2);
+      width: 90%;
+      max-width: 400px;
+      padding: 20px;
+      z-index: 1000;
+      transition: transform 0.25s ease;
+      user-select: none;
+    }
+    #filter-popup.active {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #filter-popup header {
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      color: #1a202c;
+      text-align: center;
+    }
+
+    #filter-popup button.close-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
       color: #718096;
-    }
-
-    .date-button .day-date {
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-
-    /* Stato selezionato */
-    .date-button.selected {
-      background-color: #3b82f6; /* blu acceso */
-      color: white;
-      font-weight: 700;
-      border-right-color: transparent;
-      border-left-color: transparent;
-      box-shadow: inset 0 -4px 0 0 #2563eb;
       user-select: none;
     }
+    #filter-popup button.close-btn:hover {
+      color: #4a5568;
+    }
 
-    /* Hover per non selezionati */
-    .date-button:not(.selected):hover {
-      background-color: #e0e7ff;
-      color: #1e40af;
+    /* Overlay per popup */
+    #popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.3);
+      z-index: 900;
+      user-select: none;
+    }
+    #popup-overlay.active {
+      display: block;
     }
 
     /* Tabella */
@@ -197,20 +203,11 @@
 
     /* Responsive */
     @media (max-width: 600px) {
-      #date-strip {
-        gap: 0;
-        margin-bottom: 15px;
+      #search-input {
+        width: 150px;
       }
-      .date-button {
-        flex: 1 0 14.28%;
-        padding: 10px 0;
-        font-size: 0.8rem;
-      }
-      .date-button .day-date {
-        font-size: 1rem;
-      }
-      .date-button.selected {
-        font-size: 1rem;
+      main {
+        padding: 25px 15px;
       }
     }
   </style>
@@ -219,17 +216,23 @@
   <main>
     <div id="azienda">SITEC IMPIANTI SRL</div>
     <h1>Programma Giornaliero</h1>
+    <div id="current-date" aria-live="polite"></div>
 
     <div id="toolbar">
       <div id="search-container">
-        <input type="text" id="search-input" placeholder="Cerca...">
-        <span id="settings-icon">⚙️</span>
+        <input type="text" id="search-input" placeholder="Cerca..." aria-label="Cerca nel programma" />
+        <span id="settings-icon" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="filter-popup">⚙️</span>
       </div>
     </div>
 
-    <div id="filter-popup"></div>
+    <div id="popup-overlay" tabindex="-1"></div>
 
-    <div id="date-strip" aria-label="Seleziona data" role="listbox"></div>
+    <div id="filter-popup" role="dialog" aria-modal="true" aria-labelledby="filter-popup-title" tabindex="-1">
+      <button class="close-btn" aria-label="Chiudi filtro popup">×</button>
+      <header id="filter-popup-title">Filtri</header>
+      <!-- Inserisci qui i contenuti del filtro -->
+      <p>Nessun filtro configurato.</p>
+    </div>
 
     <table>
       <thead>
@@ -250,42 +253,20 @@
   <script>
     const JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
 
+    // Imposta la data corrente in italiano
+    function formatDate(date) {
+      return date.toLocaleDateString('it-IT', {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
     const today = new Date();
-    const strip = document.getElementById('date-strip');
-    const range = 3; // 3 giorni prima + 3 giorni dopo = 7 giorni totali
+    const currentDateElem = document.getElementById('current-date');
+    currentDateElem.textContent = formatDate(today);
 
-    function createDateButton(date, isToday = false) {
-      const btn = document.createElement('div');
-      btn.className = 'date-button';
-      btn.dataset.date = date.toISOString().split('T')[0];
-      btn.setAttribute('role', 'option');
-      btn.setAttribute('tabindex', '0');
-
-      const dayName = document.createElement('div');
-      dayName.className = 'day-name';
-      dayName.textContent = date.toLocaleDateString('it-IT', { weekday: 'short' });
-
-      const dayDate = document.createElement('div');
-      dayDate.className = 'day-date';
-      dayDate.textContent = date.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' });
-
-      btn.appendChild(dayName);
-      btn.appendChild(dayDate);
-
-      if (isToday) {
-        btn.classList.add('selected');
-      }
-      return btn;
-    }
-
-    // Crea i giorni visibili nella barra
-    for (let i = -range; i <= range; i++) {
-      const d = new Date(today);
-      d.setDate(today.getDate() + i);
-      strip.appendChild(createDateButton(d, i === 0));
-    }
-
-    // Funzione per caricare dati della tabella
+    // Carica dati della tabella per la data odierna
     function loadProgramma(dateString) {
       fetch(`${JSON_URL}?data=${dateString}`)
         .then(res => res.json())
@@ -313,21 +294,57 @@
         });
     }
 
-    // Selezione data e cambio colore selezionato
-    strip.addEventListener('click', e => {
-      const target = e.target.closest('.date-button');
-      if (!target) return;
+    loadProgramma(today.toISOString().split('T')[0]);
 
-      // Rimuovi selected da tutti
-      strip.querySelectorAll('.date-button').forEach(b => b.classList.remove('selected'));
-      // Seleziona il click
-      target.classList.add('selected');
+    // Gestione popup filtro migliorata per mobile
+    const settingsIcon = document.getElementById('settings-icon');
+    const filterPopup = document.getElementById('filter-popup');
+    const popupOverlay = document.getElementById('popup-overlay');
+    const closeBtn = filterPopup.querySelector('.close-btn');
 
-      loadProgramma(target.dataset.date);
+    function openPopup() {
+      filterPopup.classList.add('active');
+      popupOverlay.classList.add('active');
+      settingsIcon.setAttribute('aria-expanded', 'true');
+      filterPopup.focus();
+    }
+
+    function closePopup() {
+      filterPopup.classList.remove('active');
+      popupOverlay.classList.remove('active');
+      settingsIcon.setAttribute('aria-expanded', 'false');
+      settingsIcon.focus();
+    }
+
+    settingsIcon.addEventListener('click', () => {
+      if (filterPopup.classList.contains('active')) {
+        closePopup();
+      } else {
+        openPopup();
+      }
     });
 
-    // Carica dati del giorno corrente all'avvio
-    loadProgramma(today.toISOString().split('T')[0]);
+    settingsIcon.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (filterPopup.classList.contains('active')) {
+          closePopup();
+        } else {
+          openPopup();
+        }
+      }
+    });
+
+    closeBtn.addEventListener('click', closePopup);
+
+    popupOverlay.addEventListener('click', closePopup);
+
+    // Chiudi popup con ESC
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && filterPopup.classList.contains('active')) {
+        closePopup();
+      }
+    });
   </script>
 </body>
 </html>
