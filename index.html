@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Programma Giornaliero</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
       margin: 0;
@@ -15,7 +15,7 @@
       display: flex;
       justify-content: center;
       min-height: 100vh;
-      overflow-x: hidden; /* blocca scroll orizzontale */
+      overflow-x: hidden;
     }
 
     main {
@@ -27,7 +27,7 @@
       width: 100%;
       box-sizing: border-box;
       text-align: center;
-      overflow-x: hidden; /* blocca scroll orizzontale */
+      overflow-x: hidden;
     }
 
     #azienda {
@@ -83,7 +83,7 @@
       text-align: left;
       table-layout: fixed;
       word-wrap: break-word;
-      overflow-x: hidden; /* blocca scroll orizzontale */
+      overflow-x: hidden;
     }
 
     thead th {
@@ -168,41 +168,38 @@
         padding: 10px 40px 10px 40px;
       }
       table {
-        border-spacing: 0;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 0 20px rgba(44,62,80,0.1);
+        border-spacing: 0 12px;
       }
       thead {
         display: none;
       }
       tbody tr {
         display: block;
-        margin-bottom: 0; /* zero margine per non creare doppio riquadro */
-        background: transparent; /* rimuovo sfondo per togliere doppio riquadro */
-        box-shadow: none; /* niente ombra per non riquadro doppio */
-        padding: 0;
-        border-radius: 0;
-        transition: none;
+        margin-bottom: 12px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(44,62,80,0.07);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        padding: 15px 20px;
       }
       tbody tr:hover {
-        background: transparent;
-        transform: none;
-        box-shadow: none;
+        background: #e0e7ff;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(67,56,202,0.25);
       }
       tbody td {
         display: flex;
         justify-content: space-between;
-        padding: 12px 10px;
+        padding: 5px 0;
         font-size: 0.95rem;
-        border-bottom: 1px solid #d9dce1;
+        color: #2d3748;
         border-radius: 0;
-        background: white; /* metto sfondo bianco solo qui */
-        margin-bottom: 6px; /* piccolo spazio tra righe */
+        background: transparent;
       }
-      tbody td:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
+      tbody td:not(:last-child) {
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
       }
       tbody td::before {
         content: attr(data-label);
@@ -210,7 +207,7 @@
         color: #4a5568;
         flex: 1 1 40%;
         text-align: left;
-        padding-right: 10px;
+        padding-right: 15px;
       }
       tbody td span {
         flex: 1 1 60%;
@@ -218,7 +215,7 @@
         word-break: break-word;
       }
 
-      /* Correzione scritta "Caricamento dati" centrata */
+      /* Centrare testo caricamento dati */
       tbody tr td[colspan="5"] {
         display: block;
         text-align: center;
@@ -230,10 +227,14 @@
         margin: 0;
       }
 
-      /* Linea dritta tra Cantiere e Luogo */
+      /* Linea dritta fra Cantiere e Luogo */
       tbody tr td:first-child {
-        border-top-left-radius: 0 !important;
-        border-bottom-left-radius: 0 !important;
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+      }
+      tbody tr td:last-child {
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
       }
     }
   </style>
