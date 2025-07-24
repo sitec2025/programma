@@ -181,6 +181,16 @@
     tbody tr td:last-child { border-radius: 0 12px 12px 0; border-top: none;}
     tbody tr td { border-top: none; }
 
+    /* Stile specifico per la cella di "Caricamento dati" / "Nessun dato" */
+    #programma-body tr td[colspan="5"] {
+      border-radius: 12px !important; /* Forza angoli arrotondati su tutti i lati */
+      border: 1px solid var(--surface-border); /* Assicurati che il bordo sia presente */
+      background: var(--surface-bg); /* Assicurati lo sfondo */
+      box-shadow: 0 8px 25px rgba(44, 62, 80, 0.08); /* E l'ombra */
+      color: #999; /* Colore testo per questi messaggi */
+    }
+
+
     /* Stile per i pulsanti */
     .button-group {
         display: flex;
@@ -225,7 +235,7 @@
       width: 24px;
       height: 24px;
       animation: spin 1s linear infinite;
-      margin-right: 8px; /* Spazio tra rotella e testo */
+      /* Nessun margin-right qui, lo gestiremo solo quando è accanto al testo */
     }
 
     @media (max-width: 768px) {
@@ -268,7 +278,7 @@
         text-align: left;
       }
 
-      /* Centra la scritta "Caricamento dati..." e "Nessun dato disponibile." */
+      /* Centra la rotella (o testo se presente) per mobile */
       #programma-body tr td[colspan="5"] {
         display: flex !important; /* Forza flexbox per il centraggio */
         justify-content: center !important; /* Centra orizzontalmente */
@@ -276,15 +286,15 @@
         width: 100%;
         padding: 20px; 
         color: #999; 
-        background: transparent;
-        box-shadow: none;
-        border: none;
+        background: transparent; /* Rimuovi sfondo qui per consistenza */
+        box-shadow: none; /* Rimuovi ombra qui per consistenza */
+        border: none; /* Rimuovi bordo qui per consistenza */
         flex-direction: row; /* Assicura che elementi (spinner e testo) siano affiancati */
       }
-
-      /* Rimuovi il margine della rotella quando non è in un flex container (ad es. in stampa o desktop) */
-      .spinner:not(#programma-body td .spinner) {
-          margin-right: 0;
+      /* Quando il testo è accanto alla rotella, aggiungi un margine */
+      #programma-body tr td[colspan="5"] span + .spinner,
+      #programma-body tr td[colspan="5"] .spinner + span {
+          margin-left: 8px; /* Spazio tra spinner e testo */
       }
 
 
@@ -424,7 +434,7 @@
         </tr>
       </thead>
       <tbody id="programma-body">
-        <tr><td colspan="5" style="text-align:center; color:#999; background: transparent; box-shadow:none; border:none;">Caricamento dati...</td></tr>
+        <tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>
       </tbody>
     </table>
 
@@ -450,15 +460,13 @@
 
     // Funzione per mostrare il messaggio di caricamento
     function showLoadingMessage() {
-      // Controlla se è un dispositivo mobile
       const isMobile = window.matchMedia("(max-width: 768px)").matches;
       if (isMobile) {
         tbody.innerHTML = `<tr><td colspan="5">
                               <div class="spinner"></div>
-                              <span>Caricamento dati...</span>
-                           </td></tr>`;
+                           </td></tr>`; // Solo spinner per mobile
       } else {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#999; background: transparent; box-shadow:none; border:none;">Caricamento dati...</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>`;
       }
     }
 
@@ -471,7 +479,7 @@
         tbody.innerHTML = ''; // Pulisce il messaggio di caricamento
 
         if (data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#999; background: transparent; box-shadow:none; border:none;">Nessun dato disponibile.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
           return;
         }
 
@@ -489,7 +497,7 @@
         });
       })
       .catch(err => {
-        tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center; background: transparent; box-shadow:none; border:none;">Errore: ${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore: ${err.message}</td></tr>`;
       });
 
     document.getElementById('search-bar').addEventListener('input', function () {
