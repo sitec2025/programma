@@ -189,6 +189,12 @@
       background: var(--surface-bg); /* Assicurati lo sfondo */
       box-shadow: 0 8px 25px rgba(44, 62, 80, 0.08); /* E l'ombra */
       color: #999; /* Colore testo per questi messaggi */
+      
+      /* Aggiunte per il centraggio responsivo del testo */
+      text-align: center !important; /* Forza il centraggio del testo */
+      display: table-cell !important; /* Assicura che sia trattata come una cella di tabella */
+      padding: 20px; /* Assicura un padding adeguato */
+      width: 100%; /* Occupa tutta la larghezza disponibile */
     }
 
 
@@ -272,21 +278,20 @@
         text-align: left;
       }
 
-      /* Centra il testo per mobile (senza rotella) */
+      /* Rimosse le regole di centratura con grid/flex per il messaggio di caricamento,
+         perché la regola 'text-align: center !important;' a livello di #programma-body tr td[colspan="5"]
+         gestirà il centraggio del testo in tutti i casi.
+      */
       #programma-body tr td[colspan="5"] {
-        display: flex !important; /* Forza flex per il centraggio */
-        justify-content: center !important;
-        align-items: center !important;
-        width: 100%;
+        /* Rimosso display: grid/flex e place-items/justify-content/align-items */
+        /* Il text-align: center !important; nella regola generale è sufficiente */
         padding: 20px; 
         color: #999; 
         background: transparent; 
         box-shadow: none; 
         border: none; 
       }
-      /* Rimosso il margine della rotella, dato che la rotella non c'è più */
-      /* .spinner { margin: 0 !important; } */
-
+      
       h1 {
         font-size: 1.8rem;
         margin-bottom: 5px;
@@ -312,7 +317,7 @@
     @media print {
       /* Nascondi elementi non necessari */
       .modern-search-container,
-      .button-group /* .spinner rimosso qui */ { 
+      .button-group { 
         display: none !important;
       }
       body {
@@ -393,11 +398,13 @@
          }
          /* Garantisci che le celle di stato (caricamento/nessun dato) siano centrate in stampa mobile */
          #programma-body tr td[colspan="5"] {
-            display: flex !important; /* Forza flexbox anche in stampa mobile */
-            justify-content: center !important;
-            align-items: center !important;
-            text-align: center !important; /* Mantenuto per sicurezza, ma flexbox dovrebbe bastare */
-            flex-direction: row; /* Assicura che elementi (spinner e testo) siano affiancati */
+            /* Qui è importante che text-align: center; sia applicato */
+            text-align: center !important; 
+            padding: 20px; 
+            color: #999; 
+            background: transparent; 
+            box-shadow: none; 
+            border: none; 
          }
       }
     }
@@ -457,7 +464,7 @@
 
     // Funzione per mostrare il messaggio di caricamento
     function showLoadingMessage() {
-      // Non c'è più la rotella, solo testo
+      // Ora, indipendentemente dal mobile, usiamo solo il testo centrato
       tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>`;
       orarioInizioGiornataDiv.textContent = 'Caricamento orario...'; // Messaggio di caricamento per l'orario
     }
