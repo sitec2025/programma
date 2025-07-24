@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8" />
-    <title>Programma di Oggi</title>
+    <title>Dashboard Sitec Impianti</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
@@ -449,8 +449,7 @@
                     flex-direction: row; /* Assicura che elementi (spinner e testo) siano affiancati */
                 }
             }
-        }
-    </style>
+        </style>
 </head>
 <body>
     <main>
@@ -460,50 +459,51 @@
         <div id="orario-inizio-giornata"></div>
 
         <div class="modern-search-container">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <input type="text" id="search-bar" placeholder="Cerca cantiere, collaboratore..." />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 7 9.5 7 14 9.01 14 11.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="search-bar" placeholder="Cerca per nominativo, cantiere o comune..." />
         </div>
 
         <table>
             <thead>
                 <tr>
-                    <th>Cantiere</th>
-                    <th>Luogo</th>
-                    <th>Lavorazioni</th>
-                    <th>Collaboratori</th>
-                    <th>Mezzo</th>
+                    <th>Ora</th>
+                    <th>Tipo Intervento</th>
+                    <th>Nominativo</th>
+                    <th>Cantiere / Descrizione</th>
+                    <th>Comune</th>
                 </tr>
             </thead>
             <tbody id="programma-body">
-                <tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>
+                <tr>
+                    <td colspan="5" style="text-align: center;">
+                        <div class="spinner"></div> Caricamento dati...
+                    </td>
+                </tr>
             </tbody>
         </table>
 
         <div class="button-group">
-            <button class="action-button" onclick="window.print()">Stampa Programma</button>
-            <button class="action-button" id="shareButton">Condividi</button>
-            <button class="action-button" id="logoutButton">Esci</button>
+            <button id="importDataBtn" class="action-button">Importa Dati</button>
+            <button id="exportPdfBtn" class="action-button">Esporta PDF</button>
+            <button id="exportExcelBtn" class="action-button">Esporta Excel</button>
+            <button id="logoutButton" class="action-button">Logout</button>
         </div>
-
+        
         <div class="note-collaboratori">
-            <strong>Idraulici:</strong> Marco, Riccardo, Antonio, Diego, Stefano L., Emanuele<br>
-            <strong>Elettricisti:</strong> Andrea, Stefano C., Francesco<br>
-            <strong>Manutentore:</strong> Rossano
+            <strong>Nota sui Collaboratori:</strong> Le ore qui visualizzate si riferiscono all'orario di inizio dell'intervento. Non includono i tempi di spostamento. Il programma potrebbe subire variazioni in base a urgenze o imprevisti.
         </div>
     </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-        import { 
-            getAuth, 
-            signOut, 
-            onAuthStateChanged 
-        } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+        import { utils, write, SheetJSExpress } from "https://unpkg.com/xlsx/xlsx.mjs";
+        import autoTable from "https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.mjs"; // jspdf-autotable
+        import { jsPDF } from "https://cdn.jsdelivr.net/npm/jspdf@2.10.0/dist/jspdf.es.min.js"; // jspdf
 
-        // IMPORTANTISSIMO: Inserisci la tua configurazione Firebase REALE qui!
-        // Questi valori DEVONO corrispondere esattamente a quelli del tuo progetto Firebase.
         const firebaseConfig = {
-            apiKey: "AIzaSyCDs7iMJjJYFh8qc7LASNwFYSyFAJDJrQ8", // <--- SOSTITUISCI CON LA TUA API KEY REALE
+            apiKey: "AIzaSyCDs7iMJjJYFh8qc7LASNwFYSyFAJDJrQ8",
             authDomain: "programma-sitec-impianti.firebaseapp.com",
             projectId: "programma-sitec-impianti",
             storageBucket: "programma-sitec-impianti.firebasestorage.app",
@@ -513,166 +513,172 @@
         };
 
         const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
         const auth = getAuth(app);
 
-        const logoutButton = document.getElementById('logoutButton');
+        // Riferimenti agli elementi DOM
         const dataOggiDiv = document.getElementById('data-oggi');
         const orarioInizioGiornataDiv = document.getElementById('orario-inizio-giornata');
-        const tbody = document.getElementById('programma-body');
+        const programmaBody = document.getElementById('programma-body');
         const searchBar = document.getElementById('search-bar');
-        const shareButton = document.getElementById('shareButton');
+        const importDataBtn = document.getElementById('importDataBtn');
+        const exportPdfBtn = document.getElementById('exportPdfBtn');
+        const exportExcelBtn = document.getElementById('exportExcelBtn');
+        const logoutButton = document.getElementById('logoutButton');
 
-        // --- Gestione dello Stato di Autenticazione (Protezione della Pagina) ---
+        let allInterventions = []; // Array per memorizzare tutti gli interventi
+
+        // Funzione per formattare la data
+        const formatDate = (date) => {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('it-IT', options);
+        };
+
+        // Funzione per formattare l'orario di inizio giornata (fisso 8:00)
+        const formatTime = () => {
+            return 'Inizio giornata: 08:00';
+        };
+
+        // Funzione per caricare i dati da Firestore
+        const loadProgramData = async () => {
+            programmaBody.innerHTML = `<tr><td colspan="5" style="text-align: center;"><div class="spinner"></div> Caricamento dati...</td></tr>`;
+            try {
+                const querySnapshot = await getDocs(collection(db, "interventi"));
+                allInterventions = []; // Svuota l'array prima di riempirlo
+                querySnapshot.forEach((doc) => {
+                    allInterventions.push(doc.data());
+                });
+                displayProgramData(allInterventions); // Visualizza tutti i dati all'inizio
+            } catch (error) {
+                console.error("Errore nel caricamento dei dati:", error);
+                programmaBody.innerHTML = `<tr><td colspan="5" style="color: #dc3545;">Errore nel caricamento dei dati.</td></tr>`;
+            }
+        };
+
+        // Funzione per visualizzare i dati nella tabella
+        const displayProgramData = (interventions) => {
+            programmaBody.innerHTML = ''; // Pulisce la tabella
+            if (interventions.length === 0) {
+                programmaBody.innerHTML = `<tr><td colspan="5" style="text-align: center;">Nessun intervento trovato per oggi.</td></tr>`;
+                return;
+            }
+
+            // Ordina gli interventi per ora
+            interventions.sort((a, b) => {
+                const [hourA, minuteA] = a.ora.split(':').map(Number);
+                const [hourB, minuteB] = b.ora.split(':').map(Number);
+                if (hourA !== hourB) {
+                    return hourA - hourB;
+                }
+                return minuteA - minuteB;
+            });
+
+            interventions.forEach((intervento, index) => {
+                const row = programmaBody.insertRow();
+                row.style.animationDelay = `${index * 0.05}s`; // Ritardo per animazione sequenziale
+                row.innerHTML = `
+                    <td data-label="Ora">${intervento.ora}</td>
+                    <td data-label="Tipo Intervento">${intervento.tipoIntervento}</td>
+                    <td data-label="Nominativo">${intervento.nominativo}</td>
+                    <td data-label="Cantiere / Descrizione">${intervento.cantiereDescrizione}</td>
+                    <td data-label="Comune">${intervento.comune}</td>
+                `;
+            });
+        };
+
+        // Filtra i dati in base alla barra di ricerca
+        searchBar.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredInterventions = allInterventions.filter(intervento => {
+                return (
+                    intervento.nominativo.toLowerCase().includes(searchTerm) ||
+                    intervento.cantiereDescrizione.toLowerCase().includes(searchTerm) ||
+                    intervento.comune.toLowerCase().includes(searchTerm)
+                );
+            });
+            displayProgramData(filteredInterventions);
+        });
+
+        // Gestione pulsante "Importa Dati" (placeholder)
+        importDataBtn.addEventListener('click', () => {
+            alert('Funzionalità "Importa Dati" non ancora implementata.');
+        });
+
+        // Gestione pulsante "Esporta PDF"
+        exportPdfBtn.addEventListener('click', () => {
+            const doc = new jsPDF();
+            doc.text("Programma di Oggi Sitec Impianti Srl", 14, 20);
+            doc.text(`${dataOggiDiv.textContent} - ${orarioInizioGiornataDiv.textContent}`, 14, 30);
+
+            const tableData = allInterventions.map(intervento => [
+                intervento.ora,
+                intervento.tipoIntervento,
+                intervento.nominativo,
+                intervento.cantiereDescrizione,
+                intervento.comune
+            ]);
+
+            autoTable(doc, {
+                head: [['Ora', 'Tipo Intervento', 'Nominativo', 'Cantiere / Descrizione', 'Comune']],
+                body: tableData,
+                startY: 40,
+                theme: 'striped',
+                headStyles: { fillColor: [0, 123, 255] },
+                styles: { font: 'Poppins', fontStyle: 'normal' },
+            });
+
+            doc.save('programma_sitec_impianti.pdf');
+        });
+
+        // Gestione pulsante "Esporta Excel"
+        exportExcelBtn.addEventListener('click', () => {
+            const ws = utils.json_to_sheet(allInterventions.map(i => ({
+                Ora: i.ora,
+                'Tipo Intervento': i.tipoIntervento,
+                Nominativo: i.nominativo,
+                'Cantiere / Descrizione': i.cantiereDescrizione,
+                Comune: i.comune
+            })));
+            const wb = utils.book_new();
+            utils.book_append_sheet(wb, ws, "Programma");
+            write(wb, { fileName: "programma_sitec_impianti.xlsx" });
+        });
+
+        // Gestione del logout
+        logoutButton.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                console.log('Logout riuscito!');
+                window.location.href = 'index.html'; // Reindirizza alla pagina di login
+            } catch (error) {
+                console.error('Errore durante il logout:', error);
+                alert('Errore durante il logout. Riprova.');
+            }
+        });
+
+        // Controlla lo stato di autenticazione all'avvio della pagina
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                console.log('Firebase Auth: Utente loggato.', user.email);
-                loadProgramData(); 
+                console.log('Utente autenticato:', user.email);
+                // Visualizza data e orario all'avvio
+                const today = new Date();
+                dataOggiDiv.textContent = `Data: ${formatDate(today)}`;
+                orarioInizioGiornataDiv.textContent = formatTime();
+                loadProgramData(); // Carica i dati del programma
             } else {
-                console.log('Firebase Auth: Nessun utente loggato, reindirizzo a login.html.');
-                window.location.href = 'login.html'; 
+                console.log('Nessun utente autenticato, reindirizzo a index.html.');
+                window.location.href = 'index.html'; // Reindirizza alla pagina di login
             }
         });
 
-        // Funzione per il Logout
-        if (logoutButton) {
-            logoutButton.addEventListener('click', () => {
-                signOut(auth)
-                    .then(() => {
-                        console.log('Logout effettuato con successo. Reindirizzo a login.html.');
-                        window.location.href = 'login.html'; 
-                    })
-                    .catch((error) => {
-                        console.error('Errore durante il logout:', error);
-                        alert(`Errore durante il logout: ${error.message}`);
-                    });
-            });
-        }
+        // Inizializza jsPDF con il font Poppins (necessario per exportPdfBtn)
+        // Dovrai assicurarti che 'Poppins' sia incorporato o disponibile
+        // Questo è un placeholder e potrebbe richiedere configurazioni avanzate di jspdf per i font
+        // Se non funziona, autoTable userà un font di fallback come Helvetica.
+        jsPDF.API.events.push(['addFonts', function(){
+            this.addFont('Poppins', 'Poppins', 'normal');
+        }]);
 
-        function formatDate(date) {
-            const d = date.getDate().toString().padStart(2, '0');
-            const m = (date.getMonth() + 1).toString().padStart(2, '0');
-            const y = date.getFullYear();
-            return `${d}/${m}/${y}`;
-        }
-
-        dataOggiDiv.textContent = `Data odierna: ${formatDate(new Date())}`; // Aggiornato per chiarezza
-
-        // Assicurati che questi URL siano i tuoi URL di deployment degli script Google Apps
-        const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
-        const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
-
-        function showLoadingMessage() {
-            const isMobile = window.matchMedia("(max-width: 768px)").matches;
-            if (isMobile) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">
-                                        <div class="spinner"></div>
-                                    </td></tr>`;
-            } else {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>`;
-            }
-            orarioInizioGiornataDiv.textContent = 'Caricamento orario inizio giornata...';
-        }
-
-        function loadProgramData() {
-            showLoadingMessage();
-
-            // --- FETCH PER I DATI DEL PROGRAMMA ---
-            console.log('Inizio fetch per i dati del programma da:', PROGRAM_JSON_URL);
-            fetch(PROGRAM_JSON_URL)
-                .then(res => {
-                    if (!res.ok) {
-                        console.error(`Errore HTTP nel recupero programma: Status ${res.status}, URL: ${PROGRAM_JSON_URL}`);
-                        throw new Error(`Errore HTTP! Status: ${res.status}`);
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    console.log('Dati programma ricevuti:', data);
-                    tbody.innerHTML = ''; 
-
-                    if (!Array.isArray(data) || data.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile o formato errato.</td></tr>`;
-                        console.warn('Nessun dato o dati non in formato array per il programma.', data);
-                        return;
-                    }
-
-                    data.forEach((row, index) => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td data-label="Cantiere">${row.Cantiere || ''}</td>
-                            <td data-label="Luogo">${row.Luogo || ''}</td>
-                            <td data-label="Lavorazioni">${row.Lavorazioni || ''}</td>
-                            <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
-                            <td data-label="Mezzo">${row.Mezzo || ''}</td>
-                        `;
-                        tr.style.animationDelay = `${index * 70}ms`;
-                        tbody.appendChild(tr);
-                    });
-                    console.log('Dati programma renderizzati con successo.');
-                })
-                .catch(err => {
-                    tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore durante il caricamento del programma: ${err.message}. Controlla la console per dettagli.</td></tr>`;
-                    console.error("Errore critico nel fetch del programma:", err);
-                });
-
-            // --- FETCH SEPARATO PER L'ORARIO ---
-            console.log('Inizio fetch per l\'orario da:', TIME_JSON_URL);
-            fetch(TIME_JSON_URL)
-                .then(res => {
-                    if (!res.ok) {
-                        console.error(`Errore HTTP nel recupero orario: Status ${res.status}, URL: ${TIME_JSON_URL}`);
-                        throw new Error(`Errore HTTP! Status: ${res.status}`);
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    console.log('Dati orario ricevuti:', data);
-                    if (data.error) {
-                        orarioInizioGiornataDiv.textContent = `Errore orario: ${data.error}`;
-                        console.warn('Errore specifico dall\'API orario:', data.error);
-                    } else {
-                        const orarioInizio = data.orarioInizioLavorativa || 'Non disponibile';
-                        orarioInizioGiornataDiv.textContent = `Orario inizio giornata lavorativa: ${orarioInizio}`;
-                        console.log('Orario renderizzato con successo:', orarioInizio);
-                    }
-                })
-                .catch(err => {
-                    orarioInizioGiornataDiv.textContent = `Errore caricamento orario: ${err.message}. Controlla console.`;
-                    console.error("Errore critico nel fetch orario:", err);
-                });
-        }
-
-        // Logica della barra di ricerca
-        searchBar.addEventListener('input', function () {
-            const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#programma-body tr');
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                if (row.querySelector('td[colspan="5"]')) { // Non nascondere i messaggi di stato
-                    row.style.display = '';
-                } else {
-                    row.style.display = text.includes(searchTerm) ? '' : 'none';
-                }
-            });
-        });
-
-        // Funzione per il pulsante Condividi
-        shareButton.addEventListener('click', async () => {
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: 'Programma di Oggi - Sitec Impianti Srl',
-                        text: 'Dai un\'occhiata al programma di lavoro di oggi!',
-                        url: window.location.href,
-                    });
-                    console.log('Contenuto condiviso con successo!');
-                } catch (error) {
-                    console.error('Errore durante la condivisione:', error);
-                }
-            } else {
-                alert('La tua navigazione non supporta la condivisione web. Puoi copiare il link manualmente.');
-            }
-        });
     </script>
 </body>
 </html>
