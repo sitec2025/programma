@@ -25,6 +25,7 @@
       max-width: 1200px;
       width: 100%;
       box-sizing: border-box;
+      overflow-x: auto; /* per sicurezza su mobile */
     }
 
     #azienda {
@@ -45,10 +46,10 @@
       text-align: center;
     }
 
-    #current-date {
+    #date-today {
       text-align: center;
-      font-weight: 500;
-      font-size: 1.1rem;
+      font-weight: 600;
+      font-size: 1rem;
       margin-bottom: 30px;
       color: #4a5568;
     }
@@ -57,17 +58,21 @@
       display: flex;
       justify-content: center;
       margin-bottom: 30px;
+      width: 100%;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     #search-input {
-      width: 100%;
-      max-width: 400px;
-      padding: 12px 20px;
-      font-size: 1rem;
+      padding: 12px 18px;
       border-radius: 30px;
-      border: 1.5px solid #cbd5e0;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
-      transition: border-color 0.3s ease;
+      border: 1px solid #cbd5e0;
+      font-size: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.07);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     #search-input:focus {
@@ -79,8 +84,9 @@
     table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 0 15px;
+      border-spacing: 0 20px;
       text-align: left;
+      min-width: 600px;
     }
 
     thead th {
@@ -92,28 +98,18 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       border-bottom: 2px solid #cbd5e0;
-      border-radius: 0;
       position: relative;
     }
 
+    /* Linea dritta senza curve tra Cantiere e Luogo */
     thead th:first-child {
-      border-top-left-radius: 15px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-right: 1px solid #cbd5e0;
     }
 
-    thead th:last-child {
-      border-top-right-radius: 15px;
-    }
-
-    /* Rimuovo curva linea tra Cantiere e Luogo (prima colonna) */
     thead th:first-child::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 1px;
-      height: 100%;
-      background: #cbd5e0;
-      border-radius: 0; /* rimuove curva */
+      content: none;
     }
 
     tbody tr {
@@ -121,6 +117,9 @@
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(44,62,80,0.07);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
+      border: 1px solid #cbd5e0; /* bordo leggerissimo tra le righe */
+      margin-bottom: 15px;
+      display: table-row;
     }
 
     tbody tr:hover {
@@ -133,87 +132,59 @@
       padding: 18px 20px;
       font-size: 1rem;
       color: #2d3748;
-      vertical-align: top;
-      border: none;
+      vertical-align: middle;
     }
 
-    tbody tr td:first-child {
-      border-top-left-radius: 15px;
-      border-bottom-left-radius: 15px;
-    }
-
-    tbody tr td:last-child {
-      border-top-right-radius: 15px;
-      border-bottom-right-radius: 15px;
-    }
-
-    /* Messaggio caricamento e nessun dato */
-    #programma-body td[colspan="5"] {
-      text-align: center;
-      color: #999;
-      font-style: italic;
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
+    /* Per la versione mobile: */
+    @media (max-width: 900px) {
       body {
         padding: 20px 10px;
       }
       main {
-        padding: 25px 20px;
+        padding: 20px 15px;
         box-shadow: none;
         border-radius: 15px;
         max-width: 100%;
       }
-
       #search-container {
+        max-width: 100%;
+        padding: 0 10px;
         margin-bottom: 20px;
       }
-
       #search-input {
-        max-width: 100%;
         font-size: 1rem;
-        padding: 12px 18px;
+        padding: 12px 15px;
       }
 
       table {
-        border-spacing: 0 20px; /* più spazio verticale */
+        width: 100%;
+        border-spacing: 0 25px;
+        min-width: 0;
       }
 
       thead {
-        display: none; /* Nascondi intestazione */
+        display: none; /* nascondi intestazione */
       }
 
       tbody tr {
         display: block;
-        margin-bottom: 20px; /* più spazio verticale */
-        background: #f7fafc;
         border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(44,62,80,0.07);
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-        padding: 20px 25px;
-        border: 1px solid #d1d5db; /* bordo leggerissimo per evidenziare riga */
-      }
-
-      tbody tr:hover {
-        background: #e0e7ff;
-        transform: none;
-        box-shadow: 0 4px 12px rgba(67,56,202,0.2);
+        background: #f0f4f8; /* grigio più scuro rispetto desktop */
+        border: 1px solid #cbd5e0;
+        margin-bottom: 25px;
+        padding: 15px 20px;
+        box-shadow: none;
       }
 
       tbody td {
         display: flex;
         justify-content: space-between;
-        padding: 12px 0;
+        padding: 10px 0;
         border-bottom: 1px solid #cbd5e0;
         font-size: 1rem;
-        color: #2d3748;
-        word-break: break-word;
-        align-items: center;
+        vertical-align: middle;
       }
-
-      /* Rimuovo bordo dall'ultimo td per riga */
-      tbody tr td:last-child {
+      tbody td:last-child {
         border-bottom: none;
       }
 
@@ -221,42 +192,53 @@
         content: attr(data-label);
         font-weight: 600;
         color: #4a5568;
-        width: 120px;
         flex-shrink: 0;
+        width: 40%;
+        text-align: left;
       }
 
-      /* Allinea a destra testo di Lavorazioni e Collaboratori */
+      /* Testo allineato a destra per Lavorazioni, Collaboratori e Mezzo */
       tbody td[data-label="Lavorazioni"],
-      tbody td[data-label="Collaboratori"] {
+      tbody td[data-label="Collaboratori"],
+      tbody td[data-label="Mezzo"] {
         justify-content: flex-end;
         text-align: right;
       }
 
-      /* L’etichetta resta a sinistra */
       tbody td[data-label="Lavorazioni"]::before,
-      tbody td[data-label="Collaboratori"]::before {
+      tbody td[data-label="Collaboratori"]::before,
+      tbody td[data-label="Mezzo"]::before {
         text-align: left;
-        margin-right: 12px;
       }
 
-      /* Centrare messaggi caricamento e nessun dato */
-      #programma-body td[colspan="5"] {
-        text-align: center;
-        color: #999;
-        font-style: italic;
-        padding: 20px 0;
+      /* Elimina bordi arrotondati sulle righe (per non creare curve extra) */
+      tbody tr td:first-child {
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+      }
+      tbody tr td:last-child {
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+      }
+
+      /* Centratura testo in caricamento dati */
+      #programma-body td {
+        text-align: center !important;
       }
     }
+
   </style>
 </head>
 <body>
   <main>
     <div id="azienda">SITEC IMPIANTI SRL</div>
     <h1>Programma Giornaliero</h1>
-    <div id="current-date"></div>
+    <div id="date-today" aria-live="polite" aria-atomic="true">
+      <!-- Data dinamica inserita da JS -->
+    </div>
 
     <div id="search-container">
-      <input type="text" id="search-input" placeholder="Cerca...">
+      <input type="text" id="search-input" placeholder="Cerca..." aria-label="Barra di ricerca" />
     </div>
 
     <table>
@@ -279,16 +261,18 @@
     const JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
 
     const today = new Date();
-    const currentDateEl = document.getElementById('current-date');
-    currentDateEl.textContent = today.toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    // Inserisce la data sotto il titolo in formato IT (es. 24/07/2025)
+    const dateTodayEl = document.getElementById('date-today');
+    dateTodayEl.textContent = today.toLocaleDateString('it-IT', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
 
+    // Funzione per caricare dati e popolare tabella
     function loadProgramma(dateString) {
       fetch(`${JSON_URL}?data=${dateString}`)
         .then(res => res.json())
         .then(data => {
           const tbody = document.getElementById('programma-body');
           tbody.innerHTML = '';
-          if (data.length === 0) {
+          if (!data || data.length === 0) {
             tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
             return;
           }
@@ -309,7 +293,7 @@
         });
     }
 
-    // Filtro ricerca
+    // Filtro di ricerca
     document.getElementById('search-input').addEventListener('input', () => {
       const filter = document.getElementById('search-input').value.toLowerCase();
       document.querySelectorAll('#programma-body tr').forEach(row => {
