@@ -478,11 +478,13 @@
 
     document.getElementById('data-oggi').textContent = formatDate(new Date());
 
-    // URL per i dati del programma (QUELLO CORRETTO)
-    const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
+    // ***** IMPORTANTE: INCOLLA QUI IL TUO URL ESATTO DAL DEPLOYMENT DI GOOGLE APPS SCRIPT *****
+    // Esempio: 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
+    const PROGRAM_JSON_URL = 'INCOLLA_QUI_IL_TUO_URL_DEL_PROGRAMMA';
 
-    // URL per l'orario (fornito da te)
-    const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
+    // ***** IMPORTANTE: INCOLLA QUI IL TUO URL ESATTO DAL DEPLOYMENT DI GOOGLE APPS SCRIPT *****
+    // Esempio: 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
+    const TIME_JSON_URL = 'INCOLLA_QUI_IL_TUO_URL_DELL_ORARIO';
 
     const tbody = document.getElementById('programma-body');
     const orarioInizioGiornataDiv = document.getElementById('orario-inizio-giornata');
@@ -498,7 +500,12 @@
 
     // --- FETCH PER I DATI DEL PROGRAMMA ---
     fetch(PROGRAM_JSON_URL)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then(data => {
         tbody.innerHTML = ''; // Pulisce il messaggio di caricamento della tabella
 
@@ -526,7 +533,12 @@
 
     // --- FETCH SEPARATO PER L'ORARIO ---
     fetch(TIME_JSON_URL)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then(data => {
         if (data.error) {
             orarioInizioGiornataDiv.textContent = `Errore: ${data.error}`;
