@@ -199,9 +199,12 @@
       }
       tbody td {
         display: flex;
+        /* Allinea l'etichetta a sinistra e il contenuto a destra */
+        justify-content: space-between;
         padding: 12px 5px;
         border-bottom: 1px solid #e5e7eb;
         border-radius: 0 !important;
+        text-align: right; /* Allinea il contenuto a destra */
       }
       tbody td:last-child { border-bottom: none; }
       tbody td::before {
@@ -211,15 +214,20 @@
         flex-basis: 40%;
         margin-right: 10px;
         white-space: nowrap;
+        text-align: left; /* Assicurati che l'etichetta rimanga allineata a sinistra */
       }
 
-      /* Nuove regole per il titolo "Programma di Oggi" su mobile */
+      /* Regole per il titolo "Programma di Oggi" e la data su mobile */
       h1 {
         font-size: 1.8rem; /* Rimpicciolisci il font */
-        margin-bottom: 20px; /* Regola lo spazio sotto */
+        margin-bottom: 5px; /* Avvicina al prossimo elemento (data) */
         white-space: nowrap; /* Tutta su una linea */
         overflow: hidden; /* Nascondi eventuale overflow se la linea è troppo lunga */
         text-overflow: ellipsis; /* Aggiungi puntini di sospensione se il testo è tagliato */
+      }
+
+      #data-oggi {
+        margin-bottom: 25px; /* Riduci lo spazio sotto la data per avvicinarla al titolo */
       }
     }
   </style>
