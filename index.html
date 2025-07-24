@@ -7,8 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --brand-color: #6d28d9; /* Viola intenso come colore primario */
-      --brand-color-light: rgba(127, 156, 245, 0.25);
+      --brand-color: #007bff; /* Blu come colore primario */
+      --brand-color-light: rgba(0, 123, 255, 0.25);
       --text-primary: #111827;
       --text-secondary: #4b5563;
       --surface-bg: rgba(255, 255, 255, 0.6); /* Bianco traslucido per l'effetto vetro */
@@ -69,7 +69,7 @@
       color: var(--brand-color);
       text-transform: uppercase;
       margin-bottom: 10px;
-      letter-spacing: 3px;
+      letter-spacing: 0.5px; /* Spaziatura tra le lettere ridotta */
     }
 
     h1 {
@@ -101,8 +101,8 @@
     }
     
     .modern-search-container:focus-within {
-      border-color: var(--brand-color);
-      box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.2);
+      border-color: var(--brand-color); /* Bordo blu quando la barra è attiva */
+      box-shadow: 0 0 0 4px var(--brand-color-light);
     }
     
     .modern-search-container svg {
@@ -114,7 +114,7 @@
     }
     
     .modern-search-container:focus-within svg {
-      fill: var(--brand-color);
+      fill: var(--brand-color); /* Icona blu quando la barra è attiva */
     }
 
     #search-bar {
@@ -154,7 +154,7 @@
       border-radius: 12px;
       box-shadow: 0 8px 25px rgba(44, 62, 80, 0.08);
       transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-      opacity: 0; /* Inizia trasparente per l'animazione */
+      opacity: 0;
       animation: fadeInUp 0.5s ease-out forwards;
     }
 
@@ -173,7 +173,7 @@
     }
     tbody tr td:first-child { border-radius: 12px 0 0 12px; border-top: none; }
     tbody tr td:last-child { border-radius: 0 12px 12px 0; border-top: none;}
-    tbody tr td { border-top: none; } /* Sovrascrive per un look più pulito */
+    tbody tr td { border-top: none; }
 
 
     @media (max-width: 768px) {
@@ -266,7 +266,6 @@
             <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
             <td data-label="Mezzo">${row.Mezzo || ''}</td>
           `;
-          // Aggiunge un ritardo progressivo per l'animazione
           tr.style.animationDelay = `${index * 70}ms`;
           tbody.appendChild(tr);
         });
