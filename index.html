@@ -108,12 +108,12 @@
       transition: all 0.3s ease-in-out;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
     }
-    
+
     .modern-search-container:focus-within {
       border-color: var(--brand-color); /* Bordo blu quando la barra è attiva */
       box-shadow: 0 0 0 4px var(--brand-color-light);
     }
-    
+
     .modern-search-container svg {
       width: 20px;
       height: 20px;
@@ -121,7 +121,7 @@
       margin-right: 12px;
       transition: fill 0.3s ease-in-out;
     }
-    
+
     .modern-search-container:focus-within svg {
       fill: var(--brand-color); /* Icona blu quando la barra è attiva */
     }
@@ -281,11 +281,13 @@
         text-align: left;
       }
 
-      /* Centra la rotella per mobile */
+      /* Centra la rotella per mobile - MODIFICATO PER IL CENTRAGGIO */
       #programma-body tr td[colspan="5"] {
-        display: grid !important; /* Forza grid per il centraggio */
-        place-items: center !important; /* Centra orizzontalmente e verticalmente */
+        display: flex !important; /* Forza flexbox per il centraggio */
+        justify-content: center !important; /* Centra orizzontalmente */
+        align-items: center !important; /* Centra verticalmente */
         width: 100%;
+        min-height: 100px; /* **AGGIUNTO/MODIFICATO:** Dai un'altezza minima alla cella */
         padding: 20px;
         color: #999;
         background: transparent;
@@ -317,8 +319,6 @@
         gap: 10px; /* Meno spazio tra i pulsanti */
       }
     }
-
-    ---
 
     /* Regole di stampa */
     @media print {
@@ -357,10 +357,10 @@
         border-collapse: collapse; /* Forza i bordi a collassare per la stampa */
         text-align: left;
         margin-bottom: 0;
-        display: table !important; /* **MODIFICA:** Forza display:table per la tabella in stampa */
+        display: table !important; /* Forza display:table per la tabella in stampa */
       }
       thead {
-        display: table-header-group !important; /* **MODIFICA:** Mostra l'intestazione per la stampa */
+        display: table-header-group !important; /* Mostra l'intestazione per la stampa */
       }
       thead th {
         background-color: #f2f2f2;
@@ -374,10 +374,10 @@
         background: white;
         box-shadow: none;
         border-radius: 0;
-        display: table-row !important; /* **MODIFICA:** Forza display:table-row per le righe in stampa */
-        transition: none; /* **AGGIUNTO:** Rimuovi transizioni in stampa */
-        animation: none; /* **AGGIUNTO:** Rimuovi animazioni in stampa */
-        opacity: 1 !important; /* **AGGIUNTO:** Assicura che siano visibili */
+        display: table-row !important; /* Forza display:table-row per le righe in stampa */
+        transition: none; /* Rimuovi transizioni in stampa */
+        animation: none; /* Rimuovi animazioni in stampa */
+        opacity: 1 !important; /* Assicura che siano visibili */
       }
       tbody tr:hover {
         background: white;
@@ -391,14 +391,14 @@
         font-size: 0.9rem;
         border: 1px solid #ddd; /* Bordi per tutte le celle di dati */
         text-align: left !important; /* Forza allineamento a sinistra */
-        display: table-cell !important; /* **MODIFICA:** Forza display:table-cell per le celle in stampa */
-        border-radius: 0 !important; /* **MODIFICA:** Rimuoviamo qualsiasi border-radius specifico in stampa */
+        display: table-cell !important; /* Forza display:table-cell per le celle in stampa */
+        border-radius: 0 !important; /* Rimuoviamo qualsiasi border-radius specifico in stampa */
       }
-      
+
       /* Regole specifiche per la stampa da mobile (all'interno di @media print) */
       @media (max-width: 768px) {
           tbody td::before {
-            display: none !important; /* **MODIFICA CRUCIALE:** Nascondi le etichette data-label per la stampa mobile */
+            display: none !important; /* Nascondi le etichette data-label per la stampa mobile */
           }
           /* Garantisci che le celle di stato (caricamento/nessun dato) siano centrate in stampa mobile */
           #programma-body tr td[colspan="5"] {
@@ -417,7 +417,7 @@
     <div id="azienda">Sitec Impianti Srl</div>
     <h1>Programma di Oggi</h1>
     <div id="data-oggi"></div>
-    <div id="orario-inizio-giornata"></div> 
+    <div id="orario-inizio-giornata"></div>
 
     <div class="modern-search-container">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
