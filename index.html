@@ -235,7 +235,7 @@
 
     const today = new Date();
     const strip = document.getElementById('date-strip');
-    const range = 7; // 7 giorni prima e dopo
+    const range = 3; // 3 giorni prima + 3 giorni dopo = 7 giorni totali
 
     function createDateButton(date, isToday = false) {
       const btn = document.createElement('div');
@@ -261,7 +261,7 @@
       return btn;
     }
 
-    // Crea i giorni
+    // Crea i giorni visibili nella barra
     for (let i = -range; i <= range; i++) {
       const d = new Date(today);
       d.setDate(today.getDate() + i);
