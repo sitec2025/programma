@@ -255,9 +255,11 @@
 
       /* Centra la scritta "Caricamento dati..." e "Nessun dato disponibile." */
       #programma-body tr td[colspan="5"] {
-        display: block; 
+        display: flex !important; /* Forza flexbox per il centraggio */
+        justify-content: center !important; /* Centra orizzontalmente */
+        align-items: center !important; /* Centra verticalmente */
         width: 100%;
-        text-align: center !important; /* Forza l'allineamento centrale */
+        text-align: center !important; /* Per sicurezza, anche se flexbox dovrebbe bastare */
         padding: 20px; 
       }
 
@@ -315,24 +317,24 @@
         margin-bottom: 0;
         width: 100%;
         border-collapse: collapse; /* Forza i bordi a collassare per la stampa */
-        display: table; /* Forza display:table per la stampa */
+        display: table !important; /* Forza display:table per la tabella in stampa */
       }
       thead {
-        display: table-header-group; /* Mostra l'intestazione per la stampa */
+        display: table-header-group !important; /* Mostra l'intestazione per la stampa */
       }
       thead th {
         background-color: #f2f2f2;
         color: var(--text-primary);
-        border: 1px solid #ddd; /* Aggiungi bordi a tutte le celle di intestazione */
+        border: 1px solid #ddd; /* Bordi per tutte le celle di intestazione */
         padding: 8px 10px;
         font-size: 0.8rem;
-        text-align: left;
+        text-align: left !important; /* Forza allineamento a sinistra */
       }
       tbody tr {
         background: white;
         box-shadow: none;
         border-radius: 0;
-        display: table-row !important; /* Forza display:table-row per la stampa su tutte le dimensioni */
+        display: table-row !important; /* Forza display:table-row per le righe in stampa */
       }
       tbody tr:hover {
         background: white;
@@ -344,12 +346,18 @@
         color: var(--text-primary);
         font-weight: 400;
         font-size: 0.9rem;
-        border: 1px solid #ddd; /* Aggiungi bordi a tutte le celle di dati */
-        text-align: left !important; /* Forza allineamento a sinistra per la stampa su tutte le dimensioni */
-        display: table-cell !important; /* Forza display:table-cell per la stampa su tutte le dimensioni */
+        border: 1px solid #ddd; /* Bordi per tutte le celle di dati */
+        text-align: left !important; /* Forza allineamento a sinistra */
+        display: table-cell !important; /* Forza display:table-cell per le celle in stampa */
+        /* Rimuoviamo qualsiasi border-radius specifico in stampa */
+        border-top: 1px solid #ddd !important; /* Garantisci il bordo superiore */
+        border-left: 1px solid #ddd !important; /* Garantisci il bordo sinistro */
+        border-right: 1px solid #ddd !important; /* Garantisci il bordo destro */
+        border-bottom: 1px solid #ddd !important; /* Garantisci il bordo inferiore */
       }
-      tbody tr td:first-child { border-radius: 0; }
-      tbody tr td:last-child { border-radius: 0; }
+      /* Queste regole non dovrebbero più essere necessarie con border-collapse: collapse; */
+      tbody tr td:first-child { border-radius: 0 !important; }
+      tbody tr td:last-child { border-radius: 0 !important; }
       
       /* Regole specifiche per la stampa da mobile (all'interno di @media print) */
       @media (max-width: 768px) {
@@ -358,7 +366,10 @@
          }
          /* Garantisci che le celle di stato (caricamento/nessun dato) siano centrate in stampa mobile */
          #programma-body tr td[colspan="5"] {
-            text-align: center !important;
+            display: flex !important; /* Forza flexbox anche in stampa mobile */
+            justify-content: center !important;
+            align-items: center !important;
+            text-align: center !important; /* Mantenuto per sicurezza, ma flexbox dovrebbe bastare */
          }
       }
     }
