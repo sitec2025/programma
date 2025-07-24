@@ -33,10 +33,7 @@
       }
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    /* @keyframes spin rimosso */
 
     html {
       min-height: 100%;
@@ -231,15 +228,9 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
-    /* Stile per la rotella di caricamento */
-    .spinner {
-      border: 4px solid rgba(0, 0, 0, 0.1);
-      border-left-color: var(--brand-color);
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      animation: spin 1s linear infinite;
-    }
+    /* .spinner rimosso */
+    /* Regole per il spinner rimosse */
+
 
     @media (max-width: 768px) {
       body { padding: 0; }
@@ -281,10 +272,11 @@
         text-align: left;
       }
 
-      /* Centra la rotella per mobile */
+      /* Centra il testo per mobile (senza rotella) */
       #programma-body tr td[colspan="5"] {
-        display: grid !important; /* Forza grid per il centraggio */
-        place-items: center !important; /* Centra orizzontalmente e verticalmente */
+        display: flex !important; /* Forza flex per il centraggio */
+        justify-content: center !important;
+        align-items: center !important;
         width: 100%;
         padding: 20px; 
         color: #999; 
@@ -292,10 +284,8 @@
         box-shadow: none; 
         border: none; 
       }
-      /* Rimuoviamo il margine della rotella quando è l'unico elemento */
-      .spinner {
-          margin: 0 !important; 
-      }
+      /* Rimosso il margine della rotella, dato che la rotella non c'è più */
+      /* .spinner { margin: 0 !important; } */
 
       h1 {
         font-size: 1.8rem;
@@ -322,8 +312,7 @@
     @media print {
       /* Nascondi elementi non necessari */
       .modern-search-container,
-      .button-group,
-      .spinner { /* Nascondi la rotella in stampa */
+      .button-group /* .spinner rimosso qui */ { 
         display: none !important;
       }
       body {
@@ -460,7 +449,7 @@
     // URL per i dati del programma (quello che già usi)
     const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
 
-    // NUOVO URL per l'orario (fornito da te)
+    // URL per l'orario (fornito da te)
     const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
 
     const tbody = document.getElementById('programma-body');
@@ -468,14 +457,8 @@
 
     // Funzione per mostrare il messaggio di caricamento
     function showLoadingMessage() {
-      const isMobile = window.matchMedia("(max-width: 768px)").matches;
-      if (isMobile) {
-        tbody.innerHTML = `<tr><td colspan="5">
-                              <div class="spinner"></div>
-                           </td></tr>`; // Solo spinner per mobile
-      } else {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>`;
-      }
+      // Non c'è più la rotella, solo testo
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>`;
       orarioInizioGiornataDiv.textContent = 'Caricamento orario...'; // Messaggio di caricamento per l'orario
     }
 
