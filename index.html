@@ -235,7 +235,6 @@
       width: 24px;
       height: 24px;
       animation: spin 1s linear infinite;
-      /* Nessun margin-right qui, lo gestiremo solo quando è accanto al testo */
     }
 
     @media (max-width: 768px) {
@@ -278,25 +277,21 @@
         text-align: left;
       }
 
-      /* Centra la rotella (o testo se presente) per mobile */
+      /* Centra la rotella per mobile */
       #programma-body tr td[colspan="5"] {
-        display: flex !important; /* Forza flexbox per il centraggio */
-        justify-content: center !important; /* Centra orizzontalmente */
-        align-items: center !important; /* Centra verticalmente */
+        display: grid !important; /* Forza grid per il centraggio */
+        place-items: center !important; /* Centra orizzontalmente e verticalmente */
         width: 100%;
         padding: 20px; 
         color: #999; 
-        background: transparent; /* Rimuovi sfondo qui per consistenza */
-        box-shadow: none; /* Rimuovi ombra qui per consistenza */
-        border: none; /* Rimuovi bordo qui per consistenza */
-        flex-direction: row; /* Assicura che elementi (spinner e testo) siano affiancati */
+        background: transparent; 
+        box-shadow: none; 
+        border: none; 
       }
-      /* Quando il testo è accanto alla rotella, aggiungi un margine */
-      #programma-body tr td[colspan="5"] span + .spinner,
-      #programma-body tr td[colspan="5"] .spinner + span {
-          margin-left: 8px; /* Spazio tra spinner e testo */
+      /* Rimuoviamo il margine della rotella quando è l'unico elemento */
+      .spinner {
+          margin: 0 !important; 
       }
-
 
       h1 {
         font-size: 1.8rem;
