@@ -11,7 +11,7 @@
             --brand-color-light: rgba(0, 123, 255, 0.25);
             --text-primary: #111827;
             --text-secondary: #4b5563;
-            --surface-bg: rgba(255, 255, 255, 0.6);
+            --surface-bg: rgba(255, 255, 255, 0.6); /* Bianco traslucido per l'effetto vetro */
             --surface-border: rgba(255, 255, 255, 0.9);
             --surface-shadow: rgba(44, 62, 80, 0.15);
         }
@@ -171,6 +171,7 @@
             background-color: rgba(239, 68, 68, 0.1);
             border-left: 4px solid #ef4444;
             border-radius: 4px;
+            display: none; /* Inizialmente nascosto */
         }
 
         @media (max-width: 768px) {
@@ -186,8 +187,6 @@
             }
         }
     </style>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body>
     <div class="login-container">
@@ -195,7 +194,8 @@
             <img src="sitec_logo_nuovo[1] (2)_page-0001.jpg" alt="Sitec Impianti Srl Logo">
         </div>
         <h2>Accedi al Programma</h2>
-        <div id="error-message" class="error-message" style="display:none;"></div>
+        <div id="error-message" class="error-message">
+            </div>
         <div class="input-group">
             <label for="email">Email</label>
             <input type="email" id="email" placeholder="La tua email">
@@ -213,71 +213,16 @@
     </div>
 
     <script>
-        // La tua configurazione Firebase (copiala da Firebase Console)
-        const firebaseConfig = {
-            // YOUR_FIREBASE_CONFIG_HERE
-        };
-
-        // Inizializza Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const errorMessageDiv = document.getElementById('error-message');
-
-        function showError(message) {
-            errorMessageDiv.textContent = message;
-            errorMessageDiv.style.display = 'block';
-        }
-
-        function hideError() {
-            errorMessageDiv.style.display = 'none';
-        }
-
-        // Reindirizza se già autenticato
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                window.location.href = 'index.html';
-            }
-        });
-
+        // Questo script è solo un placeholder. La logica di autenticazione verrà aggiunta in seguito.
+        // Attualmente, i pulsanti non faranno nulla.
         document.getElementById('loginButton').addEventListener('click', () => {
-            hideError();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Accesso riuscito, l'onAuthStateChanged reindirizzerà
-                })
-                .catch((error) => {
-                    showError("Errore di accesso: " + error.message);
-                });
+            alert('Funzionalità di accesso non ancora implementata.');
         });
-
         document.getElementById('registerButton').addEventListener('click', () => {
-            hideError();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    alert("Registrazione avvenuta con successo! Puoi accedere ora.");
-                    // Non reindirizzare automaticamente qui, l'utente dovrebbe poi fare il login
-                })
-                .catch((error) => {
-                    showError("Errore di registrazione: " + error.message);
-                });
+            alert('Funzionalità di registrazione non ancora implementata.');
         });
-
         document.getElementById('googleSignInButton').addEventListener('click', () => {
-            hideError();
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    // Accesso con Google riuscito, l'onAuthStateChanged reindirizzerà
-                })
-                .catch((error) => {
-                    showError("Errore di accesso con Google: " + error.message);
-                });
+            alert('Funzionalità di accesso con Google non ancora implementata.');
         });
     </script>
 </body>
