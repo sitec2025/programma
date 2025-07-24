@@ -33,6 +33,11 @@
       }
     }
 
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     html {
       min-height: 100%;
     }
@@ -212,6 +217,16 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
+    /* Stile per la rotella di caricamento */
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: var(--brand-color);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin-right: 8px; /* Spazio tra rotella e testo */
+    }
 
     @media (max-width: 768px) {
       body { padding: 0; }
@@ -260,12 +275,18 @@
         align-items: center !important; /* Centra verticalmente */
         width: 100%;
         padding: 20px; 
-        /* Rimuovi text-align: center qui perché flexbox lo gestisce */
-        color: #999; /* Stili direttamente qui per il messaggio */
+        color: #999; 
         background: transparent;
         box-shadow: none;
         border: none;
+        flex-direction: row; /* Assicura che elementi (spinner e testo) siano affiancati */
       }
+
+      /* Rimuovi il margine della rotella quando non è in un flex container (ad es. in stampa o desktop) */
+      .spinner:not(#programma-body td .spinner) {
+          margin-right: 0;
+      }
+
 
       h1 {
         font-size: 1.8rem;
@@ -289,7 +310,8 @@
     @media print {
       /* Nascondi elementi non necessari */
       .modern-search-container,
-      .button-group {
+      .button-group,
+      .spinner { /* Nascondi la rotella in stampa */
         display: none !important;
       }
       body {
@@ -374,6 +396,7 @@
             justify-content: center !important;
             align-items: center !important;
             text-align: center !important; /* Mantenuto per sicurezza, ma flexbox dovrebbe bastare */
+            flex-direction: row; /* Assicura che elementi (spinner e testo) siano affiancati */
          }
       }
     }
@@ -401,7 +424,7 @@
         </tr>
       </thead>
       <tbody id="programma-body">
-        <tr><td colspan="5">Caricamento dati...</td></tr>
+        <tr><td colspan="5" style="text-align:center; color:#999; background: transparent; box-shadow:none; border:none;">Caricamento dati...</td></tr>
       </tbody>
     </table>
 
@@ -423,15 +446,32 @@
 
     const JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
 
+    const tbody = document.getElementById('programma-body');
+
+    // Funzione per mostrare il messaggio di caricamento
+    function showLoadingMessage() {
+      // Controlla se è un dispositivo mobile
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+      if (isMobile) {
+        tbody.innerHTML = `<tr><td colspan="5">
+                              <div class="spinner"></div>
+                              <span>Caricamento dati...</span>
+                           </td></tr>`;
+      } else {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#999; background: transparent; box-shadow:none; border:none;">Caricamento dati...</td></tr>`;
+      }
+    }
+
+    // Mostra il messaggio di caricamento all'inizio
+    showLoadingMessage();
+
     fetch(JSON_URL)
       .then(res => res.json())
       .then(data => {
-        const tbody = document.getElementById('programma-body');
-        tbody.innerHTML = '';
+        tbody.innerHTML = ''; // Pulisce il messaggio di caricamento
 
         if (data.length === 0) {
-          // Rimosso lo stile in linea anche da qui
-          tbody.innerHTML = `<tr><td colspan="5">Nessun dato disponibile.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#999; background: transparent; box-shadow:none; border:none;">Nessun dato disponibile.</td></tr>`;
           return;
         }
 
@@ -449,9 +489,7 @@
         });
       })
       .catch(err => {
-        const tbody = document.getElementById('programma-body');
-        // Rimosso lo stile in linea anche da qui
-        tbody.innerHTML = `<tr><td colspan="5" style="color:red;">Errore: ${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center; background: transparent; box-shadow:none; border:none;">Errore: ${err.message}</td></tr>`;
       });
 
     document.getElementById('search-bar').addEventListener('input', function () {
