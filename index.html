@@ -52,29 +52,46 @@
       margin-bottom: 30px;
     }
 
-    /* ⭐️ MODERN SEARCH BAR */
-    #search-bar {
+    .search-container {
       width: 100%;
-      max-width: 100%;
-      padding: 14px 20px;
-      font-size: 1rem;
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-      outline: none;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      margin-bottom: 30px;
+      max-width: 800px;
+      margin: 0 auto 30px auto;
+      position: relative;
     }
 
-    #search-bar:focus {
-      border-color: #7f9cf5;
-      box-shadow: 0 0 0 3px rgba(127,156,245,0.3);
+    #search-bar {
+      width: 100%;
+      padding: 14px 50px 14px 20px;
+      font-size: 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 9999px;
+      background: #f9fafb;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: all 0.25s ease;
+      font-family: 'Poppins', sans-serif;
     }
 
     #search-bar::placeholder {
       color: #a0aec0;
-      font-weight: 400;
       font-style: italic;
+    }
+
+    #search-bar:focus {
+      border-color: #7f9cf5;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(127,156,245,0.2);
+      outline: none;
+    }
+
+    .search-container::after {
+      content: '🔍';
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      font-size: 1.2rem;
+      color: #a0aec0;
     }
 
     table {
@@ -85,6 +102,10 @@
       text-align: left;
     }
 
+    thead {
+      background: #f0f4f8;
+    }
+
     thead th {
       padding: 15px 20px;
       font-weight: 600;
@@ -93,6 +114,8 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       border-bottom: 2px solid #cbd5e0;
+      user-select: none;
+      white-space: normal;
     }
 
     tbody tr {
@@ -113,7 +136,9 @@
       color: #2d3748;
       font-weight: 500;
       font-size: 1rem;
+      vertical-align: top;
       white-space: normal;
+      word-wrap: break-word;
     }
 
     tbody tr td:first-child {
@@ -126,25 +151,38 @@
       border-bottom-right-radius: 15px;
     }
 
-    /* Responsive design */
     @media (max-width: 600px) {
       body {
         padding: 20px 10px;
       }
 
       main {
-        padding: 25px 20px;
+        padding: 20px 15px;
+      }
+
+      #azienda {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
       }
 
       h1 {
         font-size: 1.6rem;
-        margin-bottom: 10px;
+        margin-bottom: 3px;
+      }
+
+      #data-oggi {
+        font-size: 1rem;
+        margin-bottom: 20px;
+      }
+
+      .search-container {
+        max-width: 100%;
+        margin-bottom: 20px;
       }
 
       #search-bar {
         font-size: 0.95rem;
-        padding: 12px 15px;
-        margin-bottom: 20px;
+        padding: 12px 44px 12px 16px;
       }
 
       table, thead, tbody, th, td, tr {
@@ -152,19 +190,33 @@
         width: 100%;
       }
 
-      thead {
+      thead tr {
         display: none;
       }
 
       tbody tr {
         margin-bottom: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(44,62,80,0.1);
+        background: #f7fafc;
         padding: 20px 15px;
+        box-sizing: border-box;
       }
 
       tbody td {
         padding: 10px 0;
+        font-size: 0.95rem;
+        border: none;
         display: flex;
-        border-bottom: 1px solid #e2e8f0;
+        justify-content: flex-start;
+        align-items: center;
+        border-bottom: 1px solid #d1d5db;
+        white-space: normal;
+        word-wrap: break-word;
+      }
+
+      tbody td:last-child {
+        border-bottom: none;
       }
 
       tbody td::before {
@@ -172,24 +224,31 @@
         font-weight: 600;
         color: #4a5568;
         flex-basis: 35%;
-        margin-right: 10px;
+        max-width: 120px;
+        margin-right: 15px;
         white-space: nowrap;
+        flex-shrink: 0;
       }
 
-      tbody td:last-child {
-        border-bottom: none;
+      tbody tr td:first-child,
+      tbody tr td:last-child {
+        border-radius: 0 !important;
       }
 
       tbody td[colspan] {
         display: block;
-        text-align: center;
-        border: none;
+        text-align: center !important;
+        padding: 0;
+        margin: 0 auto;
+        width: 100%;
         font-style: italic;
-        color: #999;
+        color: #777;
+        border: none;
       }
 
       tbody td[colspan]::before {
         display: none;
+        content: "";
       }
     }
   </style>
@@ -200,8 +259,10 @@
     <h1>Programma di Oggi</h1>
     <div id="data-oggi"></div>
 
-    <!-- 🔍 SEARCH INPUT -->
-    <input type="text" id="search-bar" placeholder="Cerca" />
+    <!-- 🔍 Search bar moderna -->
+    <div class="search-container">
+      <input type="text" id="search-bar" placeholder="Cerca" />
+    </div>
 
     <table>
       <thead>
@@ -237,13 +298,14 @@
         const tbody = document.getElementById('programma-body');
         tbody.innerHTML = '';
 
-        if (!data.length) {
+        if (data.length === 0) {
           tbody.innerHTML = `<tr><td colspan="5">Nessun dato disponibile.</td></tr>`;
           return;
         }
 
         data.forEach(row => {
           const tr = document.createElement('tr');
+
           tr.innerHTML = `
             <td data-label="Cantiere">${row.Cantiere || ''}</td>
             <td data-label="Luogo">${row.Luogo || ''}</td>
@@ -251,6 +313,7 @@
             <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
             <td data-label="Mezzo">${row.Mezzo || ''}</td>
           `;
+
           tbody.appendChild(tr);
         });
       })
@@ -259,7 +322,7 @@
         tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore: ${err.message}</td></tr>`;
       });
 
-    // 🔍 LIVE SEARCH
+    // 🔍 Filtro ricerca
     document.getElementById('search-bar').addEventListener('input', function () {
       const searchTerm = this.value.toLowerCase();
       const rows = document.querySelectorAll('#programma-body tr');
