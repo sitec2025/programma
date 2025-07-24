@@ -191,16 +191,15 @@
       color: #999; /* Colore testo per questi messaggi */
 
       /* Aggiustamenti per centrare il testo - VALIDO SIA PER DESKTOP CHE PER MOBILE */
-      display: flex; /* Utilizza flexbox per centrare */
+      display: flex; /* Usa flexbox per il centraggio */
       justify-content: center; /* Centra orizzontalmente */
       align-items: center; /* Centra verticalmente */
       min-height: 80px; /* Altezza minima per un buon centraggio */
-      /* Rimosso 'gap' in quanto non ci sono più elementi da distanziare */
       text-align: center; /* Fallback per browser meno recenti, anche se flexbox è preferito */
     }
 
-    /* Rimosso stile per i punti ad onda e spinner */
-
+    /* Rimosso stile per la rotella di caricamento */
+    /* Rimosso stile per i punti ad onda */
 
     /* Stile per i pulsanti */
     .button-group {
@@ -238,7 +237,6 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
-    /* Rimosso stile per la rotella di caricamento */
 
     @media (max-width: 768px) {
       body { padding: 0; }
@@ -280,9 +278,7 @@
         text-align: left;
       }
 
-      /* La cella di caricamento ora è gestita dalla regola generica per td[colspan="5"] sopra */
-      /* Rimosso stili specifici per mobile per #programma-body tr td[colspan="5"] */
-
+      /* La cella di caricamento è già centrata dalla regola generica per td[colspan="5"] */
 
       h1 {
         font-size: 1.8rem;
@@ -310,7 +306,7 @@
       /* Nascondi elementi non necessari */
       .modern-search-container,
       .button-group
-      /* Rimosso .spinner e .loading-dots */
+      /* Assicurati che non ci siano riferimenti a .spinner qui */
       {
         display: none !important;
       }
@@ -388,11 +384,12 @@
           }
           /* Garantisci che le celle di stato (caricamento/nessun dato) siano centrate in stampa mobile */
           #programma-body tr td[colspan="5"] {
-            display: flex !important; /* Forza flexbox anche in stampa mobile */
+            /* Per la stampa, `text-align: center` sulla cella dovrebbe essere sufficiente,
+               ma manteniamo flexbox per massima compatibilità se il contenuto dovesse variare */
+            display: flex !important;
             justify-content: center !important;
             align-items: center !important;
             text-align: center !important;
-            flex-direction: row; /* Assicura che elementi (spinner e testo) siano affiancati */
           }
       }
     }
@@ -450,9 +447,9 @@
     const tbody = document.getElementById('programma-body');
     const orarioInizioGiornataDiv = document.getElementById('orario-inizio-giornata');
 
-    // Funzione per mostrare il messaggio di caricamento (solo testo)
+    // Funzione per mostrare il messaggio di caricamento (solo testo, centrato dal CSS)
     function showLoadingMessage() {
-      // Non è più necessario differenziare tra mobile e desktop qui, il CSS lo gestisce
+      // Non è più necessario differenziare qui, il CSS gestisce il centraggio per tutti
       tbody.innerHTML = `<tr><td colspan="5">Caricamento dati...</td></tr>`;
       orarioInizioGiornataDiv.textContent = 'Caricamento orario...'; // Messaggio di caricamento per l'orario
     }
