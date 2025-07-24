@@ -201,6 +201,7 @@
             justify-content: center;
             gap: 20px; /* Spazio tra i pulsanti */
             margin-top: 20px;
+            margin-bottom: 40px; /* Spazio sotto il gruppo di pulsanti per le note */
         }
 
         .action-button {
@@ -249,6 +250,23 @@
 
         #logoutButton:hover {
             background-color: #c82333;
+        }
+
+        /* Stile per le note sui collaboratori */
+        .note-collaboratori {
+            text-align: left;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            background: rgba(249, 250, 251, 0.7);
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 15px 20px;
+            line-height: 1.6;
+            margin-top: 20px; /* Spazio sopra le note */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+        .note-collaboratori strong {
+            color: var(--text-primary);
         }
 
 
@@ -326,10 +344,14 @@
             .button-group {
                 flex-direction: column; /* Impila i pulsanti verticalmente */
                 gap: 10px; /* Meno spazio tra i pulsanti */
+                margin-bottom: 25px; /* Spazio ridotto per mobile */
             }
             #logoutButton {
                 margin-left: 0;
                 margin-top: 10px; /* Aggiungi un piccolo spazio sopra se impilato */
+            }
+            .note-collaboratori {
+                margin-top: 15px; /* Spazio ridotto sopra le note per mobile */
             }
         }
 
@@ -471,7 +493,6 @@
     </main>
 
     <script type="module">
-        // Importa le funzioni necessarie dall'SDK di Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
         import { 
             getAuth, 
@@ -479,9 +500,10 @@
             onAuthStateChanged 
         } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-        // La tua configurazione Firebase (DEVE ESSERE LA STESSA DI login.html)
+        // IMPORTANTISSIMO: Inserisci la tua configurazione Firebase REALE qui!
+        // Questi valori DEVONO corrispondere esattamente a quelli del tuo progetto Firebase.
         const firebaseConfig = {
-            apiKey: "AIzaSyCDs7iMJjJYFh8qc7LASNwFYSyFAJDJrQ8", // SOSTITUISCI CON LA TUA API KEY REALE
+            apiKey: "AIzaSyCDs7iMJjJYFh8qc7LASNwFYSyFAJDJrQ8", // <--- SOSTITUISCI CON LA TUA API KEY REALE
             authDomain: "programma-sitec-impianti.firebaseapp.com",
             projectId: "programma-sitec-impianti",
             storageBucket: "programma-sitec-impianti.firebasestorage.app",
@@ -490,11 +512,9 @@
             measurementId: "G-XSSHYE58MD"
         };
 
-        // Inizializza Firebase
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app); // Ottieni l'istanza di Auth
+        const auth = getAuth(app);
 
-        // Riferimenti agli elementi HTML
         const logoutButton = document.getElementById('logoutButton');
         const dataOggiDiv = document.getElementById('data-oggi');
         const orarioInizioGiornataDiv = document.getElementById('orario-inizio-giornata');
@@ -505,23 +525,21 @@
         // --- Gestione dello Stato di Autenticazione (Protezione della Pagina) ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Utente loggato: la pagina può caricare i dati
-                console.log('Utente loggato, mostro il programma:', user.email);
-                loadProgramData(); // Chiamiamo la funzione per caricare i dati del programma
+                console.log('Firebase Auth: Utente loggato.', user.email);
+                loadProgramData(); 
             } else {
-                // Utente NON loggato: reindirizza alla pagina di login
-                console.log('Nessun utente loggato, reindirizzo a login.html.');
+                console.log('Firebase Auth: Nessun utente loggato, reindirizzo a login.html.');
                 window.location.href = 'login.html'; 
             }
         });
 
         // Funzione per il Logout
-        if (logoutButton) { // Controlla che il pulsante esista prima di aggiungere l'event listener
+        if (logoutButton) {
             logoutButton.addEventListener('click', () => {
                 signOut(auth)
                     .then(() => {
-                        console.log('Logout effettuato. Reindirizzo a login.html.');
-                        window.location.href = 'login.html'; // Reindirizza dopo il logout
+                        console.log('Logout effettuato con successo. Reindirizzo a login.html.');
+                        window.location.href = 'login.html'; 
                     })
                     .catch((error) => {
                         console.error('Errore durante il logout:', error);
@@ -530,8 +548,6 @@
             });
         }
 
-
-        // Le tue funzioni originali di formattazione data e showLoadingMessage
         function formatDate(date) {
             const d = date.getDate().toString().padStart(2, '0');
             const m = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -539,42 +555,44 @@
             return `${d}/${m}/${y}`;
         }
 
-        dataOggiDiv.textContent = formatDate(new Date());
+        dataOggiDiv.textContent = `Data odierna: ${formatDate(new Date())}`; // Aggiornato per chiarezza
 
-        // URL per i dati del programma e dell'orario (li ho ripresi da quelli che hai fornito nell'ultima richiesta)
+        // Assicurati che questi URL siano i tuoi URL di deployment degli script Google Apps
         const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
         const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
-
 
         function showLoadingMessage() {
             const isMobile = window.matchMedia("(max-width: 768px)").matches;
             if (isMobile) {
-                tbody.innerHTML = `<tr><td colspan="5">
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">
                                         <div class="spinner"></div>
                                     </td></tr>`;
             } else {
                 tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>`;
             }
-            orarioInizioGiornataDiv.textContent = 'Caricamento orario...';
+            orarioInizioGiornataDiv.textContent = 'Caricamento orario inizio giornata...';
         }
 
-        // QUESTA FUNZIONE CARICA I DATI, CHIAMALA SOLO DOPO L'AUTENTICAZIONE
         function loadProgramData() {
-            showLoadingMessage(); // Mostra i messaggi di caricamento prima del fetch
+            showLoadingMessage();
 
             // --- FETCH PER I DATI DEL PROGRAMMA ---
+            console.log('Inizio fetch per i dati del programma da:', PROGRAM_JSON_URL);
             fetch(PROGRAM_JSON_URL)
                 .then(res => {
-                    if (!res.ok) { // Gestione errori HTTP come 404, 500
-                        throw new Error(`HTTP error! status: ${res.status}`);
+                    if (!res.ok) {
+                        console.error(`Errore HTTP nel recupero programma: Status ${res.status}, URL: ${PROGRAM_JSON_URL}`);
+                        throw new Error(`Errore HTTP! Status: ${res.status}`);
                     }
                     return res.json();
                 })
                 .then(data => {
-                    tbody.innerHTML = ''; // Pulisce il messaggio di caricamento
+                    console.log('Dati programma ricevuti:', data);
+                    tbody.innerHTML = ''; 
 
-                    if (data.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
+                    if (!Array.isArray(data) || data.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile o formato errato.</td></tr>`;
+                        console.warn('Nessun dato o dati non in formato array per il programma.', data);
                         return;
                     }
 
@@ -590,34 +608,39 @@
                         tr.style.animationDelay = `${index * 70}ms`;
                         tbody.appendChild(tr);
                     });
+                    console.log('Dati programma renderizzati con successo.');
                 })
                 .catch(err => {
-                    tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore durante il caricamento del programma: ${err.message}</td></tr>`;
-                    console.error("Errore fetch programma:", err);
+                    tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore durante il caricamento del programma: ${err.message}. Controlla la console per dettagli.</td></tr>`;
+                    console.error("Errore critico nel fetch del programma:", err);
                 });
 
             // --- FETCH SEPARATO PER L'ORARIO ---
+            console.log('Inizio fetch per l\'orario da:', TIME_JSON_URL);
             fetch(TIME_JSON_URL)
                 .then(res => {
-                    if (!res.ok) { // Gestione errori HTTP
-                        throw new Error(`HTTP error! status: ${res.status}`);
+                    if (!res.ok) {
+                        console.error(`Errore HTTP nel recupero orario: Status ${res.status}, URL: ${TIME_JSON_URL}`);
+                        throw new Error(`Errore HTTP! Status: ${res.status}`);
                     }
                     return res.json();
                 })
                 .then(data => {
+                    console.log('Dati orario ricevuti:', data);
                     if (data.error) {
-                        orarioInizioGiornataDiv.textContent = `Errore: ${data.error}`;
+                        orarioInizioGiornataDiv.textContent = `Errore orario: ${data.error}`;
+                        console.warn('Errore specifico dall\'API orario:', data.error);
                     } else {
                         const orarioInizio = data.orarioInizioLavorativa || 'Non disponibile';
                         orarioInizioGiornataDiv.textContent = `Orario inizio giornata lavorativa: ${orarioInizio}`;
+                        console.log('Orario renderizzato con successo:', orarioInizio);
                     }
                 })
                 .catch(err => {
-                    orarioInizioGiornataDiv.textContent = `Errore durante il caricamento dell'orario: ${err.message}`;
-                    console.error("Errore fetch orario:", err);
+                    orarioInizioGiornataDiv.textContent = `Errore caricamento orario: ${err.message}. Controlla console.`;
+                    console.error("Errore critico nel fetch orario:", err);
                 });
         }
-
 
         // Logica della barra di ricerca
         searchBar.addEventListener('input', function () {
@@ -625,8 +648,7 @@
             const rows = document.querySelectorAll('#programma-body tr');
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
-                // Assicurati di non nascondere i messaggi di stato (es. "Caricamento dati...")
-                if (row.querySelector('td[colspan="5"]')) {
+                if (row.querySelector('td[colspan="5"]')) { // Non nascondere i messaggi di stato
                     row.style.display = '';
                 } else {
                     row.style.display = text.includes(searchTerm) ? '' : 'none';
