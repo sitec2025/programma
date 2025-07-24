@@ -15,7 +15,6 @@
       display: flex;
       justify-content: center;
       min-height: 100vh;
-      overflow-x: hidden;
     }
 
     main {
@@ -26,8 +25,6 @@
       max-width: 1200px;
       width: 100%;
       box-sizing: border-box;
-      text-align: center;
-      overflow-x: hidden;
     }
 
     #azienda {
@@ -37,6 +34,7 @@
       text-transform: uppercase;
       margin-bottom: 10px;
       letter-spacing: 2px;
+      text-align: center;
     }
 
     h1 {
@@ -44,36 +42,38 @@
       font-size: 2.2rem;
       margin-bottom: 5px;
       color: #1a202c;
+      text-align: center;
     }
 
     #current-date {
-      font-size: 1.1rem;
+      text-align: center;
       font-weight: 500;
-      color: #4a5568;
+      font-size: 1.1rem;
       margin-bottom: 30px;
-      user-select: none;
+      color: #4a5568;
     }
 
-    /* Barra di ricerca moderna e responsiva */
+    #search-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
     #search-input {
       width: 100%;
-      max-width: 320px;
-      margin: 0 auto 30px auto;
-      padding: 12px 40px 12px 40px;
+      max-width: 400px;
+      padding: 12px 20px;
       font-size: 1rem;
       border-radius: 30px;
-      border: 1.8px solid #cbd5e0;
-      box-shadow: 0 2px 8px rgba(67, 56, 202, 0.15);
-      outline: none;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      background: url('data:image/svg+xml;utf8,<svg fill="%23999" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M21.707 20.293l-5.388-5.388a7.5 7.5 0 1 0-1.414 1.414l5.388 5.388a1 1 0 0 0 1.414-1.414zM10.5 17a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13z"/></svg>') no-repeat 12px center;
-      background-size: 18px 18px;
-      box-sizing: border-box;
+      border: 1.5px solid #cbd5e0;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+      transition: border-color 0.3s ease;
     }
+
     #search-input:focus {
-      border-color: #4338ca;
-      box-shadow: 0 0 8px rgba(67, 56, 202, 0.5);
-      background-color: #fafaff;
+      outline: none;
+      border-color: #4358ca;
+      box-shadow: 0 0 8px rgba(67, 88, 202, 0.4);
     }
 
     table {
@@ -81,9 +81,6 @@
       border-collapse: separate;
       border-spacing: 0 15px;
       text-align: left;
-      table-layout: fixed;
-      word-wrap: break-word;
-      overflow-x: hidden;
     }
 
     thead th {
@@ -95,7 +92,16 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       border-bottom: 2px solid #cbd5e0;
-      overflow-wrap: break-word;
+      border-radius: 0;
+      position: relative;
+    }
+
+    thead th:first-child {
+      border-top-left-radius: 15px;
+    }
+
+    thead th:last-child {
+      border-top-right-radius: 15px;
     }
 
     tbody tr {
@@ -116,12 +122,12 @@
       font-size: 1rem;
       color: #2d3748;
       vertical-align: top;
-      overflow-wrap: break-word;
     }
 
     tbody tr td:first-child {
       border-top-left-radius: 15px;
       border-bottom-left-radius: 15px;
+      border-right: 1px solid #cbd5e0;
     }
 
     tbody tr td:last-child {
@@ -129,112 +135,93 @@
       border-bottom-right-radius: 15px;
     }
 
-    /* Responsive */
-    @media (max-width: 900px) {
-      main {
-        padding: 30px 20px;
-      }
-      thead th, tbody td {
-        padding: 12px 10px;
-        font-size: 0.9rem;
-      }
-      #search-input {
-        max-width: 100%;
-      }
+    /* Messaggio caricamento e nessun dato */
+    #programma-body td[colspan="5"] {
+      text-align: center;
+      color: #999;
+      font-style: italic;
     }
 
+    /* Responsive */
     @media (max-width: 600px) {
       body {
         padding: 20px 10px;
       }
       main {
-        padding: 20px 15px;
+        padding: 25px 20px;
+        box-shadow: none;
         border-radius: 15px;
-        overflow-x: hidden;
+        max-width: 100%;
       }
-      h1 {
-        font-size: 1.8rem;
-      }
-      #azienda {
-        font-size: 1.2rem;
-        letter-spacing: 1.5px;
-      }
-      #current-date {
-        font-size: 1rem;
+
+      #search-container {
         margin-bottom: 20px;
       }
+
       #search-input {
-        font-size: 0.95rem;
-        padding: 10px 40px 10px 40px;
+        max-width: 100%;
+        font-size: 1rem;
+        padding: 12px 18px;
       }
+
       table {
         border-spacing: 0 12px;
       }
+
       thead {
-        display: none;
+        display: none; /* Nascondi intestazione */
       }
+
       tbody tr {
         display: block;
         margin-bottom: 12px;
-        background: white;
+        background: #f7fafc; /* grigio chiaro come desktop */
         border-radius: 15px;
         box-shadow: 0 4px 10px rgba(44,62,80,0.07);
         transition: transform 0.25s ease, box-shadow 0.25s ease;
         padding: 15px 20px;
       }
+
       tbody tr:hover {
         background: #e0e7ff;
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(67,56,202,0.25);
+        transform: none;
+        box-shadow: 0 4px 12px rgba(67,56,202,0.2);
       }
+
       tbody td {
         display: flex;
         justify-content: space-between;
-        padding: 5px 0;
-        font-size: 0.95rem;
+        padding: 10px 0;
+        border: none;
+        font-size: 1rem;
         color: #2d3748;
-        border-radius: 0;
-        background: transparent;
       }
-      tbody td:not(:last-child) {
-        border-bottom: 1px solid #e2e8f0;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
+
+      tbody tr td:first-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-right: none;
       }
+
+      tbody tr td:last-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
       tbody td::before {
         content: attr(data-label);
         font-weight: 600;
         color: #4a5568;
-        flex: 1 1 40%;
-        text-align: left;
-        padding-right: 15px;
-      }
-      tbody td span {
-        flex: 1 1 60%;
-        text-align: right;
-        word-break: break-word;
+        width: 110px;
+        flex-shrink: 0;
       }
 
-      /* Centrare testo caricamento dati */
-      tbody tr td[colspan="5"] {
-        display: block;
+      /* Centrare messaggi caricamento e nessun dato */
+      #programma-body td[colspan="5"] {
         text-align: center;
-        padding: 30px 0 !important;
         color: #999;
         font-style: italic;
-        background: transparent !important;
-        border: none !important;
-        margin: 0;
-      }
-
-      /* Linea dritta fra Cantiere e Luogo */
-      tbody tr td:first-child {
-        border-top-left-radius: 15px;
-        border-bottom-left-radius: 15px;
-      }
-      tbody tr td:last-child {
-        border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
+        padding: 20px 0;
       }
     }
   </style>
@@ -243,9 +230,11 @@
   <main>
     <div id="azienda">SITEC IMPIANTI SRL</div>
     <h1>Programma Giornaliero</h1>
-    <div id="current-date" aria-live="polite"></div>
+    <div id="current-date"></div>
 
-    <input type="text" id="search-input" placeholder="Cerca..." aria-label="Cerca nel programma" autocomplete="off" />
+    <div id="search-container">
+      <input type="text" id="search-input" placeholder="Cerca...">
+    </div>
 
     <table>
       <thead>
@@ -267,67 +256,43 @@
     const JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
 
     const today = new Date();
-    const currentDateElem = document.getElementById('current-date');
-    const searchInput = document.getElementById('search-input');
-    const programmaBody = document.getElementById('programma-body');
-
-    function formatDateIT(date) {
-      return date.toLocaleDateString('it-IT', {
-        weekday: 'long',
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      });
-    }
-
-    currentDateElem.textContent = formatDateIT(today);
-
-    let allRowsData = [];
-
-    function renderRows(data) {
-      if (!data || data.length === 0) {
-        programmaBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
-        return;
-      }
-      programmaBody.innerHTML = '';
-      data.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td data-label="Cantiere"><span>${row.Cantiere || ''}</span></td>
-          <td data-label="Luogo"><span>${row.Luogo || ''}</span></td>
-          <td data-label="Lavorazioni"><span>${row.Lavorazioni || ''}</span></td>
-          <td data-label="Collaboratori"><span>${row.Collaboratori || ''}</span></td>
-          <td data-label="Mezzo"><span>${row.Mezzo || ''}</span></td>
-        `;
-        programmaBody.appendChild(tr);
-      });
-    }
+    const currentDateEl = document.getElementById('current-date');
+    currentDateEl.textContent = today.toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
     function loadProgramma(dateString) {
-      programmaBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#999;">Caricamento dati...</td></tr>`;
       fetch(`${JSON_URL}?data=${dateString}`)
         .then(res => res.json())
         .then(data => {
-          allRowsData = data;
-          renderRows(allRowsData);
+          const tbody = document.getElementById('programma-body');
+          tbody.innerHTML = '';
+          if (data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
+            return;
+          }
+          data.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td data-label="Cantiere">${row.Cantiere || ''}</td>
+              <td data-label="Luogo">${row.Luogo || ''}</td>
+              <td data-label="Lavorazioni">${row.Lavorazioni || ''}</td>
+              <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
+              <td data-label="Mezzo">${row.Mezzo || ''}</td>
+            `;
+            tbody.appendChild(tr);
+          });
         })
         .catch(err => {
-          programmaBody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore: ${err.message}</td></tr>`;
+          document.getElementById('programma-body').innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore: ${err.message}</td></tr>`;
         });
     }
 
-    searchInput.addEventListener('input', () => {
-      const filter = searchInput.value.toLowerCase().trim();
-      if (!filter) {
-        renderRows(allRowsData);
-        return;
-      }
-      const filtered = allRowsData.filter(row => 
-        Object.values(row).some(value =>
-          value && value.toLowerCase().includes(filter)
-        )
-      );
-      renderRows(filtered);
+    // Filtro ricerca
+    document.getElementById('search-input').addEventListener('input', () => {
+      const filter = document.getElementById('search-input').value.toLowerCase();
+      document.querySelectorAll('#programma-body tr').forEach(row => {
+        const match = Array.from(row.children).some(td => td.textContent.toLowerCase().includes(filter));
+        row.style.display = match ? '' : 'none';
+      });
     });
 
     loadProgramma(today.toISOString().split('T')[0]);
