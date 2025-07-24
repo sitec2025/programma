@@ -190,11 +190,11 @@
       box-shadow: 0 8px 25px rgba(44, 62, 80, 0.08); /* E l'ombra */
       color: #999; /* Colore testo per questi messaggi */
       
-      /* Aggiunte per il centraggio responsivo del testo */
-      text-align: center !important; /* Forza il centraggio del testo */
-      display: table-cell !important; /* Assicura che sia trattata come una cella di tabella */
-      padding: 20px; /* Assicura un padding adeguato */
-      width: 100%; /* Occupa tutta la larghezza disponibile */
+      /* Aggiunte/Modifiche per il centraggio responsivo del testo */
+      display: table-cell; /* Assicura che sia trattata come una cella di tabella */
+      text-align: center; /* Centra il testo */
+      width: 100%; /* Occupa tutta la larghezza disponibile della colonna */
+      box-sizing: border-box; /* Include padding e border nel calcolo della larghezza */
     }
 
 
@@ -234,10 +234,6 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
-    /* .spinner rimosso */
-    /* Regole per il spinner rimosse */
-
-
     @media (max-width: 768px) {
       body { padding: 0; }
       main {
@@ -265,7 +261,7 @@
         padding: 12px 5px;
         border-bottom: 1px solid #e5e7eb;
         border-radius: 0 !important;
-        text-align: right;
+        text-align: right; /* Mantiene l'allineamento a destra per le celle normali */
       }
       tbody td:last-child { border-bottom: none; }
       tbody td::before {
@@ -278,13 +274,12 @@
         text-align: left;
       }
 
-      /* Rimosse le regole di centratura con grid/flex per il messaggio di caricamento,
-         perché la regola 'text-align: center !important;' a livello di #programma-body tr td[colspan="5"]
-         gestirà il centraggio del testo in tutti i casi.
-      */
+      /* Regola specifica per il messaggio di caricamento/nessun dato su mobile */
       #programma-body tr td[colspan="5"] {
-        /* Rimosso display: grid/flex e place-items/justify-content/align-items */
-        /* Il text-align: center !important; nella regola generale è sufficiente */
+        /* Sovrascrive display: flex/block e text-align: right delle td generali */
+        display: block !important; /* Rendi la cella un blocco per occupare l'intera larghezza */
+        text-align: center !important; /* Centra il testo al suo interno */
+        width: 100%; /* Assicura che la cella occupi tutta la larghezza */
         padding: 20px; 
         color: #999; 
         background: transparent; 
@@ -398,7 +393,6 @@
          }
          /* Garantisci che le celle di stato (caricamento/nessun dato) siano centrate in stampa mobile */
          #programma-body tr td[colspan="5"] {
-            /* Qui è importante che text-align: center; sia applicato */
             text-align: center !important; 
             padding: 20px; 
             color: #999; 
@@ -433,7 +427,7 @@
         </tr>
       </thead>
       <tbody id="programma-body">
-        <tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>
+        <tr><td colspan="5">Caricamento dati...</td></tr>
       </tbody>
     </table>
 
@@ -464,8 +458,8 @@
 
     // Funzione per mostrare il messaggio di caricamento
     function showLoadingMessage() {
-      // Ora, indipendentemente dal mobile, usiamo solo il testo centrato
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>`;
+      // Usiamo il messaggio testuale centrato direttamente qui
+      tbody.innerHTML = `<tr><td colspan="5">Caricamento dati...</td></tr>`;
       orarioInizioGiornataDiv.textContent = 'Caricamento orario...'; // Messaggio di caricamento per l'orario
     }
 
@@ -479,7 +473,7 @@
         tbody.innerHTML = ''; // Pulisce il messaggio di caricamento della tabella
 
         if (data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="5">Nessun dato disponibile.</td></tr>`;
           return;
         }
 
@@ -497,7 +491,7 @@
         });
       })
       .catch(err => {
-        tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore durante il caricamento del programma: ${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" style="color:red;">Errore durante il caricamento del programma: ${err.message}</td></tr>`;
       });
 
     // --- FETCH SEPARATO PER L'ORARIO ---
