@@ -136,6 +136,7 @@
       border-collapse: separate;
       border-spacing: 0 10px;
       text-align: left;
+      margin-bottom: 40px; /* Spazio prima del pulsante di stampa */
     }
 
     thead th {
@@ -174,6 +175,36 @@
     tbody tr td:first-child { border-radius: 12px 0 0 12px; border-top: none; }
     tbody tr td:last-child { border-radius: 0 12px 12px 0; border-top: none;}
     tbody tr td { border-top: none; }
+
+    /* Stile per il pulsante di stampa */
+    .print-button {
+      background-color: var(--brand-color);
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 9999px; /* Rendi il pulsante ovale */
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      display: inline-flex; /* Per allineare icona e testo se ne aggiungi */
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px; /* Spazio sopra il pulsante */
+    }
+
+    .print-button:hover {
+      background-color: #0056b3; /* Blu più scuro all'hover */
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .print-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
 
 
     @media (max-width: 768px) {
@@ -230,6 +261,74 @@
         margin-bottom: 25px; /* Riduci lo spazio sotto la data per avvicinarla al titolo */
       }
     }
+
+    /* Regole di stampa: nascondi elementi non necessari */
+    @media print {
+      .modern-search-container,
+      .print-button {
+        display: none; /* Nascondi la barra di ricerca e il pulsante di stampa */
+      }
+      body {
+        background: none; /* Rimuovi lo sfondo animato in stampa */
+      }
+      main {
+        background: white; /* Assicurati che lo sfondo principale sia bianco in stampa */
+        border: none;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        padding: 0; /* Rimuovi padding extra per ottimizzare lo spazio */
+      }
+      table {
+        border-spacing: 0; /* Rimuovi spaziatura tra righe per una stampa più compatta */
+      }
+      tbody tr {
+        box-shadow: none; /* Rimuovi ombre dalle righe */
+        border: 1px solid #e5e7eb; /* Aggiungi un bordo leggero per separare le righe */
+        border-radius: 0;
+      }
+      tbody tr:hover {
+        background: white; /* Rimuovi hover effect in stampa */
+        transform: none;
+        box-shadow: none;
+      }
+      tbody td {
+        padding: 10px 15px; /* Riduci il padding delle celle per una stampa più compatta */
+        border-top: 1px solid #e5e7eb !important; /* Forza i bordi tra le celle */
+        border-left: 1px solid #e5e7eb;
+        border-right: 1px solid #e5e7eb;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      tbody tr:first-child td { border-top: 1px solid #e5e7eb; }
+      tbody tr:last-child td { border-bottom: 1px solid #e5e7eb; }
+      tbody tr td:first-child { border-left: 1px solid #e5e7eb; border-radius: 0; }
+      tbody tr td:last-child { border-right: 1px solid #e5e7eb; border-radius: 0; }
+      /* Ripristina l'intestazione della tabella per la stampa se necessario */
+      thead {
+        display: table-header-group; /* Mostra l'intestazione per la stampa */
+      }
+      /* Regola il layout delle celle per la stampa */
+      tbody td::before {
+        display: none; /* Nascondi le etichette per la stampa se l'intestazione è presente */
+      }
+      @media (max-width: 768px) {
+        /* Adattamenti specifici per la stampa da mobile, se necessario */
+        /* Ad esempio, potresti voler mostrare comunque le etichette data-label per chiarezza */
+         tbody td::before {
+           display: inline-block; /* Riabilita le etichette per la stampa mobile */
+           margin-right: 5px;
+           flex-basis: auto;
+           text-align: left;
+           font-weight: 700;
+           color: var(--text-secondary);
+         }
+         tbody td {
+           display: flex;
+           justify-content: flex-start; /* Allinea il testo a sinistra per la stampa mobile */
+           text-align: left;
+         }
+      }
+    }
   </style>
 </head>
 <body>
@@ -257,6 +356,8 @@
         <tr><td colspan="5" style="text-align:center; color:#999; background: transparent; box-shadow:none; border:none;">Caricamento dati...</td></tr>
       </tbody>
     </table>
+
+    <button class="print-button" onclick="window.print()">Stampa Programma</button>
   </main>
 
   <script>
