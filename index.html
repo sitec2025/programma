@@ -6,15 +6,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
+      padding: 40px 20px;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #eef2f7, #ffffff);
+      color: #2c3e50;
       display: flex;
       justify-content: center;
       min-height: 100vh;
-      overflow-x: hidden;
     }
 
     main {
@@ -42,6 +42,7 @@
       font-size: 2.2rem;
       margin-bottom: 5px;
       color: #1a202c;
+      line-height: 1.1;
     }
 
     #data-oggi {
@@ -49,34 +50,6 @@
       font-size: 1.1rem;
       color: #4a5568;
       margin-bottom: 30px;
-    }
-
-    .search-container {
-      width: 100%;
-      max-width: 400px;
-      margin: 0 auto 30px auto;
-    }
-
-    #search-bar {
-      width: 100%;
-      padding: 8px 14px;
-      font-size: 0.95rem;
-      border: 1px solid #cbd5e0;
-      border-radius: 9999px;
-      background: white;
-      transition: all 0.25s ease;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    #search-bar::placeholder {
-      color: #a0aec0;
-      font-style: italic;
-    }
-
-    #search-bar:focus {
-      border-color: #7f9cf5;
-      box-shadow: 0 0 0 3px rgba(127,156,245,0.2);
-      outline: none;
     }
 
     table {
@@ -87,6 +60,10 @@
       text-align: left;
     }
 
+    thead {
+      background: #f0f4f8;
+    }
+
     thead th {
       padding: 15px 20px;
       font-weight: 600;
@@ -95,11 +72,13 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       border-bottom: 2px solid #cbd5e0;
-      background: #f0f4f8;
+      user-select: none;
+      white-space: normal;
     }
 
     tbody tr {
       background: #f7fafc;
+      border-radius: 15px;
       box-shadow: 0 4px 10px rgba(44,62,80,0.07);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
@@ -115,22 +94,43 @@
       color: #2d3748;
       font-weight: 500;
       font-size: 1rem;
+      vertical-align: top;
+      white-space: normal;
       word-wrap: break-word;
     }
 
+    tbody tr td:first-child {
+      border-top-left-radius: 15px;
+      border-bottom-left-radius: 15px;
+    }
+
+    tbody tr td:last-child {
+      border-top-right-radius: 15px;
+      border-bottom-right-radius: 15px;
+    }
+
     @media (max-width: 600px) {
+      body {
+        padding: 20px 10px;
+      }
+
       main {
         padding: 20px 15px;
       }
 
-      .search-container {
-        max-width: 100%;
-        margin-bottom: 20px;
+      #azienda {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
       }
 
-      #search-bar {
-        font-size: 0.9rem;
-        padding: 10px 14px;
+      h1 {
+        font-size: 1.6rem;
+        margin-bottom: 3px;
+      }
+
+      #data-oggi {
+        font-size: 1rem;
+        margin-bottom: 20px;
       }
 
       table, thead, tbody, th, td, tr {
@@ -138,13 +138,15 @@
         width: 100%;
       }
 
-      thead {
+      thead tr {
         display: none;
       }
 
       tbody tr {
         margin-bottom: 20px;
+        border-radius: 15px;
         box-shadow: 0 4px 10px rgba(44,62,80,0.1);
+        background: #f7fafc;
         padding: 20px 15px;
         box-sizing: border-box;
       }
@@ -152,8 +154,17 @@
       tbody td {
         padding: 10px 0;
         font-size: 0.95rem;
+        border: none;
         display: flex;
+        justify-content: flex-start;
+        align-items: center;
         border-bottom: 1px solid #d1d5db;
+        white-space: normal;
+        word-wrap: break-word;
+      }
+
+      tbody td:last-child {
+        border-bottom: none;
       }
 
       tbody td::before {
@@ -161,17 +172,22 @@
         font-weight: 600;
         color: #4a5568;
         flex-basis: 35%;
+        max-width: 120px;
         margin-right: 15px;
         white-space: nowrap;
+        flex-shrink: 0;
       }
 
-      tbody td:last-child {
-        border-bottom: none;
+      /* ✅ CORREGGE angoli curvi su prima e ultima cella */
+      tbody tr td:first-child,
+      tbody tr td:last-child {
+        border-radius: 0 !important;
       }
 
+      /* ✅ Centra il messaggio "Caricamento dati..." su mobile */
       tbody td[colspan] {
         display: block;
-        text-align: center;
+        text-align: center !important;
         padding: 0;
         margin: 0 auto;
         width: 100%;
@@ -182,6 +198,7 @@
 
       tbody td[colspan]::before {
         display: none;
+        content: "";
       }
     }
   </style>
@@ -191,10 +208,6 @@
     <div id="azienda">SITEC IMPIANTI SRL</div>
     <h1>Programma di Oggi</h1>
     <div id="data-oggi"></div>
-
-    <div class="search-container">
-      <input type="text" id="search-bar" placeholder="Cerca" />
-    </div>
 
     <table>
       <thead>
@@ -237,6 +250,7 @@
 
         data.forEach(row => {
           const tr = document.createElement('tr');
+
           tr.innerHTML = `
             <td data-label="Cantiere">${row.Cantiere || ''}</td>
             <td data-label="Luogo">${row.Luogo || ''}</td>
@@ -244,6 +258,7 @@
             <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
             <td data-label="Mezzo">${row.Mezzo || ''}</td>
           `;
+
           tbody.appendChild(tr);
         });
       })
@@ -251,15 +266,6 @@
         const tbody = document.getElementById('programma-body');
         tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore: ${err.message}</td></tr>`;
       });
-
-    document.getElementById('search-bar').addEventListener('input', function () {
-      const searchTerm = this.value.toLowerCase();
-      const rows = document.querySelectorAll('#programma-body tr');
-      rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        row.style.display = text.includes(searchTerm) ? '' : 'none';
-      });
-    });
   </script>
 </body>
 </html>
