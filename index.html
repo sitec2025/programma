@@ -33,6 +33,11 @@
       }
     }
 
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     html {
       min-height: 100%;
     }
@@ -187,12 +192,6 @@
       background: var(--surface-bg); /* Assicurati lo sfondo */
       box-shadow: 0 8px 25px rgba(44, 62, 80, 0.08); /* E l'ombra */
       color: #999; /* Colore testo per questi messaggi */
-      
-      /* Aggiunte/Modifiche per il centraggio responsivo del testo */
-      display: table-cell; /* Assicura che sia trattata come una cella di tabella */
-      text-align: center; /* Centra il testo */
-      width: 100%; /* Occupa tutta la larghezza disponibile della colonna */
-      box-sizing: border-box; /* Include padding e border nel calcolo della larghezza */
     }
 
 
@@ -232,23 +231,15 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
-    /* Stile per la nota in basso */
-    .note-collaboratori {
-        margin-top: 40px; /* Spazio sopra la nota */
-        text-align: left; /* Allinea il testo a sinistra */
-        font-size: 0.9rem;
-        color: var(--text-secondary);
-        line-height: 1.6;
-        padding: 20px;
-        background: rgba(249, 250, 251, 0.8);
-        border-radius: 12px;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    /* Stile per la rotella di caricamento */
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: var(--brand-color);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
     }
-    .note-collaboratori strong {
-        color: var(--text-primary);
-    }
-
 
     @media (max-width: 768px) {
       body { padding: 0; }
@@ -277,7 +268,7 @@
         padding: 12px 5px;
         border-bottom: 1px solid #e5e7eb;
         border-radius: 0 !important;
-        text-align: right; /* Mantiene l'allineamento a destra per le celle normali */
+        text-align: right;
       }
       tbody td:last-child { border-bottom: none; }
       tbody td::before {
@@ -290,18 +281,22 @@
         text-align: left;
       }
 
-      /* Regola specifica per il messaggio di caricamento/nessun dato su mobile */
+      /* Centra la rotella per mobile */
       #programma-body tr td[colspan="5"] {
-        display: block !important; /* Rendi la cella un blocco per occupare l'intera larghezza */
-        text-align: center !important; /* Centra il testo al suo interno */
-        width: 100%; /* Assicura che la cella occupi tutta la larghezza */
+        display: grid !important; /* Forza grid per il centraggio */
+        place-items: center !important; /* Centra orizzontalmente e verticalmente */
+        width: 100%;
         padding: 20px; 
         color: #999; 
         background: transparent; 
         box-shadow: none; 
         border: none; 
       }
-      
+      /* Rimuoviamo il margine della rotella quando è l'unico elemento */
+      .spinner {
+          margin: 0 !important; 
+      }
+
       h1 {
         font-size: 1.8rem;
         margin-bottom: 5px;
@@ -321,18 +316,14 @@
         flex-direction: column; /* Impila i pulsanti verticalmente */
         gap: 10px; /* Meno spazio tra i pulsanti */
       }
-
-      .note-collaboratori {
-        margin-top: 30px; /* Spazio ridotto per mobile */
-        padding: 15px;
-      }
     }
 
     /* Regole di stampa */
     @media print {
       /* Nascondi elementi non necessari */
       .modern-search-container,
-      .button-group { 
+      .button-group,
+      .spinner { /* Nascondi la rotella in stampa */
         display: none !important;
       }
       body {
@@ -413,18 +404,12 @@
          }
          /* Garantisci che le celle di stato (caricamento/nessun dato) siano centrate in stampa mobile */
          #programma-body tr td[colspan="5"] {
-            text-align: center !important; 
-            padding: 20px; 
-            color: #999; 
-            background: transparent; 
-            box-shadow: none; 
-            border: none; 
+            display: flex !important; /* Forza flexbox anche in stampa mobile */
+            justify-content: center !important;
+            align-items: center !important;
+            text-align: center !important; /* Mantenuto per sicurezza, ma flexbox dovrebbe bastare */
+            flex-direction: row; /* Assicura che elementi (spinner e testo) siano affiancati */
          }
-      }
-
-      /* Nascondi la nota in stampa */
-      .note-collaboratori {
-        display: none !important;
       }
     }
   </style>
@@ -452,19 +437,13 @@
         </tr>
       </thead>
       <tbody id="programma-body">
-        <tr><td colspan="5">Caricamento dati...</td></tr>
+        <tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>
       </tbody>
     </table>
 
     <div class="button-group">
         <button class="action-button" onclick="window.print()">Stampa Programma</button>
         <button class="action-button" id="shareButton">Condividi</button>
-    </div>
-
-    <div class="note-collaboratori">
-        <strong>Idraulici:</strong> Marco, Riccardo, Antonio, Diego, Stefano L., Emanuele<br>
-        <strong>Elettricisti:</strong> Andrea, Stefano C., Francesco<br>
-        <strong>Manutentore:</strong> Rossano
     </div>
   </main>
 
@@ -479,9 +458,9 @@
     document.getElementById('data-oggi').textContent = formatDate(new Date());
 
     // URL per i dati del programma (quello che già usi)
-    const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflqngqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
+    const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
 
-    // URL per l'orario (fornito da te)
+    // NUOVO URL per l'orario (fornito da te)
     const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
 
     const tbody = document.getElementById('programma-body');
@@ -489,7 +468,14 @@
 
     // Funzione per mostrare il messaggio di caricamento
     function showLoadingMessage() {
-      tbody.innerHTML = `<tr><td colspan="5">Caricamento dati...</td></tr>`;
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+      if (isMobile) {
+        tbody.innerHTML = `<tr><td colspan="5">
+                              <div class="spinner"></div>
+                           </td></tr>`; // Solo spinner per mobile
+      } else {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>`;
+      }
       orarioInizioGiornataDiv.textContent = 'Caricamento orario...'; // Messaggio di caricamento per l'orario
     }
 
@@ -503,7 +489,7 @@
         tbody.innerHTML = ''; // Pulisce il messaggio di caricamento della tabella
 
         if (data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5">Nessun dato disponibile.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
           return;
         }
 
@@ -521,7 +507,7 @@
         });
       })
       .catch(err => {
-        tbody.innerHTML = `<tr><td colspan="5" style="color:red;">Errore durante il caricamento del programma: ${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore durante il caricamento del programma: ${err.message}</td></tr>`;
       });
 
     // --- FETCH SEPARATO PER L'ORARIO ---
