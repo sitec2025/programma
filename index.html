@@ -473,8 +473,6 @@
     <script type="module">
         // Importa le funzioni necessarie dall'SDK di Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-        // getAnalytics è importato ma non usato in questa parte di codice, puoi rimuoverlo se non ti serve
-        // import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js"; 
         import { 
             getAuth, 
             signOut, 
@@ -483,7 +481,7 @@
 
         // La tua configurazione Firebase (DEVE ESSERE LA STESSA DI login.html)
         const firebaseConfig = {
-            apiKey: "AIzaSyCDs7iMJjJYFh8qc7LASNwFYSyFAJDJrQ8",
+            apiKey: "AIzaSyCDs7iMJjJYFh8qc7LASNwFYSyFAJDJrQ8", // SOSTITUISCI CON LA TUA API KEY REALE
             authDomain: "programma-sitec-impianti.firebaseapp.com",
             projectId: "programma-sitec-impianti",
             storageBucket: "programma-sitec-impianti.firebasestorage.app",
@@ -494,7 +492,6 @@
 
         // Inizializza Firebase
         const app = initializeApp(firebaseConfig);
-        // const analytics = getAnalytics(app); // Rimuovi o commenta se non usi Analytics
         const auth = getAuth(app); // Ottieni l'istanza di Auth
 
         // Riferimenti agli elementi HTML
@@ -510,7 +507,6 @@
             if (user) {
                 // Utente loggato: la pagina può caricare i dati
                 console.log('Utente loggato, mostro il programma:', user.email);
-                // Puoi anche mostrare info utente qui se hai un div apposito (es. userInfo.textContent = `Benvenuto, ${user.email}`);
                 loadProgramData(); // Chiamiamo la funzione per caricare i dati del programma
             } else {
                 // Utente NON loggato: reindirizza alla pagina di login
@@ -520,17 +516,20 @@
         });
 
         // Funzione per il Logout
-        logoutButton.addEventListener('click', () => {
-            signOut(auth)
-                .then(() => {
-                    console.log('Logout effettuato. Reindirizzo a login.html.');
-                    window.location.href = 'login.html'; // Reindirizza dopo il logout
-                })
-                .catch((error) => {
-                    console.error('Errore durante il logout:', error);
-                    alert(`Errore durante il logout: ${error.message}`);
-                });
-        });
+        if (logoutButton) { // Controlla che il pulsante esista prima di aggiungere l'event listener
+            logoutButton.addEventListener('click', () => {
+                signOut(auth)
+                    .then(() => {
+                        console.log('Logout effettuato. Reindirizzo a login.html.');
+                        window.location.href = 'login.html'; // Reindirizza dopo il logout
+                    })
+                    .catch((error) => {
+                        console.error('Errore durante il logout:', error);
+                        alert(`Errore durante il logout: ${error.message}`);
+                    });
+            });
+        }
+
 
         // Le tue funzioni originali di formattazione data e showLoadingMessage
         function formatDate(date) {
@@ -542,10 +541,9 @@
 
         dataOggiDiv.textContent = formatDate(new Date());
 
-        // URL per i dati del programma (ricorda di sostituire con i tuoi URL reali)
-        // ATTENZIONE: SOSTITUISCI QUESTI CON I TUOI URL REALI DEI FILE JSON
-        const PROGRAM_JSON_URL = 'https://example.com/your_program_data.json'; // Esempio: Sostituisci questo URL
-        const TIME_JSON_URL = 'https://example.com/your_time_data.json';     // Esempio: Sostituisci questo URL
+        // URL per i dati del programma e dell'orario (li ho ripresi da quelli che hai fornito nell'ultima richiesta)
+        const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
+        const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
 
 
         function showLoadingMessage() {
