@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accedi a Sitec Impianti Srl</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accedi a Sitec Impianti</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
     <style>
         :root {
-            --brand-color: #007bff; /* Blu come colore primario */
+            --brand-color: #007bff;
             --brand-color-light: rgba(0, 123, 255, 0.25);
             --text-primary: #111827;
             --text-secondary: #4b5563;
-            --surface-bg: rgba(255, 255, 255, 0.6); /* Bianco traslucido per l'effetto vetro */
+            --surface-bg: rgba(255, 255, 255, 0.6);
             --surface-border: rgba(255, 255, 255, 0.9);
             --surface-shadow: rgba(44, 62, 80, 0.15);
         }
 
+        @keyframes animated-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         body {
             margin: 0;
-            padding: 20px;
+            padding: 0;
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #f3e8ff, #dbeafe, #e0f2fe);
             background-size: 400% 400%;
@@ -30,40 +36,35 @@
             box-sizing: border-box;
         }
 
-        @keyframes animated-gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
         .login-container {
+            width: 100%;
+            max-width: 400px; /* Ridotto per una form più compatta */
+            padding: 40px; /* Aumentato il padding per più respiro */
+            text-align: center;
             background: var(--surface-bg);
             border-radius: 24px;
             border: 1px solid var(--surface-border);
             box-shadow: 0 20px 50px var(--surface-shadow);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
+            box-sizing: border-box; /* Assicura che padding e border siano inclusi nella larghezza */
         }
 
-        .logo {
-            margin-bottom: 30px;
-        }
-
-        .logo img {
-            max-width: 200px; /* Regola la dimensione del logo */
-            height: auto;
-            border-radius: 8px; /* Bordo leggermente arrotondato per il logo */
+        /* Stile per il testo "SITEC IMPIANTI SRL" */
+        .company-name {
+            font-weight: 700; /* Grassetto */
+            font-size: 1.8rem; /* Dimensione maggiore */
+            color: var(--brand-color); /* Colore del brand */
+            margin-bottom: 25px; /* Spazio sotto */
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         h2 {
-            color: var(--text-primary);
+            font-weight: 700;
             font-size: 2rem;
             margin-bottom: 25px;
-            font-weight: 700;
+            color: var(--text-primary);
         }
 
         .input-group {
@@ -74,20 +75,22 @@
         .input-group label {
             display: block;
             margin-bottom: 8px;
-            color: var(--text-secondary);
             font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
         }
 
         .input-group input {
-            width: calc(100% - 24px);
-            padding: 12px;
+            width: 100%;
+            padding: 12px 15px;
             border: 1px solid #e5e7eb;
-            border-radius: 12px;
+            border-radius: 10px;
             font-family: 'Poppins', sans-serif;
             font-size: 1rem;
             color: var(--text-primary);
             background-color: rgba(249, 250, 251, 0.8);
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            box-sizing: border-box; /* Include padding e border nella larghezza totale */
         }
 
         .input-group input:focus {
@@ -96,141 +99,83 @@
             box-shadow: 0 0 0 3px var(--brand-color-light);
         }
 
-        .button-primary, .button-secondary {
+        .login-button {
             width: 100%;
-            padding: 15px;
+            padding: 14px 20px;
+            background-color: var(--brand-color);
+            color: white;
             border: none;
-            border-radius: 9999px;
+            border-radius: 10px;
             font-family: 'Poppins', sans-serif;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            margin-top: 15px;
+            margin-top: 15px; /* Spazio sopra il bottone di login */
         }
 
-        .button-primary {
-            background-color: var(--brand-color);
-            color: white;
-        }
-
-        .button-primary:hover {
+        .login-button:hover {
             background-color: #0056b3;
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
-        .button-secondary {
-            background-color: #e2e8f0;
-            color: var(--text-primary);
+        .login-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        .button-secondary:hover {
-            background-color: #cbd5e1;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        #error-message {
+            color: #dc3545;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            min-height: 20px; /* Per evitare salti di layout */
         }
-
-        .google-signin-button {
-            background-color: #DB4437; /* Google red */
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 15px;
-            border: none;
-            border-radius: 9999px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            margin-top: 25px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .google-signin-button img {
-            width: 24px;
-            height: 24px;
-        }
-
-        .google-signin-button:hover {
-            background-color: #C13529;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-        }
-
-        .error-message {
-            color: #ef4444;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            text-align: left;
-            padding: 10px;
-            background-color: rgba(239, 68, 68, 0.1);
-            border-left: 4px solid #ef4444;
-            border-radius: 4px;
-            display: none; /* Inizialmente nascosto */
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 0; }
+        
+        @media (max-width: 480px) {
             .login-container {
+                margin: 20px;
                 padding: 30px 20px;
-                background: none;
-                border: none;
-                box-shadow: none;
-                backdrop-filter: none;
-                -webkit-backdrop-filter: none;
-                border-radius: 0;
+            }
+            .company-name {
+                font-size: 1.5rem;
+            }
+            h2 {
+                font-size: 1.8rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <div class="logo">
-            <!-- Assicurati che il percorso dell'immagine sia corretto -->
-            <img src="sitec_logo_nuovo[1] (2)_page-0001.jpg" alt="Sitec Impianti Srl Logo">
-        </div>
-        <h2>Accedi al Programma</h2>
-        <div id="error-message" class="error-message">
-            <!-- Messaggio di errore apparirà qui -->
-        </div>
+        <div class="company-name">SITEC IMPIANTI SRL</div>
+
+        <h2>Accedi</h2>
         <div class="input-group">
             <label for="email">Email</label>
-            <input type="email" id="email" placeholder="La tua email">
+            <input type="email" id="email" placeholder="Inserisci la tua email" required />
         </div>
         <div class="input-group">
             <label for="password">Password</label>
-            <input type="password" id="password" placeholder="La tua password">
+            <input type="password" id="password" placeholder="Inserisci la tua password" required />
         </div>
-        <button id="loginButton" class="button-primary">Accedi</button>
-        <button id="registerButton" class="button-secondary">Registrati</button>
-        <button id="googleSignInButton" class="google-signin-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_and_wordmark_of_Google.svg" alt="Google logo">
-            Accedi con Google
-        </button>
+        <button type="submit" class="login-button" id="loginButton">Accedi</button>
+        <div id="error-message"></div>
     </div>
 
     <script type="module">
         // Importa le funzioni necessarie dall'SDK di Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-        // getAnalytics è importato ma non usato, puoi rimuoverlo se non ti serve
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
         import { 
             getAuth, 
-            createUserWithEmailAndPassword, 
             signInWithEmailAndPassword, 
-            GoogleAuthProvider, 
-            signInWithPopup, 
             onAuthStateChanged 
         } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-        // La tua configurazione Firebase (copiala da Firebase Console)
+        // La tua configurazione Firebase (DEVE ESSERE LA STESSA DI index.html)
         const firebaseConfig = {
-            apiKey: "AIzaSyCDs7iMJjJYFh8qc7LASNwFYSyFAJDJrQ8",
+            apiKey: "AIzaSyCDs7iMJjJYFh8qc7LASNwFYSyFAJDJrQ8", // SOSTITUISCI CON LA TUA API KEY REALE
             authDomain: "programma-sitec-impianti.firebaseapp.com",
             projectId: "programma-sitec-impianti",
             storageBucket: "programma-sitec-impianti.firebasestorage.app",
@@ -241,103 +186,65 @@
 
         // Inizializza Firebase
         const app = initializeApp(firebaseConfig);
-        // const analytics = getAnalytics(app); // Rimuovi o commenta se non usi Analytics
-        const auth = getAuth(app); // Ottieni l'istanza di Auth
+        const auth = getAuth(app);
 
         // Riferimenti agli elementi HTML
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
         const loginButton = document.getElementById('loginButton');
-        const registerButton = document.getElementById('registerButton');
-        const googleSignInButton = document.getElementById('googleSignInButton');
         const errorMessageDiv = document.getElementById('error-message');
 
-        function showError(message) {
-            errorMessageDiv.textContent = message;
-            errorMessageDiv.style.display = 'block';
-        }
-
-        function hideError() {
-            errorMessageDiv.style.display = 'none';
-        }
-
-        // Questo è il CODICE CHIAVE per il reindirizzamento dopo un login riuscito
-        // o se l'utente è già loggato.
+        // Controlla lo stato di autenticazione all'avvio: se già loggato, reindirizza
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Utente loggato, reindirizza alla pagina principale del programma
-                console.log('Utente loggato, reindirizzo a index.html:', user.email);
-                window.location.href = 'index.html'; // Reindirizza a index.html
-            } else {
-                // Nessun utente loggato, assicurati che il form di login sia visibile
-                console.log('Nessun utente loggato, visualizzo il form di login.');
-                // Non mostrare messaggi di errore qui a meno che non ci sia un tentativo fallito
-                hideError(); 
+                console.log('Utente già loggato, reindirizzo a index.html.');
+                window.location.href = 'index.html';
             }
         });
 
-        // Logica per il pulsante "Accedi"
-        loginButton.addEventListener('click', () => {
-            hideError(); // Nascondi eventuali errori precedenti
+        // Gestione del login con email e password
+        loginButton.addEventListener('click', async (e) => {
+            e.preventDefault(); // Previene il comportamento di default del form
+
             const email = emailInput.value;
             const password = passwordInput.value;
 
-            if (!email || !password) {
-                showError("Per favore, inserisci email e password.");
-                return;
-            }
-
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    // Accesso riuscito. L'onAuthStateChanged gestirà il reindirizzamento.
-                    console.log("Accesso riuscito per:", userCredential.user.email);
-                })
-                .catch((error) => {
-                    showError("Errore di accesso: " + error.message);
-                    console.error('Errore login:', error);
-                });
-        });
-
-        // Logica per il pulsante "Registrati"
-        registerButton.addEventListener('click', () => {
-            hideError(); // Nascondi eventuali errori precedenti
-            const email = emailInput.value;
-            const password = passwordInput.value;
+            errorMessageDiv.textContent = ''; // Pulisce messaggi di errore precedenti
 
             if (!email || !password) {
-                showError("Per favore, inserisci email e password.");
-                return;
-            }
-            if (password.length < 6) {
-                showError("La password deve essere di almeno 6 caratteri.");
+                errorMessageDiv.textContent = 'Per favore, inserisci email e password.';
                 return;
             }
 
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    alert("Registrazione avvenuta con successo per " + userCredential.user.email + "! Puoi accedere ora.");
-                    // Dopo la registrazione, l'utente è automaticamente loggato da Firebase.
-                    // L'onAuthStateChanged gestirà il reindirizzamento.
-                })
-                .catch((error) => {
-                    showError("Errore di registrazione: " + error.message);
-                    console.error('Errore registrazione:', error);
-                });
-        });
-
-        // Logica per il pulsante "Accedi con Google"
-        googleSignInButton.addEventListener('click', () => {
-            hideError(); // Nascondi eventuali errori precedenti
-            const provider = new GoogleAuthProvider();
-            signInWithPopup(auth, provider)
-                .then((result) => {
-                    // Accesso con Google riuscito. L'onAuthStateChanged gestirà il reindirizzamento.
-                    console.log("Accesso Google riuscito per:", result.user.email);
-                })
-                .catch((error) => {
-                    showError("Errore di accesso con Google: " + error.message);
-                    console.error('Errore login Google:', error);
-                });
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                console.log('Accesso riuscito!');
+                window.location.href = 'index.html'; // Reindirizza a index.html al successo
+            } catch (error) {
+                console.error('Errore di accesso:', error.code, error.message);
+                let message = 'Errore di accesso. Riprova.';
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        message = 'L\'indirizzo email non è valido.';
+                        break;
+                    case 'auth/user-disabled':
+                        message = 'Questo utente è stato disabilitato.';
+                        break;
+                    case 'auth/user-not-found':
+                    case 'auth/wrong-password':
+                        message = 'Email o password errati.';
+                        break;
+                    case 'auth/invalid-credential': // Nuovo codice per credenziali non valide
+                        message = 'Credenziali non valide. Controlla email e password.';
+                        break;
+                    case 'auth/too-many-requests':
+                        message = 'Troppi tentativi di accesso falliti. Riprova più tardi.';
+                        break;
+                    default:
+                        message = `Errore: ${error.message}`; // Messaggio di fallback più generico
+                }
+                errorMessageDiv.textContent = message;
+            }
         });
     </script>
 </body>
