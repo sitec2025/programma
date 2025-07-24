@@ -306,6 +306,11 @@
         border-spacing: 0;
         margin-bottom: 0;
         width: 100%;
+        /* Importante: ripristina display per la stampa */
+        display: table;
+      }
+      thead {
+        display: table-header-group; /* Mostra l'intestazione per la stampa */
       }
       thead th {
         background-color: #f2f2f2; /* Sfondo per l'intestazione */
@@ -313,12 +318,15 @@
         border: 1px solid #ddd;
         padding: 8px 10px;
         font-size: 0.8rem;
+        text-align: left; /* Assicurati che le intestazioni siano allineate a sinistra */
       }
       tbody tr {
         background: white;
         box-shadow: none;
         border: 1px solid #ddd;
         border-radius: 0;
+        /* Importante: ripristina display per la stampa */
+        display: table-row;
       }
       tbody tr:hover {
         background: white;
@@ -332,29 +340,19 @@
         font-size: 0.9rem;
         border: 1px solid #ddd; /* Bordi per tutte le celle in stampa */
         text-align: left; /* Allinea a sinistra per la stampa desktop */
+        /* Importante: ripristina display per la stampa */
+        display: table-cell;
       }
       tbody tr td:first-child { border-radius: 0; }
       tbody tr td:last-child { border-radius: 0; }
       
-      /* Regole specifiche per la stampa da mobile */
+      /* Regole specifiche per la stampa da mobile (all'interno di @media print) */
       @media (max-width: 768px) {
-        thead {
-          display: table-header-group; /* Mostra l'intestazione anche per la stampa da mobile */
-        }
-        tbody tr {
-          display: table-row; /* Torna a un comportamento di riga tabella normale */
-          margin-bottom: 0;
-        }
-        tbody td {
-          display: table-cell; /* Torna a un comportamento di cella tabella normale */
-          justify-content: flex-start; /* Reset justify-content */
-          text-align: left; /* Allinea il testo a sinistra per tutte le colonne */
-          border-bottom: 1px solid #ddd; /* Assicurati che i bordi siano visibili */
-          padding: 8px 10px; /* Padding coerente */
-        }
-        tbody td::before {
-          display: none; /* Nascondi le etichette data-label se l'intestazione è presente */
-        }
+         /* Non servono display:table-row/cell qui se già impostato sopra nel @media print */
+         /* Le etichette data-label non sono necessarie se thead è visibile */
+         tbody td::before {
+           display: none;
+         }
       }
     }
   </style>
