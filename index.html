@@ -122,7 +122,7 @@
       font-size: 1rem;
       color: #2d3748;
       vertical-align: top;
-      border: none; /* rimuovo tutte le linee */
+      border: none;
     }
 
     tbody tr td:first-child {
@@ -175,7 +175,7 @@
       tbody tr {
         display: block;
         margin-bottom: 20px; /* più spazio verticale */
-        background: #f7fafc; /* grigio chiaro come desktop */
+        background: #f7fafc;
         border-radius: 15px;
         box-shadow: 0 4px 10px rgba(44,62,80,0.07);
         transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -191,11 +191,17 @@
       tbody td {
         display: flex;
         justify-content: space-between;
-        padding: 10px 0;
-        border: none;
+        padding: 12px 0;
+        border-bottom: 1px solid #cbd5e0;
         font-size: 1rem;
         color: #2d3748;
         word-break: break-word;
+        align-items: center;
+      }
+
+      /* Rimuovo bordo dall'ultimo td per riga */
+      tbody tr td:last-child {
+        border-bottom: none;
       }
 
       tbody td::before {
