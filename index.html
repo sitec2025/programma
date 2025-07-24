@@ -11,7 +11,7 @@
             --brand-color-light: rgba(0, 123, 255, 0.25);
             --text-primary: #111827;
             --text-secondary: #4b5563;
-            --surface-bg: rgba(255, 255, 255, 0.6);
+            --surface-bg: rgba(255, 255, 255, 0.6); /* Bianco traslucido per l'effetto vetro */
             --surface-border: rgba(255, 255, 255, 0.9);
             --surface-shadow: rgba(44, 62, 80, 0.15);
         }
@@ -46,12 +46,13 @@
             border: 1px solid var(--surface-border);
             box-shadow: 0 20px 50px var(--surface-shadow);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); /* Supporto per Safari */
             box-sizing: border-box; /* Assicura che padding e border siano inclusi nella larghezza */
         }
 
-        /* Stile per il testo "SITEC IMPIANTI SRL" */
+        /* Stile per il testo "SITEC IMPIANTI SRL" con ITC Souvenir Demi */
         .company-name {
+            font-family: 'ITC Souvenir Demi', serif; /* Aggiunto il font ITC Souvenir Demi */
             font-weight: 700; /* Grassetto */
             font-size: 1.8rem; /* Dimensione maggiore */
             color: var(--brand-color); /* Colore del brand */
@@ -116,7 +117,7 @@
         }
 
         .login-button:hover {
-            background-color: #0056b3;
+            background-color: #0056b3; /* Blu più scuro all'hover */
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
@@ -173,7 +174,7 @@
             onAuthStateChanged 
         } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-        // La tua configurazione Firebase (DEVE ESSERE LA STESSA DI index.html)
+        // La tua configurazione Firebase (DEVE ESSERE LA STESSA DI dashboard.html)
         const firebaseConfig = {
             apiKey: "AIzaSyCDs7iMJjJYFh8qc7LASNwFYSyFAJDJrQ8", // SOSTITUISCI CON LA TUA API KEY REALE
             authDomain: "programma-sitec-impianti.firebaseapp.com",
@@ -197,8 +198,8 @@
         // Controlla lo stato di autenticazione all'avvio: se già loggato, reindirizza
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                console.log('Utente già loggato, reindirizzo a index.html.');
-                window.location.href = 'index.html';
+                console.log('Utente già loggato, reindirizzo a dashboard.html.');
+                window.location.href = 'dashboard.html'; // Modificato il reindirizzamento
             }
         });
 
@@ -219,7 +220,7 @@
             try {
                 await signInWithEmailAndPassword(auth, email, password);
                 console.log('Accesso riuscito!');
-                window.location.href = 'index.html'; // Reindirizza a index.html al successo
+                window.location.href = 'dashboard.html'; // Modificato il reindirizzamento
             } catch (error) {
                 console.error('Errore di accesso:', error.code, error.message);
                 let message = 'Errore di accesso. Riprova.';
