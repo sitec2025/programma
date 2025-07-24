@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>Programma Giornaliero</title>
+  <title>Programma di Oggi</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
@@ -15,6 +15,7 @@
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     main {
@@ -25,7 +26,6 @@
       max-width: 1200px;
       width: 100%;
       box-sizing: border-box;
-      overflow-x: auto; /* per sicurezza su mobile */
     }
 
     #azienda {
@@ -46,51 +46,88 @@
       text-align: center;
     }
 
-    #date-today {
-      text-align: center;
-      font-weight: 600;
-      font-size: 1rem;
-      margin-bottom: 30px;
-      color: #4a5568;
+    #toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 30px 0;
+      flex-wrap: wrap;
+      gap: 20px;
     }
 
     #search-container {
       display: flex;
-      justify-content: center;
-      margin-bottom: 30px;
+      align-items: center;
+      gap: 10px;
       width: 100%;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
     }
 
     #search-input {
-      padding: 12px 18px;
-      border-radius: 30px;
+      padding: 10px 15px;
+      border-radius: 8px;
       border: 1px solid #cbd5e0;
       font-size: 1rem;
       width: 100%;
-      box-sizing: border-box;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.07);
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      max-width: 500px;
     }
 
-    #search-input:focus {
-      outline: none;
-      border-color: #4358ca;
-      box-shadow: 0 0 8px rgba(67, 88, 202, 0.4);
+    #date-strip {
+      display: flex;
+      gap: 50px;
+      justify-content: center;
+      padding: 10px 0 25px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .date-button {
+      background: #f1f5f9;
+      padding: 8px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      min-width: 70px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      font-size: 0.85rem;
+      margin: 0 10px;
+    }
+
+    .date-button .day-name {
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .date-button .day-date {
+      font-size: 0.95rem;
+    }
+
+    .date-button:hover,
+    .date-button.selected {
+      transform: scale(1.15);
+      box-shadow: 0 4px 12px rgba(67, 56, 202, 0.2);
+    }
+
+    .date-button.today {
+      background-color: #c3dafe;
+      color: #1a202c;
+      font-weight: 700;
+      transform: scale(1.7);
+      z-index: 1;
     }
 
     table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 0 20px;
+      border-spacing: 0 15px;
       text-align: left;
-      min-width: 600px;
     }
 
     thead th {
-      background: #f0f4f8;
+      background: #f8fafc;
       padding: 15px 20px;
       font-weight: 600;
       font-size: 0.95rem;
@@ -98,18 +135,7 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       border-bottom: 2px solid #cbd5e0;
-      position: relative;
-    }
-
-    /* Linea dritta senza curve tra Cantiere e Luogo */
-    thead th:first-child {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      border-right: 1px solid #cbd5e0;
-    }
-
-    thead th:first-child::after {
-      content: none;
+      text-align: left;
     }
 
     tbody tr {
@@ -117,9 +143,6 @@
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(44,62,80,0.07);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
-      border: 1px solid #cbd5e0; /* bordo leggerissimo tra le righe */
-      margin-bottom: 15px;
-      display: table-row;
     }
 
     tbody tr:hover {
@@ -132,114 +155,64 @@
       padding: 18px 20px;
       font-size: 1rem;
       color: #2d3748;
-      vertical-align: middle;
+      vertical-align: top;
+      text-align: left;
     }
 
-    /* Per la versione mobile: */
-    @media (max-width: 900px) {
-      body {
-        padding: 20px 10px;
+    tbody tr td:first-child {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    tbody tr td:last-child {
+      border-top-right-radius: 15px;
+      border-bottom-right-radius: 15px;
+    }
+
+    @media (max-width: 768px) {
+      #toolbar {
+        flex-direction: column;
+        align-items: stretch;
       }
-      main {
-        padding: 20px 15px;
-        box-shadow: none;
-        border-radius: 15px;
-        max-width: 100%;
-      }
+
       #search-container {
-        max-width: 100%;
-        padding: 0 10px;
-        margin-bottom: 20px;
+        width: 100%;
       }
+
       #search-input {
-        font-size: 1rem;
-        padding: 12px 15px;
+        width: 100%;
+      }
+
+      .date-button {
+        transform: scale(1);
+      }
+
+      .date-button.today {
+        transform: scale(1.3);
       }
 
       table {
-        width: 100%;
-        border-spacing: 0 25px;
-        min-width: 0;
+        font-size: 0.9rem;
       }
 
-      thead {
-        display: none; /* nascondi intestazione */
-      }
-
-      tbody tr {
-        display: block;
-        border-radius: 15px;
-        background: #f0f4f8; /* grigio più scuro rispetto desktop */
-        border: 1px solid #cbd5e0;
-        margin-bottom: 25px;
-        padding: 15px 20px;
-        box-shadow: none;
-      }
-
-      tbody td {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 0;
-        border-bottom: 1px solid #cbd5e0;
-        font-size: 1rem;
-        vertical-align: middle;
-      }
-      tbody td:last-child {
-        border-bottom: none;
-      }
-
-      tbody td::before {
-        content: attr(data-label);
-        font-weight: 600;
-        color: #4a5568;
-        flex-shrink: 0;
-        width: 40%;
-        text-align: left;
-      }
-
-      /* Testo allineato a destra per Lavorazioni, Collaboratori e Mezzo */
-      tbody td[data-label="Lavorazioni"],
-      tbody td[data-label="Collaboratori"],
-      tbody td[data-label="Mezzo"] {
-        justify-content: flex-end;
-        text-align: right;
-      }
-
-      tbody td[data-label="Lavorazioni"]::before,
-      tbody td[data-label="Collaboratori"]::before,
-      tbody td[data-label="Mezzo"]::before {
-        text-align: left;
-      }
-
-      /* Elimina bordi arrotondati sulle righe (per non creare curve extra) */
-      tbody tr td:first-child {
-        border-top-left-radius: 15px;
-        border-bottom-left-radius: 15px;
-      }
-      tbody tr td:last-child {
-        border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
-
-      /* Centratura testo in caricamento dati */
-      #programma-body td {
-        text-align: center !important;
+      thead th, tbody td {
+        padding: 12px 10px;
       }
     }
-
   </style>
 </head>
 <body>
   <main>
     <div id="azienda">SITEC IMPIANTI SRL</div>
     <h1>Programma Giornaliero</h1>
-    <div id="date-today" aria-live="polite" aria-atomic="true">
-      <!-- Data dinamica inserita da JS -->
+
+    <div id="toolbar">
+      <div id="search-container">
+        <input type="text" id="search-input" placeholder="Cerca...">
+      </div>
     </div>
 
-    <div id="search-container">
-      <input type="text" id="search-input" placeholder="Cerca..." aria-label="Barra di ricerca" />
-    </div>
+    <div id="date-strip"></div>
 
     <table>
       <thead>
@@ -261,19 +234,50 @@
     const JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
 
     const today = new Date();
-    // Inserisce la data sotto il titolo in formato IT (es. 24/07/2025)
-    const dateTodayEl = document.getElementById('date-today');
-    dateTodayEl.textContent = today.toLocaleDateString('it-IT', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
+    const strip = document.getElementById('date-strip');
+    const range = 5;
 
-    // Funzione per caricare dati e popolare tabella
+    for (let i = -range; i <= range; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+
+      const btn = document.createElement('div');
+      btn.className = 'date-button';
+      btn.dataset.date = d.toISOString().split('T')[0];
+
+      const dayName = document.createElement('div');
+      dayName.className = 'day-name';
+      dayName.textContent = d.toLocaleDateString('it-IT', { weekday: 'short' });
+
+      const dayDate = document.createElement('div');
+      dayDate.className = 'day-date';
+      dayDate.textContent = d.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' });
+
+      btn.appendChild(dayName);
+      btn.appendChild(dayDate);
+
+      if (i === 0) btn.classList.add('today', 'selected');
+
+      strip.appendChild(btn);
+    }
+
+    strip.addEventListener('click', e => {
+      const target = e.target.closest('.date-button');
+      if (target) {
+        document.querySelectorAll('.date-button').forEach(b => b.classList.remove('selected'));
+        target.classList.add('selected');
+        loadProgramma(target.dataset.date);
+      }
+    });
+
     function loadProgramma(dateString) {
       fetch(`${JSON_URL}?data=${dateString}`)
         .then(res => res.json())
         .then(data => {
           const tbody = document.getElementById('programma-body');
           tbody.innerHTML = '';
-          if (!data || data.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
+          if (data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5">Nessun dato disponibile.</td></tr>`;
             return;
           }
           data.forEach(row => {
@@ -293,7 +297,6 @@
         });
     }
 
-    // Filtro di ricerca
     document.getElementById('search-input').addEventListener('input', () => {
       const filter = document.getElementById('search-input').value.toLowerCase();
       document.querySelectorAll('#programma-body tr').forEach(row => {
