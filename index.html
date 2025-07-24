@@ -253,6 +253,15 @@
         text-align: left;
       }
 
+      /* Centra la scritta "Caricamento dati..." e "Nessun dato disponibile." */
+      #programma-body tr td[colspan="5"] {
+        display: block; /* Importante per consentire il text-align */
+        width: 100%;
+        text-align: center;
+        /* Rimuovi justify-content se usi display:block */
+        padding: 20px; 
+      }
+
       h1 {
         font-size: 1.8rem;
         margin-bottom: 5px;
@@ -348,7 +357,6 @@
       
       /* Regole specifiche per la stampa da mobile (all'interno di @media print) */
       @media (max-width: 768px) {
-         /* Non servono display:table-row/cell qui se già impostato sopra nel @media print */
          /* Le etichette data-label non sono necessarie se thead è visibile */
          tbody td::before {
            display: none;
