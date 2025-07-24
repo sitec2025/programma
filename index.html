@@ -314,6 +314,7 @@
         border-spacing: 0;
         margin-bottom: 0;
         width: 100%;
+        border-collapse: collapse; /* Forza i bordi a collassare per la stampa */
         display: table; /* Forza display:table per la stampa */
       }
       thead {
@@ -322,7 +323,7 @@
       thead th {
         background-color: #f2f2f2;
         color: var(--text-primary);
-        border: 1px solid #ddd;
+        border: 1px solid #ddd; /* Aggiungi bordi a tutte le celle di intestazione */
         padding: 8px 10px;
         font-size: 0.8rem;
         text-align: left;
@@ -330,7 +331,6 @@
       tbody tr {
         background: white;
         box-shadow: none;
-        border: 1px solid #ddd;
         border-radius: 0;
         display: table-row !important; /* Forza display:table-row per la stampa su tutte le dimensioni */
       }
@@ -344,7 +344,7 @@
         color: var(--text-primary);
         font-weight: 400;
         font-size: 0.9rem;
-        border: 1px solid #ddd;
+        border: 1px solid #ddd; /* Aggiungi bordi a tutte le celle di dati */
         text-align: left !important; /* Forza allineamento a sinistra per la stampa su tutte le dimensioni */
         display: table-cell !important; /* Forza display:table-cell per la stampa su tutte le dimensioni */
       }
@@ -356,7 +356,7 @@
          tbody td::before {
            display: none !important; /* Nascondi le etichette data-label per la stampa mobile */
          }
-         /* Garantisci che le celle di stato (caricamento/nessun dato) siano centrate */
+         /* Garantisci che le celle di stato (caricamento/nessun dato) siano centrate in stampa mobile */
          #programma-body tr td[colspan="5"] {
             text-align: center !important;
          }
