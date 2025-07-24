@@ -52,6 +52,16 @@
       margin-bottom: 30px;
     }
 
+    #search-bar {
+      width: 100%;
+      padding: 14px 20px;
+      font-size: 1rem;
+      border: 1px solid #cbd5e0;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      margin-bottom: 30px;
+    }
+
     table {
       width: 100%;
       border-collapse: separate;
@@ -178,13 +188,11 @@
         flex-shrink: 0;
       }
 
-      /* ✅ CORREGGE angoli curvi su prima e ultima cella */
       tbody tr td:first-child,
       tbody tr td:last-child {
         border-radius: 0 !important;
       }
 
-      /* ✅ Centra il messaggio "Caricamento dati..." su mobile */
       tbody td[colspan] {
         display: block;
         text-align: center !important;
@@ -208,6 +216,8 @@
     <div id="azienda">SITEC IMPIANTI SRL</div>
     <h1>Programma di Oggi</h1>
     <div id="data-oggi"></div>
+
+    <input type="text" id="search-bar" placeholder="Cerca nel programma...">
 
     <table>
       <thead>
@@ -266,6 +276,18 @@
         const tbody = document.getElementById('programma-body');
         tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore: ${err.message}</td></tr>`;
       });
+
+    // Ricerca live
+    const searchBar = document.getElementById('search-bar');
+    searchBar.addEventListener('input', function () {
+      const term = this.value.toLowerCase();
+      const rows = document.querySelectorAll('#programma-body tr');
+
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(term) ? '' : 'none';
+      });
+    });
   </script>
 </body>
 </html>
