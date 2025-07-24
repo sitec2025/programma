@@ -249,99 +249,6 @@
         color: var(--text-primary);
     }
 
-    /* Stili per il form di login */
-    #auth-container {
-        padding: 30px;
-        background: var(--surface-bg);
-        border-radius: 12px;
-        border: 1px solid var(--surface-border);
-        box-shadow: 0 10px 30px rgba(44, 62, 80, 0.1);
-        margin-bottom: 40px;
-        max-width: 400px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    #auth-container h2 {
-        color: var(--text-primary);
-        margin-bottom: 25px;
-        font-size: 1.8rem;
-    }
-    #auth-container input[type="email"],
-    #auth-container input[type="password"] {
-        width: calc(100% - 20px);
-        padding: 12px 10px;
-        margin-bottom: 15px;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        font-family: 'Poppins', sans-serif;
-        font-size: 1rem;
-        color: var(--text-primary);
-        background-color: rgba(249, 250, 251, 0.8);
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    #auth-container input[type="email"]:focus,
-    #auth-container input[type="password"]:focus {
-        outline: none;
-        border-color: var(--brand-color);
-        box-shadow: 0 0 0 3px var(--brand-color-light);
-    }
-    #auth-container button {
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 10px;
-        background-color: var(--brand-color);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-family: 'Poppins', sans-serif;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-    #auth-container button:hover {
-        background-color: #0056b3;
-        transform: translateY(-1px);
-    }
-    #auth-container #auth-status {
-        margin-top: 15px;
-        font-size: 0.9rem;
-        color: var(--text-secondary);
-    }
-    #auth-container #google-login-btn {
-        background-color: #DB4437; /* Google Red */
-    }
-    #auth-container #google-login-btn:hover {
-        background-color: #C33D2E;
-    }
-    #content h2 {
-        color: var(--text-primary);
-        font-size: 2rem;
-        margin-bottom: 15px;
-    }
-    #content #user-info {
-        font-size: 1.1rem;
-        color: var(--text-secondary);
-        margin-bottom: 30px;
-    }
-    #content #logout-btn {
-        background-color: #dc3545; /* Rosso per Logout */
-        color: white;
-        padding: 12px 25px;
-        border: none;
-        border-radius: 9999px;
-        font-family: 'Poppins', sans-serif;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-    #content #logout-btn:hover {
-        background-color: #c82333;
-        transform: translateY(-2px);
-    }
-
 
     @media (max-width: 768px) {
       body { padding: 0; }
@@ -419,23 +326,13 @@
         margin-top: 30px; /* Spazio ridotto per mobile */
         padding: 15px;
       }
-
-      #auth-container {
-        padding: 20px;
-        margin-bottom: 20px;
-      }
-      #auth-container h2 {
-        font-size: 1.5rem;
-      }
     }
 
     /* Regole di stampa */
     @media print {
       /* Nascondi elementi non necessari */
       .modern-search-container,
-      .button-group,
-      #auth-container,
-      #content #logout-btn { /* Nascondi anche i contenitori di autenticazione in stampa */
+      .button-group { 
         display: none !important;
       }
       body {
@@ -539,85 +436,39 @@
     <div id="data-oggi"></div>
     <div id="orario-inizio-giornata"></div> 
 
-    <div id="auth-container">
-        <h2>Accedi o Registrati</h2>
-        <input type="email" id="email" placeholder="Email" required><br>
-        <input type="password" id="password" placeholder="Password" required><br>
-        <button id="login-btn">Accedi</button>
-        <button id="register-btn">Registrati</button>
-        <button id="google-login-btn">Accedi con Google</button>
-        <p id="auth-status"></p>
+    <div class="modern-search-container">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" id="search-bar" placeholder="Cerca cantiere, collaboratore..." />
     </div>
 
-    <div id="content" style="display:none;">
-        <h2>Benvenuto!</h2>
-        <p id="user-info"></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Cantiere</th>
+          <th>Luogo</th>
+          <th>Lavorazioni</th>
+          <th>Collaboratori</th>
+          <th>Mezzo</th>
+        </tr>
+      </thead>
+      <tbody id="programma-body">
+        <tr><td colspan="5">Caricamento dati...</td></tr>
+      </tbody>
+    </table>
 
-        <div class="modern-search-container">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <input type="text" id="search-bar" placeholder="Cerca cantiere, collaboratore..." />
-        </div>
+    <div class="button-group">
+        <button class="action-button" onclick="window.print()">Stampa Programma</button>
+        <button class="action-button" id="shareButton">Condividi</button>
+    </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Cantiere</th>
-                    <th>Luogo</th>
-                    <th>Lavorazioni</th>
-                    <th>Collaboratori</th>
-                    <th>Mezzo</th>
-                </tr>
-            </thead>
-            <tbody id="programma-body">
-                <tr><td colspan="5">Caricamento dati...</td></tr>
-            </tbody>
-        </table>
-
-        <div class="button-group">
-            <button class="action-button" onclick="window.print()">Stampa Programma</button>
-            <button class="action-button" id="shareButton">Condividi</button>
-            <button id="logout-btn" class="action-button" style="background-color: #dc3545;">Esci</button>
-        </div>
-
-        <div class="note-collaboratori">
-            <strong>Idraulici:</strong> Marco, Riccardo, Antonio, Diego, Stefano L., Emanuele<br>
-            <strong>Elettricisti:</strong> Andrea, Stefano C., Francesco<br>
-            <strong>Manutentore:</strong> Rossano
-        </div>
+    <div class="note-collaboratori">
+        <strong>Idraulici:</strong> Marco, Riccardo, Antonio, Diego, Stefano L., Emanuele<br>
+        <strong>Elettricisti:</strong> Andrea, Stefano C., Francesco<br>
+        <strong>Manutentore:</strong> Rossano
     </div>
   </main>
 
-  <script type="module">
-    // Importa le funzioni necessarie dall'SDK di Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
-    import { 
-        getAuth, 
-        createUserWithEmailAndPassword, 
-        signInWithEmailAndPassword, 
-        GoogleAuthProvider, 
-        signInWithPopup, 
-        signOut, 
-        onAuthStateChanged 
-    } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-
-    // La tua configurazione Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyCDs7iMJjJYFh8qc7LASNwFYSyFAJDJrQ8",
-      authDomain: "programma-sitec-impianti.firebaseapp.com",
-      projectId: "programma-sitec-impianti",
-      storageBucket: "programma-sitec-impianti.firebasestorage.app",
-      messagingSenderId: "87076748220",
-      appId: "1:87076748220:web:351e6806174f18307dc9b9",
-      measurementId: "G-XSSHYE58MD"
-    };
-
-    // Inizializza Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app); // Puoi rimuovere questa riga se non usi Analytics
-    const auth = getAuth(app); // Ottieni l'istanza di Auth
-
-    // Funzione per formattare la data
+  <script>
     function formatDate(date) {
       const d = date.getDate().toString().padStart(2, '0');
       const m = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -627,27 +478,14 @@
 
     document.getElementById('data-oggi').textContent = formatDate(new Date());
 
-    // ***** IMPORTANTE: INCOLLA QUI IL TUO URL ESATTO DAL DEPLOYMENT DI GOOGLE APPS SCRIPT *****
-    const PROGRAM_JSON_URL = 'INCOLLA_QUI_IL_TUO_URL_DEL_PROGRAMMA';
+    // URL per i dati del programma (quello che già usi)
+    const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflqngqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
 
-    // ***** IMPORTANTE: INCOLLA QUI IL TUO URL ESATTO DAL DEPLOYMENT DI GOOGLE APPS SCRIPT *****
-    const TIME_JSON_URL = 'INCOLLA_QUI_IL_TUO_URL_DELL_ORARIO';
+    // URL per l'orario (fornito da te)
+    const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
 
     const tbody = document.getElementById('programma-body');
     const orarioInizioGiornataDiv = document.getElementById('orario-inizio-giornata');
-
-    // Riferimenti agli elementi HTML per l'autenticazione
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const loginBtn = document.getElementById('login-btn');
-    const registerBtn = document.getElementById('register-btn');
-    const googleLoginBtn = document.getElementById('google-login-btn');
-    const logoutBtn = document.getElementById('logout-btn');
-    const authStatus = document.getElementById('auth-status');
-    const authContainer = document.getElementById('auth-container');
-    const content = document.getElementById('content'); // Contenitore del contenuto protetto
-    const userInfo = document.getElementById('user-info');
-
 
     // Funzione per mostrare il messaggio di caricamento
     function showLoadingMessage() {
@@ -655,143 +493,53 @@
       orarioInizioGiornataDiv.textContent = 'Caricamento orario...'; // Messaggio di caricamento per l'orario
     }
 
-    // --- Metodo Email/Password ---
+    // Mostra il messaggio di caricamento all'inizio
+    showLoadingMessage();
 
-    // Registrazione Utente
-    registerBtn.addEventListener('click', () => {
-        const email = emailInput.value;
-        const password = passwordInput.value;
+    // --- FETCH PER I DATI DEL PROGRAMMA ---
+    fetch(PROGRAM_JSON_URL)
+      .then(res => res.json())
+      .then(data => {
+        tbody.innerHTML = ''; // Pulisce il messaggio di caricamento della tabella
 
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                authStatus.textContent = `Registrazione riuscita per: ${user.email}`;
-                console.log('Utente registrato:', user);
-            })
-            .catch((error) => {
-                authStatus.textContent = `Errore registrazione: ${error.message}`;
-                console.error('Errore registrazione:', error);
-            });
-    });
-
-    // Login Utente
-    loginBtn.addEventListener('click', () => {
-        const email = emailInput.value;
-        const password = passwordInput.value;
-
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                authStatus.textContent = `Login riuscito per: ${user.email}`;
-                console.log('Utente loggato:', user);
-            })
-            .catch((error) => {
-                authStatus.textContent = `Errore login: ${error.message}`;
-                console.error('Errore login:', error);
-            });
-    });
-
-    // --- Metodo Google (Pop-up) ---
-    googleLoginBtn.addEventListener('click', () => {
-        const provider = new GoogleAuthProvider();
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                const user = result.user;
-                authStatus.textContent = `Login Google riuscito per: ${user.displayName || user.email}`;
-                console.log('Utente Google loggato:', user);
-            })
-            .catch((error) => {
-                authStatus.textContent = `Errore login Google: ${error.message}`;
-                console.error('Errore login Google:', error);
-            });
-    });
-
-    // --- Logout Utente ---
-    logoutBtn.addEventListener('click', () => {
-        signOut(auth)
-            .then(() => {
-                authStatus.textContent = 'Logout effettuato.';
-                console.log('Utente disconnesso.');
-            })
-            .catch((error) => {
-                authStatus.textContent = `Errore logout: ${error.message}`;
-                console.error('Errore logout:', error);
-            });
-    });
-
-    // --- Gestione dello Stato di Autenticazione (Monitoraggio Utente) ---
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // Utente loggato: mostra il contenuto protetto e nascondi il form di login
-            authContainer.style.display = 'none';
-            content.style.display = 'block';
-            userInfo.textContent = `Sei loggato come: ${user.displayName || user.email} (UID: ${user.uid})`;
-            console.log('Stato: Utente loggato', user);
-
-            // Carica i dati del programma e dell'orario solo se l'utente è loggato
-            showLoadingMessage(); // Mostra i messaggi di caricamento
-            fetch(PROGRAM_JSON_URL)
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error(`HTTP error! status: ${res.status}`);
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    tbody.innerHTML = ''; 
-
-                    if (data.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="5">Nessun dato disponibile.</td></tr>`;
-                        return;
-                    }
-
-                    data.forEach((row, index) => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td data-label="Cantiere">${row.Cantiere || ''}</td>
-                            <td data-label="Luogo">${row.Luogo || ''}</td>
-                            <td data-label="Lavorazioni">${row.Lavorazioni || ''}</td>
-                            <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
-                            <td data-label="Mezzo">${row.Mezzo || ''}</td>
-                        `;
-                        tr.style.animationDelay = `${index * 70}ms`;
-                        tbody.appendChild(tr);
-                    });
-                })
-                .catch(err => {
-                    tbody.innerHTML = `<tr><td colspan="5" style="color:red;">Errore durante il caricamento del programma: ${err.message}</td></tr>`;
-                });
-
-            fetch(TIME_JSON_URL)
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error(`HTTP error! status: ${res.status}`);
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    if (data.error) {
-                        orarioInizioGiornataDiv.textContent = `Errore: ${data.error}`;
-                    } else {
-                        const orarioInizio = data.orarioInizioLavorativa || 'Non disponibile';
-                        orarioInizioGiornataDiv.textContent = `Orario inizio giornata lavorativa: ${orarioInizio}`;
-                    }
-                })
-                .catch(err => {
-                    orarioInizioGiornataDiv.textContent = `Errore durante il caricamento dell'orario: ${err.message}`;
-                });
-
-        } else {
-            // Utente non loggato: mostra il form di login e nascondi il contenuto protetto
-            authContainer.style.display = 'block';
-            content.style.display = 'none';
-            userInfo.textContent = ''; 
-            authStatus.textContent = 'Effettua l\'accesso o registrati.';
-            console.log('Stato: Nessun utente loggato.');
+        if (data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5">Nessun dato disponibile.</td></tr>`;
+          return;
         }
-    });
 
-    // Logica della barra di ricerca (spostata all'interno del blocco onAuthStateChanged per essere attiva solo se loggati)
+        data.forEach((row, index) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td data-label="Cantiere">${row.Cantiere || ''}</td>
+            <td data-label="Luogo">${row.Luogo || ''}</td>
+            <td data-label="Lavorazioni">${row.Lavorazioni || ''}</td>
+            <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
+            <td data-label="Mezzo">${row.Mezzo || ''}</td>
+          `;
+          tr.style.animationDelay = `${index * 70}ms`;
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        tbody.innerHTML = `<tr><td colspan="5" style="color:red;">Errore durante il caricamento del programma: ${err.message}</td></tr>`;
+      });
+
+    // --- FETCH SEPARATO PER L'ORARIO ---
+    fetch(TIME_JSON_URL)
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+            orarioInizioGiornataDiv.textContent = `Errore: ${data.error}`;
+        } else {
+            const orarioInizio = data.orarioInizioLavorativa || 'Non disponibile';
+            orarioInizioGiornataDiv.textContent = `Orario inizio giornata lavorativa: ${orarioInizio}`;
+        }
+      })
+      .catch(err => {
+        orarioInizioGiornataDiv.textContent = `Errore durante il caricamento dell'orario: ${err.message}`;
+      });
+
+
     document.getElementById('search-bar').addEventListener('input', function () {
       const searchTerm = this.value.toLowerCase();
       const rows = document.querySelectorAll('#programma-body tr');
@@ -820,6 +568,8 @@
         }
       } else {
         alert('La tua navigazione non supporta la condivisione web. Puoi copiare il link manualmente.');
+        // Opzionale: fornire un fallback per copiare l'URL negli appunti
+        // navigator.clipboard.writeText(window.location.href);
       }
     });
   </script>
