@@ -33,15 +33,7 @@
       }
     }
 
-    /* Animazione per i punti ad onda */
-    @keyframes wave-dots {
-      0%, 80%, 100% {
-        transform: translateY(0);
-      }
-      40% {
-        transform: translateY(-5px); /* Altezza dell'onda */
-      }
-    }
+    /* Rimosse tutte le regole @keyframes per rotella e punti ad onda */
 
     html {
       min-height: 100%;
@@ -198,34 +190,16 @@
       box-shadow: 0 8px 25px rgba(44, 62, 80, 0.08); /* E l'ombra */
       color: #999; /* Colore testo per questi messaggi */
 
-      /* Aggiustamenti per centrare il testo e i punti */
+      /* Aggiustamenti per centrare il testo - VALIDO SIA PER DESKTOP CHE PER MOBILE */
       display: flex; /* Utilizza flexbox per centrare */
       justify-content: center; /* Centra orizzontalmente */
       align-items: center; /* Centra verticalmente */
       min-height: 80px; /* Altezza minima per un buon centraggio */
-      gap: 5px; /* Spazio tra il testo e i punti */
-      text-align: center; /* Per il fallback del testo */
+      /* Rimosso 'gap' in quanto non ci sono più elementi da distanziare */
+      text-align: center; /* Fallback per browser meno recenti, anche se flexbox è preferito */
     }
 
-    /* Stile per i punti ad onda */
-    .loading-dots {
-        display: flex;
-        align-items: center;
-        margin-left: 5px; /* Spazio tra il testo "Caricamento dati..." e i punti */
-    }
-
-    .loading-dot {
-        width: 6px;
-        height: 6px;
-        background-color: #999;
-        border-radius: 50%;
-        margin: 0 2px;
-        animation: wave-dots 1.4s infinite ease-in-out both;
-    }
-
-    .loading-dot:nth-child(1) { animation-delay: -0.32s; }
-    .loading-dot:nth-child(2) { animation-delay: -0.16s; }
-    .loading-dot:nth-child(3) { animation-delay: 0s; }
+    /* Rimosso stile per i punti ad onda e spinner */
 
 
     /* Stile per i pulsanti */
@@ -263,6 +237,8 @@
       transform: translateY(0);
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
+
+    /* Rimosso stile per la rotella di caricamento */
 
     @media (max-width: 768px) {
       body { padding: 0; }
@@ -304,26 +280,9 @@
         text-align: left;
       }
 
-      /* Centra il messaggio di caricamento per mobile */
-      #programma-body tr td[colspan="5"] {
-        display: flex !important; /* Forza flexbox per il centraggio */
-        justify-content: center !important; /* Centra orizzontalmente */
-        align-items: center !important; /* Centra verticalmente */
-        width: 100%;
-        min-height: 100px; /* Dai un'altezza minima alla cella */
-        padding: 20px;
-        color: #999;
-        background: transparent;
-        box-shadow: none;
-        border: none;
-        flex-direction: row; /* Assicura che testo e punti siano affiancati */
-        gap: 5px; /* Spazio tra il testo "Caricamento dati..." e i punti */
-      }
-      /* Rimuoviamo il margine della rotella quando è l'unico elemento */
-      .spinner { /* Questo selettore ora non avrà effetto, ma lo lasciamo per sicurezza */
-          margin: 0 !important;
-          display: none !important; /* Assicurati che lo spinner sia nascosto */
-      }
+      /* La cella di caricamento ora è gestita dalla regola generica per td[colspan="5"] sopra */
+      /* Rimosso stili specifici per mobile per #programma-body tr td[colspan="5"] */
+
 
       h1 {
         font-size: 1.8rem;
@@ -350,9 +309,8 @@
     @media print {
       /* Nascondi elementi non necessari */
       .modern-search-container,
-      .button-group,
-      .spinner, /* Nascondi la rotella in stampa (anche se ora non usata) */
-      .loading-dots /* Nascondi i punti ad onda in stampa */
+      .button-group
+      /* Rimosso .spinner e .loading-dots */
       {
         display: none !important;
       }
@@ -492,19 +450,10 @@
     const tbody = document.getElementById('programma-body');
     const orarioInizioGiornataDiv = document.getElementById('orario-inizio-giornata');
 
-    // Funzione per mostrare il messaggio di caricamento
+    // Funzione per mostrare il messaggio di caricamento (solo testo)
     function showLoadingMessage() {
-      // Usiamo una classe per il testo per facilitare il centraggio con i punti
-      const loadingText = 'Caricamento dati';
-      const loadingDotsHtml = `
-        <div class="loading-dots">
-          <div class="loading-dot"></div>
-          <div class="loading-dot"></div>
-          <div class="loading-dot"></div>
-        </div>
-      `;
-      // Ora non differenziamo tra mobile e desktop qui, perché gli stili CSS gestiranno il layout
-      tbody.innerHTML = `<tr><td colspan="5">${loadingText} ${loadingDotsHtml}</td></tr>`;
+      // Non è più necessario differenziare tra mobile e desktop qui, il CSS lo gestisce
+      tbody.innerHTML = `<tr><td colspan="5">Caricamento dati...</td></tr>`;
       orarioInizioGiornataDiv.textContent = 'Caricamento orario...'; // Messaggio di caricamento per l'orario
     }
 
