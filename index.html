@@ -259,8 +259,12 @@
         justify-content: center !important; /* Centra orizzontalmente */
         align-items: center !important; /* Centra verticalmente */
         width: 100%;
-        text-align: center !important; /* Per sicurezza, anche se flexbox dovrebbe bastare */
         padding: 20px; 
+        /* Rimuovi text-align: center qui perché flexbox lo gestisce */
+        color: #999; /* Stili direttamente qui per il messaggio */
+        background: transparent;
+        box-shadow: none;
+        border: none;
       }
 
       h1 {
@@ -397,7 +401,7 @@
         </tr>
       </thead>
       <tbody id="programma-body">
-        <tr><td colspan="5" style="text-align:center; color:#999; background: transparent; box-shadow:none; border:none;">Caricamento dati...</td></tr>
+        <tr><td colspan="5">Caricamento dati...</td></tr>
       </tbody>
     </table>
 
@@ -426,7 +430,8 @@
         tbody.innerHTML = '';
 
         if (data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#999; background: transparent; box-shadow:none; border:none;">Nessun dato disponibile.</td></tr>`;
+          // Rimosso lo stile in linea anche da qui
+          tbody.innerHTML = `<tr><td colspan="5">Nessun dato disponibile.</td></tr>`;
           return;
         }
 
@@ -445,7 +450,8 @@
       })
       .catch(err => {
         const tbody = document.getElementById('programma-body');
-        tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center; background: transparent; box-shadow:none; border:none;">Errore: ${err.message}</td></tr>`;
+        // Rimosso lo stile in linea anche da qui
+        tbody.innerHTML = `<tr><td colspan="5" style="color:red;">Errore: ${err.message}</td></tr>`;
       });
 
     document.getElementById('search-bar').addEventListener('input', function () {
