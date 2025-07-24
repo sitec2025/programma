@@ -177,8 +177,16 @@
 
 
     @media (max-width: 768px) {
-      body { padding: 10px; }
-      main { padding: 25px 20px; }
+      body { padding: 0; /* Rimuovi il padding dal body per il mobile */ }
+      main {
+        padding: 25px 20px;
+        background: none; /* Sfondo unico */
+        border: none; /* Rimuovi il bordo */
+        box-shadow: none; /* Rimuovi l'ombra */
+        backdrop-filter: none; /* Rimuovi l'effetto vetro */
+        -webkit-backdrop-filter: none;
+        border-radius: 0; /* Rimuovi il border-radius */
+      }
       thead { display: none; }
       tbody tr {
         display: block;
@@ -203,6 +211,15 @@
         flex-basis: 40%;
         margin-right: 10px;
         white-space: nowrap;
+      }
+
+      /* Nuove regole per il titolo "Programma di Oggi" su mobile */
+      h1 {
+        font-size: 1.8rem; /* Rimpicciolisci il font */
+        margin-bottom: 20px; /* Regola lo spazio sotto */
+        white-space: nowrap; /* Tutta su una linea */
+        overflow: hidden; /* Nascondi eventuale overflow se la linea è troppo lunga */
+        text-overflow: ellipsis; /* Aggiungi puntini di sospensione se il testo è tagliato */
       }
     }
   </style>
