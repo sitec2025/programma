@@ -1,3 +1,19 @@
+Certamente. Ho ulteriormente perfezionato il design per renderlo ancora più contemporaneo, introducendo effetti visivi come il "glassmorphism" (effetto vetro smerigliato) e animazioni più fluide.
+
+Le modifiche principali includono:
+
+  * **Sfondo Animato**: Il gradiente statico è stato sostituito con un gradiente animato che si muove lentamente, dando un tocco dinamico alla pagina.
+  * **Effetto "Glassmorphism"**: Il riquadro principale e le righe della tabella ora hanno un aspetto traslucido, simile al vetro smerigliato, che crea un senso di profondità sopra lo sfondo animato.
+  * **Animazione al Caricamento**: Le righe della tabella ora appaiono con un'animazione progressiva (staggered), rendendo il caricamento dei dati più elegante.
+  * **Stile Raffinato**: Ho ottimizzato ombre, bordi e colori per un look più pulito e professionale.
+
+-----
+
+## Codice Rivisto
+
+Ecco il codice completo con il nuovo design.
+
+```html
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -6,80 +22,115 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    html, body {
+    :root {
+      --brand-color: #6d28d9; /* Viola intenso come colore primario */
+      --brand-color-light: rgba(127, 156, 245, 0.25);
+      --text-primary: #111827;
+      --text-secondary: #4b5563;
+      --surface-bg: rgba(255, 255, 255, 0.6); /* Bianco traslucido per l'effetto vetro */
+      --surface-border: rgba(255, 255, 255, 0.9);
+      --surface-shadow: rgba(44, 62, 80, 0.15);
+    }
+
+    @keyframes animated-gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    html {
+      min-height: 100%;
+    }
+
+    body {
       margin: 0;
-      padding: 0;
+      padding: 20px;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #eef2f7, #ffffff);
+      background: linear-gradient(135deg, #f3e8ff, #dbeafe, #e0f2fe);
+      background-size: 400% 400%;
+      animation: animated-gradient 15s ease infinite;
       display: flex;
       justify-content: center;
-      min-height: 100vh;
-      overflow-x: hidden;
+      align-items: flex-start;
+      box-sizing: border-box;
     }
 
     main {
-      background: white;
-      padding: 40px 50px;
-      border-radius: 20px;
-      box-shadow: 0 15px 40px rgba(44,62,80,0.12);
-      max-width: 960px;
       width: 100%;
-      box-sizing: border-box;
+      max-width: 1000px;
+      padding: 40px 50px;
       text-align: center;
+      background: var(--surface-bg);
+      border-radius: 24px;
+      border: 1px solid var(--surface-border);
+      box-shadow: 0 20px 50px var(--surface-shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px); /* Supporto per Safari */
     }
 
     #azienda {
       font-weight: 700;
-      font-size: 1.4rem;
-      color: #1a2a54;
+      font-size: 1.2rem;
+      color: var(--brand-color);
       text-transform: uppercase;
-      margin-bottom: 15px;
-      letter-spacing: 2px;
+      margin-bottom: 10px;
+      letter-spacing: 3px;
     }
 
     h1 {
       font-weight: 700;
-      font-size: 2.2rem;
+      font-size: 2.5rem;
       margin-bottom: 5px;
-      color: #1a202c;
+      color: var(--text-primary);
+      letter-spacing: -1px;
     }
 
     #data-oggi {
       font-weight: 500;
       font-size: 1.1rem;
-      color: #4a5568;
+      color: var(--text-secondary);
       margin-bottom: 40px;
     }
 
-    /* --- STILI NUOVA BARRA DI RICERCA --- */
     .modern-search-container {
       display: flex;
       align-items: center;
-      background-color: #f8fafc;
-      border: 2px solid #e2e8f0;
-      border-radius: 9999px; /* Pill shape */
-      padding: 10px 20px;
+      background-color: rgba(249, 250, 251, 0.8);
+      border: 1px solid #e5e7eb;
+      border-radius: 9999px;
+      padding: 12px 20px;
       margin: 0 auto 40px auto;
       max-width: 450px;
       transition: all 0.3s ease-in-out;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
     }
     
     .modern-search-container:focus-within {
-      border-color: #7f9cf5;
-      box-shadow: 0 0 0 4px rgba(127, 156, 245, 0.25);
+      border-color: var(--brand-color);
+      box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.2);
     }
     
     .modern-search-container svg {
       width: 20px;
       height: 20px;
-      fill: #a0aec0; /* Icon color */
+      fill: #9ca3af;
       margin-right: 12px;
       transition: fill 0.3s ease-in-out;
     }
     
     .modern-search-container:focus-within svg {
-      fill: #4a5568; /* Icon color on focus */
+      fill: var(--brand-color);
     }
 
     #search-bar {
@@ -89,119 +140,92 @@
       background-color: transparent;
       font-family: 'Poppins', sans-serif;
       font-size: 1rem;
-      color: #2d3748;
+      color: var(--text-primary);
     }
 
     #search-bar::placeholder {
-      color: #a0aec0;
-      font-style: normal;
+      color: #9ca3af;
     }
-    /* --- FINE STILI NUOVA BARRA DI RICERCA --- */
 
     table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 0 15px;
-      table-layout: auto;
+      border-spacing: 0 10px;
       text-align: left;
     }
 
     thead th {
       padding: 15px 20px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: #4a5568;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      border-bottom: 2px solid #cbd5e0;
-      background: #f0f4f8;
+      border-bottom: 2px solid #e5e7eb;
     }
 
     tbody tr {
-      background: #f7fafc;
-      box-shadow: 0 4px 10px rgba(44,62,80,0.07);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      background: var(--surface-bg);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(44, 62, 80, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+      opacity: 0; /* Inizia trasparente per l'animazione */
+      animation: fadeInUp 0.5s ease-out forwards;
     }
 
     tbody tr:hover {
-      background: #e0e7ff;
-      box-shadow: 0 8px 20px rgba(67,56,202,0.25);
-      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 12px 30px rgba(44, 62, 80, 0.12);
+      transform: translateY(-5px) scale(1.02);
     }
 
     tbody td {
-      padding: 18px 20px;
-      color: #2d3748;
+      padding: 20px;
+      color: var(--text-primary);
       font-weight: 500;
       font-size: 1rem;
-      word-wrap: break-word;
+      border-top: 1px solid rgba(229, 231, 235, 0.5);
     }
+    tbody tr td:first-child { border-radius: 12px 0 0 12px; border-top: none; }
+    tbody tr td:last-child { border-radius: 0 12px 12px 0; border-top: none;}
+    tbody tr td { border-top: none; } /* Sovrascrive per un look più pulito */
 
-    @media (max-width: 600px) {
-      main {
-        padding: 20px 15px;
-      }
 
-      .modern-search-container {
-        max-width: 100%;
-      }
-
-      table, thead, tbody, th, td, tr {
-        display: block;
-        width: 100%;
-      }
-
-      thead {
-        display: none;
-      }
-
+    @media (max-width: 768px) {
+      body { padding: 10px; }
+      main { padding: 25px 20px; }
+      thead { display: none; }
       tbody tr {
-        margin-bottom: 20px;
-        box-shadow: 0 4px 10px rgba(44,62,80,0.1);
-        padding: 20px 15px;
-        box-sizing: border-box;
+        display: block;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 8px 25px rgba(44, 62, 80, 0.1);
       }
-
+      tbody tr:hover {
+        transform: translateY(-3px) scale(1);
+      }
       tbody td {
-        padding: 10px 0;
-        font-size: 0.95rem;
         display: flex;
-        border-bottom: 1px solid #d1d5db;
+        padding: 12px 5px;
+        border-bottom: 1px solid #e5e7eb;
+        border-radius: 0 !important;
       }
-
+      tbody td:last-child { border-bottom: none; }
       tbody td::before {
         content: attr(data-label);
-        font-weight: 600;
-        color: #4a5568;
-        flex-basis: 35%;
-        margin-right: 15px;
+        font-weight: 700;
+        color: var(--text-secondary);
+        flex-basis: 40%;
+        margin-right: 10px;
         white-space: nowrap;
-      }
-
-      tbody td:last-child {
-        border-bottom: none;
-      }
-
-      tbody td[colspan] {
-        display: block;
-        text-align: center;
-        padding: 0;
-        margin: 0 auto;
-        width: 100%;
-        font-style: italic;
-        color: #777;
-        border: none;
-      }
-
-      tbody td[colspan]::before {
-        display: none;
       }
     }
   </style>
 </head>
 <body>
   <main>
-    <div id="azienda">SITEC IMPIANTI SRL</div>
+    <div id="azienda">Sitec Impianti Srl</div>
     <h1>Programma di Oggi</h1>
     <div id="data-oggi"></div>
 
@@ -221,7 +245,7 @@
         </tr>
       </thead>
       <tbody id="programma-body">
-        <tr><td colspan="5" style="text-align:center; color:#999;">Caricamento dati...</td></tr>
+        <tr><td colspan="5" style="text-align:center; color:#999; background: transparent; box-shadow:none; border:none;">Caricamento dati...</td></tr>
       </tbody>
     </table>
   </main>
@@ -245,11 +269,11 @@
         tbody.innerHTML = '';
 
         if (data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5">Nessun dato disponibile.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#999; background: transparent; box-shadow:none; border:none;">Nessun dato disponibile.</td></tr>`;
           return;
         }
 
-        data.forEach(row => {
+        data.forEach((row, index) => {
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td data-label="Cantiere">${row.Cantiere || ''}</td>
@@ -258,12 +282,14 @@
             <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
             <td data-label="Mezzo">${row.Mezzo || ''}</td>
           `;
+          // Aggiunge un ritardo progressivo per l'animazione
+          tr.style.animationDelay = `${index * 70}ms`;
           tbody.appendChild(tr);
         });
       })
       .catch(err => {
         const tbody = document.getElementById('programma-body');
-        tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore: ${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center; background: transparent; box-shadow:none; border:none;">Errore: ${err.message}</td></tr>`;
       });
 
     document.getElementById('search-bar').addEventListener('input', function () {
