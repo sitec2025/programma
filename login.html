@@ -191,11 +191,13 @@
 <body>
     <div class="login-container">
         <div class="logo">
+            <!-- Assicurati che il percorso dell'immagine sia corretto -->
             <img src="sitec_logo_nuovo[1] (2)_page-0001.jpg" alt="Sitec Impianti Srl Logo">
         </div>
         <h2>Accedi al Programma</h2>
         <div id="error-message" class="error-message">
-            </div>
+            <!-- Messaggio di errore apparirà qui -->
+        </div>
         <div class="input-group">
             <label for="email">Email</label>
             <input type="email" id="email" placeholder="La tua email">
@@ -212,17 +214,130 @@
         </button>
     </div>
 
-    <script>
-        // Questo script è solo un placeholder. La logica di autenticazione verrà aggiunta in seguito.
-        // Attualmente, i pulsanti non faranno nulla.
-        document.getElementById('loginButton').addEventListener('click', () => {
-            alert('Funzionalità di accesso non ancora implementata.');
+    <script type="module">
+        // Importa le funzioni necessarie dall'SDK di Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+        // getAnalytics è importato ma non usato, puoi rimuoverlo se non ti serve
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword, 
+            GoogleAuthProvider, 
+            signInWithPopup, 
+            onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+        // La tua configurazione Firebase (copiala da Firebase Console)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCDs7iMJjJYFh8qc7LASNwFYSyFAJDJrQ8",
+            authDomain: "programma-sitec-impianti.firebaseapp.com",
+            projectId: "programma-sitec-impianti",
+            storageBucket: "programma-sitec-impianti.firebasestorage.app",
+            messagingSenderId: "87076748220",
+            appId: "1:87076748220:web:351e6806174f18307dc9b9",
+            measurementId: "G-XSSHYE58MD"
+        };
+
+        // Inizializza Firebase
+        const app = initializeApp(firebaseConfig);
+        // const analytics = getAnalytics(app); // Rimuovi o commenta se non usi Analytics
+        const auth = getAuth(app); // Ottieni l'istanza di Auth
+
+        // Riferimenti agli elementi HTML
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.getElementById('loginButton');
+        const registerButton = document.getElementById('registerButton');
+        const googleSignInButton = document.getElementById('googleSignInButton');
+        const errorMessageDiv = document.getElementById('error-message');
+
+        function showError(message) {
+            errorMessageDiv.textContent = message;
+            errorMessageDiv.style.display = 'block';
+        }
+
+        function hideError() {
+            errorMessageDiv.style.display = 'none';
+        }
+
+        // Questo è il CODICE CHIAVE per il reindirizzamento dopo un login riuscito
+        // o se l'utente è già loggato.
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Utente loggato, reindirizza alla pagina principale del programma
+                console.log('Utente loggato, reindirizzo a index.html:', user.email);
+                window.location.href = 'index.html'; // Reindirizza a index.html
+            } else {
+                // Nessun utente loggato, assicurati che il form di login sia visibile
+                console.log('Nessun utente loggato, visualizzo il form di login.');
+                // Non mostrare messaggi di errore qui a meno che non ci sia un tentativo fallito
+                hideError(); 
+            }
         });
-        document.getElementById('registerButton').addEventListener('click', () => {
-            alert('Funzionalità di registrazione non ancora implementata.');
+
+        // Logica per il pulsante "Accedi"
+        loginButton.addEventListener('click', () => {
+            hideError(); // Nascondi eventuali errori precedenti
+            const email = emailInput.value;
+            const password = passwordInput.value;
+
+            if (!email || !password) {
+                showError("Per favore, inserisci email e password.");
+                return;
+            }
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Accesso riuscito. L'onAuthStateChanged gestirà il reindirizzamento.
+                    console.log("Accesso riuscito per:", userCredential.user.email);
+                })
+                .catch((error) => {
+                    showError("Errore di accesso: " + error.message);
+                    console.error('Errore login:', error);
+                });
         });
-        document.getElementById('googleSignInButton').addEventListener('click', () => {
-            alert('Funzionalità di accesso con Google non ancora implementata.');
+
+        // Logica per il pulsante "Registrati"
+        registerButton.addEventListener('click', () => {
+            hideError(); // Nascondi eventuali errori precedenti
+            const email = emailInput.value;
+            const password = passwordInput.value;
+
+            if (!email || !password) {
+                showError("Per favore, inserisci email e password.");
+                return;
+            }
+            if (password.length < 6) {
+                showError("La password deve essere di almeno 6 caratteri.");
+                return;
+            }
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("Registrazione avvenuta con successo per " + userCredential.user.email + "! Puoi accedere ora.");
+                    // Dopo la registrazione, l'utente è automaticamente loggato da Firebase.
+                    // L'onAuthStateChanged gestirà il reindirizzamento.
+                })
+                .catch((error) => {
+                    showError("Errore di registrazione: " + error.message);
+                    console.error('Errore registrazione:', error);
+                });
+        });
+
+        // Logica per il pulsante "Accedi con Google"
+        googleSignInButton.addEventListener('click', () => {
+            hideError(); // Nascondi eventuali errori precedenti
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    // Accesso con Google riuscito. L'onAuthStateChanged gestirà il reindirizzamento.
+                    console.log("Accesso Google riuscito per:", result.user.email);
+                })
+                .catch((error) => {
+                    showError("Errore di accesso con Google: " + error.message);
+                    console.error('Errore login Google:', error);
+                });
         });
     </script>
 </body>
