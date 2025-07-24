@@ -201,6 +201,7 @@
             justify-content: center;
             gap: 20px; /* Spazio tra i pulsanti */
             margin-top: 20px;
+            margin-bottom: 40px; /* Spazio sotto il gruppo di pulsanti per le note */
         }
 
         .action-button {
@@ -249,6 +250,23 @@
 
         #logoutButton:hover {
             background-color: #c82333;
+        }
+
+        /* Stile per le note sui collaboratori */
+        .note-collaboratori {
+            text-align: left;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            background: rgba(249, 250, 251, 0.7);
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 15px 20px;
+            line-height: 1.6;
+            margin-top: 20px; /* Spazio sopra le note */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+        .note-collaboratori strong {
+            color: var(--text-primary);
         }
 
 
@@ -326,10 +344,14 @@
             .button-group {
                 flex-direction: column; /* Impila i pulsanti verticalmente */
                 gap: 10px; /* Meno spazio tra i pulsanti */
+                margin-bottom: 25px; /* Spazio ridotto per mobile */
             }
             #logoutButton {
                 margin-left: 0;
                 margin-top: 10px; /* Aggiungi un piccolo spazio sopra se impilato */
+            }
+            .note-collaboratori {
+                margin-top: 15px; /* Spazio ridotto sopra le note per mobile */
             }
         }
 
