@@ -419,7 +419,9 @@
     <div id="azienda">Sitec Impianti Srl</div>
     <h1>Programma di Oggi</h1>
     <div id="data-oggi"></div>
-    <div id="orario-inizio-giornata"></div> <div class="modern-search-container">
+    <div id="orario-inizio-giornata"></div> 
+
+    <div class="modern-search-container">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
       <input type="text" id="search-bar" placeholder="Cerca cantiere, collaboratore..." />
     </div>
@@ -455,7 +457,11 @@
 
     document.getElementById('data-oggi').textContent = formatDate(new Date());
 
-    const JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
+    // URL per i dati del programma (quello che già usi)
+    const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
+
+    // NUOVO URL per l'orario (fornito da te)
+    const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
 
     const tbody = document.getElementById('programma-body');
     const orarioInizioGiornataDiv = document.getElementById('orario-inizio-giornata');
@@ -476,18 +482,11 @@
     // Mostra il messaggio di caricamento all'inizio
     showLoadingMessage();
 
-    fetch(JSON_URL)
+    // --- FETCH PER I DATI DEL PROGRAMMA ---
+    fetch(PROGRAM_JSON_URL)
       .then(res => res.json())
       .then(data => {
         tbody.innerHTML = ''; // Pulisce il messaggio di caricamento della tabella
-
-        // Assumo che il primo elemento dell'array contenga l'orario di inizio giornata
-        // o che l'Apps Script possa essere modificato per restituire un oggetto con queste informazioni.
-        // Se il tuo Google Sheet ha una cella specifica per questo orario, assicurati che il tuo Apps Script
-        // lo recuperi e lo includa nella risposta JSON, ad esempio come 'OrarioInizioLavorativa' nel primo oggetto.
-        const orarioInizio = data.length > 0 && data[0].OrarioInizioLavorativa ? data[0].OrarioInizioLavorativa : 'Non disponibile';
-        orarioInizioGiornataDiv.textContent = `Orario inizio giornata lavorativa: ${orarioInizio}`;
-
 
         if (data.length === 0) {
           tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
@@ -509,17 +508,31 @@
       })
       .catch(err => {
         tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore durante il caricamento del programma: ${err.message}</td></tr>`;
-        orarioInizioGiornataDiv.textContent = `Errore durante il caricamento dell'orario: ${err.message}`; // Messaggio di errore per l'orario
       });
+
+    // --- FETCH SEPARATO PER L'ORARIO ---
+    fetch(TIME_JSON_URL)
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+            orarioInizioGiornataDiv.textContent = `Errore: ${data.error}`;
+        } else {
+            const orarioInizio = data.orarioInizioLavorativa || 'Non disponibile';
+            orarioInizioGiornataDiv.textContent = `Orario inizio giornata lavorativa: ${orarioInizio}`;
+        }
+      })
+      .catch(err => {
+        orarioInizioGiornataDiv.textContent = `Errore durante il caricamento dell'orario: ${err.message}`;
+      });
+
 
     document.getElementById('search-bar').addEventListener('input', function () {
       const searchTerm = this.value.toLowerCase();
       const rows = document.querySelectorAll('#programma-body tr');
       rows.forEach(row => {
         const text = row.textContent.toLowerCase();
-        // Assicurati di non nascondere il messaggio di "Nessun dato" o "Caricamento"
         if (row.querySelector('td[colspan="5"]')) {
-            row.style.display = ''; // Mantieni visibile il messaggio di stato
+            row.style.display = '';
         } else {
             row.style.display = text.includes(searchTerm) ? '' : 'none';
         }
