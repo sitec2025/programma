@@ -33,8 +33,6 @@
       }
     }
 
-    /* @keyframes spin rimosso */
-
     html {
       min-height: 100%;
     }
@@ -234,6 +232,24 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
+    /* Stile per la nota in basso */
+    .note-collaboratori {
+        margin-top: 40px; /* Spazio sopra la nota */
+        text-align: left; /* Allinea il testo a sinistra */
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        padding: 20px;
+        background: rgba(249, 250, 251, 0.8);
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    }
+    .note-collaboratori strong {
+        color: var(--text-primary);
+    }
+
+
     @media (max-width: 768px) {
       body { padding: 0; }
       main {
@@ -276,7 +292,6 @@
 
       /* Regola specifica per il messaggio di caricamento/nessun dato su mobile */
       #programma-body tr td[colspan="5"] {
-        /* Sovrascrive display: flex/block e text-align: right delle td generali */
         display: block !important; /* Rendi la cella un blocco per occupare l'intera larghezza */
         text-align: center !important; /* Centra il testo al suo interno */
         width: 100%; /* Assicura che la cella occupi tutta la larghezza */
@@ -305,6 +320,11 @@
       .button-group {
         flex-direction: column; /* Impila i pulsanti verticalmente */
         gap: 10px; /* Meno spazio tra i pulsanti */
+      }
+
+      .note-collaboratori {
+        margin-top: 30px; /* Spazio ridotto per mobile */
+        padding: 15px;
       }
     }
 
@@ -401,6 +421,11 @@
             border: none; 
          }
       }
+
+      /* Nascondi la nota in stampa */
+      .note-collaboratori {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -435,6 +460,12 @@
         <button class="action-button" onclick="window.print()">Stampa Programma</button>
         <button class="action-button" id="shareButton">Condividi</button>
     </div>
+
+    <div class="note-collaboratori">
+        <strong>Idraulici:</strong> Marco, Riccardo, Antonio, Diego, Stefano L., Emanuele<br>
+        <strong>Elettricisti:</strong> Andrea, Stefano C., Francesco<br>
+        <strong>Manutentore:</strong> Rossano
+    </div>
   </main>
 
   <script>
@@ -448,7 +479,7 @@
     document.getElementById('data-oggi').textContent = formatDate(new Date());
 
     // URL per i dati del programma (quello che già usi)
-    const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
+    const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflqngqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
 
     // URL per l'orario (fornito da te)
     const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
@@ -458,7 +489,6 @@
 
     // Funzione per mostrare il messaggio di caricamento
     function showLoadingMessage() {
-      // Usiamo il messaggio testuale centrato direttamente qui
       tbody.innerHTML = `<tr><td colspan="5">Caricamento dati...</td></tr>`;
       orarioInizioGiornataDiv.textContent = 'Caricamento orario...'; // Messaggio di caricamento per l'orario
     }
