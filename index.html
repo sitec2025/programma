@@ -78,58 +78,75 @@
       display: none;
     }
 
+    /* Barra giorni */
     #date-strip {
       display: flex;
       overflow-x: auto;
-      gap: 12px; /* spaziatura ridotta */
+      gap: 0; /* zero gap per margini uniformi */
+      padding: 0;
+      margin-bottom: 20px;
       justify-content: flex-start;
-      padding: 10px 0 25px;
-      align-items: flex-end;
       scrollbar-width: none; /* Firefox */
+      border-radius: 0 0 15px 15px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      user-select: none;
     }
     #date-strip::-webkit-scrollbar {
       display: none; /* Chrome, Safari e Opera */
     }
 
     .date-button {
-      background: #f1f5f9;
-      padding: 8px 14px;
-      border-radius: 12px;
+      flex: 1 0 14.28%; /* 7 giorni uguali larghezza */
+      box-sizing: border-box;
+      border-right: 1px solid #e2e8f0;
+      padding: 14px 0;
       cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 500;
-      min-width: 68px;
       text-align: center;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: #4a5568;
       display: flex;
       flex-direction: column;
-      font-size: 0.85rem;
+      justify-content: center;
+      transition: background-color 0.3s ease, color 0.3s ease;
       user-select: none;
+    }
+    .date-button:last-child {
+      border-right: none; /* togli bordo all'ultimo */
     }
 
     .date-button .day-name {
       font-size: 0.75rem;
       font-weight: 600;
       margin-bottom: 4px;
+      text-transform: capitalize;
+      color: #718096;
     }
 
     .date-button .day-date {
-      font-size: 0.95rem;
-    }
-
-    .date-button:hover,
-    .date-button.selected {
-      transform: scale(1.15);
-      box-shadow: 0 4px 12px rgba(67, 56, 202, 0.2);
-    }
-
-    .date-button.today {
-      background-color: #c3dafe;
-      color: #1a202c;
+      font-size: 1.1rem;
       font-weight: 700;
-      transform: scale(1.2);
-      z-index: 1;
     }
 
+    /* Stato selezionato */
+    .date-button.selected {
+      background-color: #3b82f6; /* blu acceso */
+      color: white;
+      font-weight: 700;
+      border-right-color: transparent;
+      border-left-color: transparent;
+      box-shadow: inset 0 -4px 0 0 #2563eb;
+      user-select: none;
+    }
+
+    /* Hover per non selezionati */
+    .date-button:not(.selected):hover {
+      background-color: #e0e7ff;
+      color: #1e40af;
+    }
+
+    /* Tabella */
     table {
       width: 100%;
       border-collapse: separate;
@@ -181,19 +198,19 @@
     /* Responsive */
     @media (max-width: 600px) {
       #date-strip {
-        gap: 8px;
-        padding: 8px 0 20px;
+        gap: 0;
+        margin-bottom: 15px;
       }
       .date-button {
-        min-width: 55px;
-        padding: 6px 10px;
-        font-size: 0.75rem;
-      }
-      .date-button .day-date {
+        flex: 1 0 14.28%;
+        padding: 10px 0;
         font-size: 0.8rem;
       }
-      .date-button.today {
-        transform: scale(1.1);
+      .date-button .day-date {
+        font-size: 1rem;
+      }
+      .date-button.selected {
+        font-size: 1rem;
       }
     }
   </style>
@@ -256,7 +273,7 @@
       btn.appendChild(dayDate);
 
       if (isToday) {
-        btn.classList.add('today', 'selected');
+        btn.classList.add('selected');
       }
       return btn;
     }
@@ -268,44 +285,7 @@
       strip.appendChild(createDateButton(d, i === 0));
     }
 
-    // Funzione per scrollare e centrare il bottone selezionato
-    function centerDateButton(button) {
-      const stripRect = strip.getBoundingClientRect();
-      const btnRect = button.getBoundingClientRect();
-
-      const scrollLeft = strip.scrollLeft;
-      // Calcola lo spostamento necessario per portare il centro del bottone al centro della barra
-      const offset = (btnRect.left + btnRect.width / 2) - (stripRect.left + stripRect.width / 2);
-
-      strip.scrollTo({
-        left: scrollLeft + offset,
-        behavior: 'smooth'
-      });
-    }
-
-    // Evento click su barra giorni
-    strip.addEventListener('click', e => {
-      const target = e.target.closest('.date-button');
-      if (target) {
-        // Rimuovi selected da tutti
-        strip.querySelectorAll('.date-button').forEach(b => b.classList.remove('selected'));
-        // Aggiungi selected a quello cliccato
-        target.classList.add('selected');
-        // Centra il bottone
-        centerDateButton(target);
-        // Carica i dati
-        loadProgramma(target.dataset.date);
-      }
-    });
-
-    // Centra il giorno corrente all'avvio
-    window.addEventListener('load', () => {
-      const todayBtn = strip.querySelector('.date-button.today');
-      if (todayBtn) {
-        centerDateButton(todayBtn);
-      }
-    });
-
+    // Funzione per caricare dati della tabella
     function loadProgramma(dateString) {
       fetch(`${JSON_URL}?data=${dateString}`)
         .then(res => res.json())
@@ -333,15 +313,20 @@
         });
     }
 
-    // Ricerca filtro su tutte le colonne
-    document.getElementById('search-input').addEventListener('input', () => {
-      const filter = document.getElementById('search-input').value.toLowerCase();
-      document.querySelectorAll('#programma-body tr').forEach(row => {
-        const match = Array.from(row.children).some(td => td.textContent.toLowerCase().includes(filter));
-        row.style.display = match ? '' : 'none';
-      });
+    // Selezione data e cambio colore selezionato
+    strip.addEventListener('click', e => {
+      const target = e.target.closest('.date-button');
+      if (!target) return;
+
+      // Rimuovi selected da tutti
+      strip.querySelectorAll('.date-button').forEach(b => b.classList.remove('selected'));
+      // Seleziona il click
+      target.classList.add('selected');
+
+      loadProgramma(target.dataset.date);
     });
 
+    // Carica dati del giorno corrente all'avvio
     loadProgramma(today.toISOString().split('T')[0]);
   </script>
 </body>
