@@ -14,6 +14,8 @@
             --surface-bg: rgba(255, 255, 255, 0.6); /* Bianco traslucido per l'effetto vetro */
             --surface-border: rgba(255, 255, 255, 0.9);
             --surface-shadow: rgba(44, 62, 80, 0.15);
+            --logout-button-color: #dc3545; /* Rosso per il logout */
+            --logout-button-hover-color: #c82333; /* Rosso più scuro all'hover */
         }
 
         @keyframes animated-gradient {
@@ -231,6 +233,15 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
+        /* Stile specifico per il pulsante di Logout */
+        #logoutButton {
+            background-color: var(--logout-button-color); /* Usa la variabile colore rosso */
+        }
+
+        #logoutButton:hover {
+            background-color: var(--logout-button-hover-color); /* Usa la variabile colore rosso scuro all'hover */
+        }
+
         /* Stile per la rotella di caricamento */
         .spinner {
             border: 4px solid rgba(0, 0, 0, 0.1);
@@ -433,8 +444,7 @@
                     <th>Luogo</th>
                     <th>Lavorazioni</th>
                     <th>Collaboratori</th>
-                    <th>Mezzo</th>
-                </tr>
+                    <th>Furgone</th> </tr>
             </thead>
             <tbody id="programma-body">
                 <tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>
@@ -458,36 +468,31 @@
 
         document.getElementById('data-oggi').textContent = formatDate(new Date());
 
-        // URL per i dati del programma (quello che già usi)
         const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
-
-        // NUOVO URL per l'orario (fornito da te)
         const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
 
         const tbody = document.getElementById('programma-body');
         const orarioInizioGiornataDiv = document.getElementById('orario-inizio-giornata');
 
-        // Funzione per mostrare il messaggio di caricamento
         function showLoadingMessage() {
             const isMobile = window.matchMedia("(max-width: 768px)").matches;
             if (isMobile) {
                 tbody.innerHTML = `<tr><td colspan="5">
                                         <div class="spinner"></div>
-                                    </td></tr>`; // Solo spinner per mobile
+                                    </td></tr>`;
             } else {
                 tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>`;
             }
-            orarioInizioGiornataDiv.textContent = 'Caricamento orario...'; // Messaggio di caricamento per l'orario
+            orarioInizioGiornataDiv.textContent = 'Caricamento orario...';
         }
 
-        // Mostra il messaggio di caricamento all'inizio
         showLoadingMessage();
 
         // --- FETCH PER I DATI DEL PROGRAMMA ---
         fetch(PROGRAM_JSON_URL)
             .then(res => res.json())
             .then(data => {
-                tbody.innerHTML = ''; // Pulisce il messaggio di caricamento della tabella
+                tbody.innerHTML = '';
 
                 if (data.length === 0) {
                     tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
@@ -501,8 +506,7 @@
                         <td data-label="Luogo">${row.Luogo || ''}</td>
                         <td data-label="Lavorazioni">${row.Lavorazioni || ''}</td>
                         <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
-                        <td data-label="Mezzo">${row.Mezzo || ''}</td>
-                    `;
+                        <td data-label="Furgone">${row.Mezzo || ''}</td> `;
                     tr.style.animationDelay = `${index * 70}ms`;
                     tbody.appendChild(tr);
                 });
@@ -540,7 +544,6 @@
             });
         });
 
-        // Funzione per il pulsante Condividi
         document.getElementById('shareButton').addEventListener('click', async () => {
             if (navigator.share) {
                 try {
@@ -555,25 +558,16 @@
                 }
             } else {
                 alert('La tua navigazione non supporta la condivisione web. Puoi copiare il link manualmente.');
-                // Opzionale: fornire un fallback per copiare l'URL negli appunti
-                // navigator.clipboard.writeText(window.location.href);
             }
         });
 
-        // --- NUOVA LOGICA PER IL PULSANTE DI LOGOUT ---
+        // --- LOGICA PER IL PULSANTE DI LOGOUT ---
         document.getElementById('logoutButton').addEventListener('click', function() {
-            // Qui puoi aggiungere la logica di "logout" se necessario, ad esempio:
-            // 1. Eliminare eventuali token di sessione/autenticazione salvati in localStorage o sessionStorage.
-            //    Esempio: localStorage.removeItem('authToken');
-            //    Esempio: sessionStorage.removeItem('userSession');
-
-            // 2. Reindirizzare l'utente alla pagina di login.
-            //    Assumendo che la tua pagina di login si chiami 'login.html' e si trovi nella stessa directory.
-            window.location.href = 'index.html'; 
-            // Se la pagina di login si trova in una sottocartella, ad esempio 'auth/login.html':
-            // window.location.href = 'auth/login.html'; 
-            // Oppure se è una URL assoluta:
-            // window.location.href = 'https://tuo-dominio.com/login.html';
+            // Qui puoi aggiungere la logica di "logout" se necessario (es. eliminazione token sessione)
+            // Esempio: localStorage.removeItem('authToken');
+            
+            // Reindirizza l'utente alla pagina di login
+            window.location.href = 'login.html'; 
         });
 
     </script>
