@@ -1,565 +1,563 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <title>Programma di Oggi</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --brand-color: #007bff; /* Blu come colore primario */
-      --brand-color-light: rgba(0, 123, 255, 0.25);
-      --text-primary: #111827;
-      --text-secondary: #4b5563;
-      --surface-bg: rgba(255, 255, 255, 0.6); /* Bianco traslucido per l'effetto vetro */
-      --surface-border: rgba(255, 255, 255, 0.9);
-      --surface-shadow: rgba(44, 62, 80, 0.15);
-    }
+  <meta charset="UTF-8" />
+  <title>Programma di Oggi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --brand-color: #007bff; /* Blu come colore primario */
+      --brand-color-light: rgba(0, 123, 255, 0.25);
+      --text-primary: #111827;
+      --text-secondary: #4b5563;
+      --surface-bg: rgba(255, 255, 255, 0.6); /* Bianco traslucido per l'effetto vetro */
+      --surface-border: rgba(255, 255, 255, 0.9);
+      --surface-shadow: rgba(44, 62, 80, 0.15);
+    }
 
-    @keyframes animated-gradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+    @keyframes animated-gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
-    html {
-      min-height: 100%;
-    }
+    html {
+      min-height: 100%;
+    }
 
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f3e8ff, #dbeafe, #e0f2fe);
-      background-size: 400% 400%;
-      animation: animated-gradient 15s ease infinite;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      box-sizing: border-box;
-    }
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f3e8ff, #dbeafe, #e0f2fe);
+      background-size: 400% 400%;
+      animation: animated-gradient 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      box-sizing: border-box;
+    }
 
-    main {
-      width: 100%;
-      max-width: 1000px;
-      padding: 40px 50px;
-      text-align: center;
-      background: var(--surface-bg);
-      border-radius: 24px;
-      border: 1px solid var(--surface-border);
-      box-shadow: 0 20px 50px var(--surface-shadow);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px); /* Supporto per Safari */
-    }
+    main {
+      width: 100%;
+      max-width: 1000px;
+      padding: 40px 50px;
+      text-align: center;
+      background: var(--surface-bg);
+      border-radius: 24px;
+      border: 1px solid var(--surface-border);
+      box-shadow: 0 20px 50px var(--surface-shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px); /* Supporto per Safari */
+    }
 
-    #azienda {
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: var(--brand-color);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      letter-spacing: 0.5px; /* Spaziatura tra le lettere ridotta */
-    }
+    #azienda {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--brand-color);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px; /* Spaziatura tra le lettere ridotta */
+    }
 
-    h1 {
-      font-weight: 700;
-      font-size: 2.5rem;
-      margin-bottom: 5px;
-      color: var(--text-primary);
-      letter-spacing: -1px;
-    }
+    h1 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 5px;
+      color: var(--text-primary);
+      letter-spacing: -1px;
+    }
 
-    #data-oggi, #orario-inizio-giornata {
-      font-weight: 500;
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      margin-bottom: 10px; /* Ridotto per il nuovo elemento */
-    }
-    #orario-inizio-giornata {
-        margin-bottom: 40px; /* Spazio sotto il nuovo elemento */
-    }
-
-
-    .modern-search-container {
-      display: flex;
-      align-items: center;
-      background-color: rgba(249, 250, 251, 0.8);
-      border: 1px solid #e5e7eb;
-      border-radius: 9999px;
-      padding: 12px 20px;
-      margin: 0 auto 40px auto;
-      max-width: 450px;
-      transition: all 0.3s ease-in-out;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-    }
-    
-    .modern-search-container:focus-within {
-      border-color: var(--brand-color); /* Bordo blu quando la barra è attiva */
-      box-shadow: 0 0 0 4px var(--brand-color-light);
-    }
-    
-    .modern-search-container svg {
-      width: 20px;
-      height: 20px;
-      fill: #9ca3af;
-      margin-right: 12px;
-      transition: fill 0.3s ease-in-out;
-    }
-    
-    .modern-search-container:focus-within svg {
-      fill: var(--brand-color); /* Icona blu quando la barra è attiva */
-    }
-
-    #search-bar {
-      width: 100%;
-      border: none;
-      outline: none;
-      background-color: transparent;
-      font-family: 'Poppins', sans-serif;
-      font-size: 1rem;
-      color: var(--text-primary);
-    }
-
-    #search-bar::placeholder {
-      color: #9ca3af;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0 10px;
-      text-align: left;
-      margin-bottom: 40px; /* Spazio prima dei pulsanti */
-    }
-
-    thead th {
-      padding: 15px 20px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      border-bottom: 2px solid #e5e7eb;
-    }
-
-    tbody tr {
-      background: var(--surface-bg);
-      border: 1px solid var(--surface-border);
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(44, 62, 80, 0.08);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-      opacity: 0;
-      animation: fadeInUp 0.5s ease-out forwards;
-    }
-
-    tbody tr:hover {
-      background: rgba(255, 255, 255, 0.8);
-      box-shadow: 0 12px 30px rgba(44, 62, 80, 0.12);
-      transform: translateY(-5px) scale(1.02);
-    }
-
-    tbody td {
-      padding: 20px;
-      color: var(--text-primary);
-      font-weight: 500;
-      font-size: 1rem;
-      border-top: 1px solid rgba(229, 231, 235, 0.5);
-    }
-    tbody tr td:first-child { border-radius: 12px 0 0 12px; border-top: none; }
-    tbody tr td:last-child { border-radius: 0 12px 12px 0; border-top: none;}
-    tbody tr td { border-top: none; }
-
-    /* Stile specifico per la cella di "Caricamento dati" / "Nessun dato" */
-    #programma-body tr td[colspan="5"] {
-      border-radius: 12px !important; /* Forza angoli arrotondati su tutti i lati */
-      border: 1px solid var(--surface-border); /* Assicurati che il bordo sia presente */
-      background: var(--surface-bg); /* Assicurati lo sfondo */
-      box-shadow: 0 8px 25px rgba(44, 62, 80, 0.08); /* E l'ombra */
-      color: #999; /* Colore testo per questi messaggi */
-    }
+    #data-oggi, #orario-inizio-giornata {
+      font-weight: 500;
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 10px; /* Ridotto per il nuovo elemento */
+    }
+    #orario-inizio-giornata {
+        margin-bottom: 40px; /* Spazio sotto il nuovo elemento */
+    }
 
 
-    /* Stile per i pulsanti */
-    .button-group {
-        display: flex;
-        flex-wrap: wrap; /* Permette ai pulsanti di andare a capo se non c'è spazio */
-        justify-content: center;
-        gap: 20px; /* Spazio tra i pulsanti */
-        margin-top: 20px;
-    }
+    .modern-search-container {
+      display: flex;
+      align-items: center;
+      background-color: rgba(249, 250, 251, 0.8);
+      border: 1px solid #e5e7eb;
+      border-radius: 9999px;
+      padding: 12px 20px;
+      margin: 0 auto 40px auto;
+      max-width: 450px;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    }
+    
+    .modern-search-container:focus-within {
+      border-color: var(--brand-color); /* Bordo blu quando la barra è attiva */
+      box-shadow: 0 0 0 4px var(--brand-color-light);
+    }
+    
+    .modern-search-container svg {
+      width: 20px;
+      height: 20px;
+      fill: #9ca3af;
+      margin-right: 12px;
+      transition: fill 0.3s ease-in-out;
+    }
+    
+    .modern-search-container:focus-within svg {
+      fill: var(--brand-color); /* Icona blu quando la barra è attiva */
+    }
 
-    .action-button {
-      background-color: var(--brand-color);
-      color: white;
-      padding: 12px 25px;
-      border: none;
-      border-radius: 9999px; /* Rendi il pulsante ovale */
-      font-family: 'Poppins', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
+    #search-bar {
+      width: 100%;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      color: var(--text-primary);
+    }
 
-    .action-button:hover {
-      background-color: #0056b3; /* Blu più scuro all'hover */
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-    }
+    #search-bar::placeholder {
+      color: #9ca3af;
+    }
 
-    .action-button:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+      text-align: left;
+      margin-bottom: 40px; /* Spazio prima dei pulsanti */
+    }
 
-    /* Stile per la rotella di caricamento */
-    .spinner {
-      border: 4px solid rgba(0, 0, 0, 0.1);
-      border-left-color: var(--brand-color);
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      animation: spin 1s linear infinite;
-    }
+    thead th {
+      padding: 15px 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-bottom: 2px solid #e5e7eb;
+    }
 
-    @media (max-width: 768px) {
-      body { padding: 0; }
-      main {
-        padding: 25px 20px;
-        background: none;
-        border: none;
-        box-shadow: none;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-        border-radius: 0;
-      }
-      thead { display: none; }
-      tbody tr {
-        display: block;
-        padding: 15px;
-        margin-bottom: 15px;
-        box-shadow: 0 8px 25px rgba(44, 62, 80, 0.1);
-      }
-      tbody tr:hover {
-        transform: translateY(-3px) scale(1);
-      }
-      tbody td {
-        display: flex;
-        justify-content: space-between;
-        padding: 12px 5px;
-        border-bottom: 1px solid #e5e7eb;
-        border-radius: 0 !important;
-        text-align: right;
-      }
-      tbody td:last-child { border-bottom: none; }
-      tbody td::before {
-        content: attr(data-label);
-        font-weight: 700;
-        color: var(--text-secondary);
-        flex-basis: 40%;
-        margin-right: 10px;
-        white-space: nowrap;
-        text-align: left;
-      }
+    tbody tr {
+      background: var(--surface-bg);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(44, 62, 80, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+      opacity: 0;
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
 
-      /* Centra la rotella per mobile */
-      #programma-body tr td[colspan="5"] {
-        display: grid !important; /* Forza grid per il centraggio */
-        place-items: center !important; /* Centra orizzontalmente e verticalmente */
-        width: 100%;
-        padding: 20px; 
-        color: #999; 
-        background: transparent; 
-        box-shadow: none; 
-        border: none; 
-      }
-      /* Rimuoviamo il margine della rotella quando è l'unico elemento */
-      .spinner {
-          margin: 0 !important; 
-      }
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 12px 30px rgba(44, 62, 80, 0.12);
+      transform: translateY(-5px) scale(1.02);
+    }
 
-      h1 {
-        font-size: 1.8rem;
-        margin-bottom: 5px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+    tbody td {
+      padding: 20px;
+      color: var(--text-primary);
+      font-weight: 500;
+      font-size: 1rem;
+      border-top: 1px solid rgba(229, 231, 235, 0.5);
+    }
+    tbody tr td:first-child { border-radius: 12px 0 0 12px; border-top: none; }
+    tbody tr td:last-child { border-radius: 0 12px 12px 0; border-top: none;}
+    tbody tr td { border-top: none; }
 
-      #data-oggi, #orario-inizio-giornata {
-        margin-bottom: 15px; /* Spazio ridotto per mobile */
-      }
-      #orario-inizio-giornata {
-        margin-bottom: 25px; /* Spazio sotto il nuovo elemento per mobile */
-      }
+    /* Stile specifico per la cella di "Caricamento dati" / "Nessun dato" */
+    #programma-body tr td[colspan="5"] {
+      border-radius: 12px !important; /* Forza angoli arrotondati su tutti i lati */
+      border: 1px solid var(--surface-border); /* Assicurati che il bordo sia presente */
+      background: var(--surface-bg); /* Assicurati lo sfondo */
+      box-shadow: 0 8px 25px rgba(44, 62, 80, 0.08); /* E l'ombra */
+      color: #999; /* Colore testo per questi messaggi */
+    }
 
-      .button-group {
-        flex-direction: column; /* Impila i pulsanti verticalmente */
-        gap: 10px; /* Meno spazio tra i pulsanti */
-      }
-    }
 
-    /* Regole di stampa */
-    @media print {
-      /* Nascondi elementi non necessari */
-      .modern-search-container,
-      .button-group,
-      .spinner { /* Nascondi la rotella in stampa */
-        display: none !important;
-      }
-      body {
-        background: none;
-        margin: 0;
-        padding: 0;
-      }
-      main {
-        padding: 10mm;
-        background: white;
-        border: none;
-        box-shadow: none;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-        border-radius: 0;
-        max-width: 100%;
-        width: auto;
-      }
-      #azienda {
-        color: var(--text-primary);
-      }
-      h1, #data-oggi, #orario-inizio-giornata {
-        color: var(--text-primary);
-        margin-bottom: 5mm;
-      }
+    /* Stile per i pulsanti */
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 20px; /* Spazio tra i pulsanti */
+        margin-top: 20px;
+    }
 
-      table {
-        border-spacing: 0;
-        margin-bottom: 0;
-        width: 100%;
-        border-collapse: collapse; /* Forza i bordi a collassare per la stampa */
-        display: table !important; /* Forza display:table per la tabella in stampa */
-      }
-      thead {
-        display: table-header-group !important; /* Mostra l'intestazione per la stampa */
-      }
-      thead th {
-        background-color: #f2f2f2;
-        color: var(--text-primary);
-        border: 1px solid #ddd; /* Bordi per tutte le celle di intestazione */
-        padding: 8px 10px;
-        font-size: 0.8rem;
-        text-align: left !important; /* Forza allineamento a sinistra */
-      }
-      tbody tr {
-        background: white;
-        box-shadow: none;
-        border-radius: 0;
-        display: table-row !important; /* Forza display:table-row per le righe in stampa */
-      }
-      tbody tr:hover {
-        background: white;
-        transform: none;
-        box-shadow: none;
-      }
-      tbody td {
-        padding: 8px 10px;
-        color: var(--text-primary);
-        font-weight: 400;
-        font-size: 0.9rem;
-        border: 1px solid #ddd; /* Bordi per tutte le celle di dati */
-        text-align: left !important; /* Forza allineamento a sinistra */
-        display: table-cell !important; /* Forza display:table-cell per le celle in stampa */
-        /* Rimuoviamo qualsiasi border-radius specifico in stampa */
-        border-top: 1px solid #ddd !important; /* Garantisci il bordo superiore */
-        border-left: 1px solid #ddd !important; /* Garantisci il bordo sinistro */
-        border-right: 1px solid #ddd !important; /* Garantisci il bordo destro */
-        border-bottom: 1px solid #ddd !important; /* Garantisci il bordo inferiore */
-      }
-      /* Queste regole non dovrebbero più essere necessarie con border-collapse: collapse; */
-      tbody tr td:first-child { border-radius: 0 !important; }
-      tbody tr td:last-child { border-radius: 0 !important; }
-      
-      /* Regole specifiche per la stampa da mobile (all'interno di @media print) */
-      @media (max-width: 768px) {
-         tbody td::before {
-           display: none !important; /* Nascondi le etichette data-label per la stampa mobile */
-         }
-         /* Garantisci che le celle di stato (caricamento/nessun dato) siano centrate in stampa mobile */
-         #programma-body tr td[colspan="5"] {
-            display: flex !important; /* Forza flexbox anche in stampa mobile */
-            justify-content: center !important;
-            align-items: center !important;
-            text-align: center !important; /* Mantenuto per sicurezza, ma flexbox dovrebbe bastare */
-            flex-direction: row; /* Assicura che elementi (spinner e testo) siano affiancati */
-         }
-      }
-    }
-  </style>
+    .action-button {
+      background-color: var(--brand-color);
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 9999px; /* Rendi il pulsante ovale */
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .action-button:hover {
+      background-color: #0056b3; /* Blu più scuro all'hover */
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .action-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Stile per la rotella di caricamento */
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: var(--brand-color);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 0; }
+      main {
+        padding: 25px 20px;
+        background: none;
+        border: none;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border-radius: 0;
+      }
+      thead { display: none; }
+      tbody tr {
+        display: block;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 8px 25px rgba(44, 62, 80, 0.1);
+      }
+      tbody tr:hover {
+        transform: translateY(-3px) scale(1);
+      }
+      tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 5px;
+        border-bottom: 1px solid #e5e7eb;
+        border-radius: 0 !important;
+        text-align: right;
+      }
+      tbody td:last-child { border-bottom: none; }
+      tbody td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: var(--text-secondary);
+        flex-basis: 40%;
+        margin-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+      }
+
+      /* Centra la rotella per mobile */
+      #programma-body tr td[colspan="5"] {
+        display: grid !important; /* Forza grid per il centraggio */
+        place-items: center !important; /* Centra orizzontalmente e verticalmente */
+        width: 100%;
+        padding: 20px; 
+        color: #999; 
+        background: transparent; 
+        box-shadow: none; 
+        border: none; 
+      }
+      /* Rimuoviamo il margine della rotella quando è l'unico elemento */
+      .spinner {
+          margin: 0 !important; 
+      }
+
+      h1 {
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      #data-oggi, #orario-inizio-giornata {
+        margin-bottom: 15px; /* Spazio ridotto per mobile */
+      }
+      #orario-inizio-giornata {
+        margin-bottom: 25px; /* Spazio sotto il nuovo elemento per mobile */
+      }
+
+      .button-group {
+        flex-direction: column; /* Impila i pulsanti verticalmente */
+        gap: 10px; /* Meno spazio tra i pulsanti */
+      }
+    }
+
+    /* Regole di stampa */
+    @media print {
+      /* Nascondi elementi non necessari */
+      .modern-search-container,
+      .button-group,
+      .spinner { /* Nascondi la rotella in stampa */
+        display: none !important;
+      }
+      body {
+        background: none;
+        margin: 0;
+        padding: 0;
+      }
+      main {
+        padding: 10mm;
+        background: white;
+        border: none;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border-radius: 0;
+        max-width: 100%;
+        width: auto;
+      }
+      #azienda {
+        color: var(--text-primary);
+      }
+      h1, #data-oggi, #orario-inizio-giornata {
+        color: var(--text-primary);
+        margin-bottom: 5mm;
+      }
+
+      table {
+        border-spacing: 0;
+        margin-bottom: 0;
+        width: 100%;
+        border-collapse: collapse; /* Forza i bordi a collassare per la stampa */
+        display: table !important; /* Forza display:table per la tabella in stampa */
+      }
+      thead {
+        display: table-header-group !important; /* Mostra l'intestazione per la stampa */
+      }
+      thead th {
+        background-color: #f2f2f2;
+        color: var(--text-primary);
+        border: 1px solid #ddd; /* Bordi per tutte le celle di intestazione */
+        padding: 8px 10px;
+        font-size: 0.8rem;
+        text-align: left !important; /* Forza allineamento a sinistra */
+      }
+      tbody tr {
+        background: white;
+        box-shadow: none;
+        border-radius: 0;
+        display: table-row !important; /* Forza display:table-row per le righe in stampa */
+      }
+      tbody tr:hover {
+        background: white;
+        transform: none;
+        box-shadow: none;
+      }
+      tbody td {
+        padding: 8px 10px;
+        color: var(--text-primary);
+        font-weight: 400;
+        font-size: 0.9rem;
+        border: 1px solid #ddd; /* Bordi per tutte le celle di dati */
+        text-align: left !important; /* Forza allineamento a sinistra */
+        display: table-cell !important; /* Forza display:table-cell per le celle in stampa */
+        /* Rimuoviamo qualsiasi border-radius specifico in stampa */
+        border-top: 1px solid #ddd !important; /* Garantisci il bordo superiore */
+        border-left: 1px solid #ddd !important; /* Garantisci il bordo sinistro */
+        border-right: 1px solid #ddd !important; /* Garantisci il bordo destro */
+        border-bottom: 1px solid #ddd !important; /* Garantisci il bordo inferiore */
+      }
+      /* Queste regole non dovrebbero più essere necessarie con border-collapse: collapse; */
+      tbody tr td:first-child { border-radius: 0 !important; }
+      tbody tr td:last-child { border-radius: 0 !important; }
+      
+      /* Regole specifiche per la stampa da mobile (all'interno di @media print) */
+      @media (max-width: 768px) {
+         tbody td::before {
+           display: none !important; /* Nascondi le etichette data-label per la stampa mobile */
+         }
+         /* Garantisci che le celle di stato (caricamento/nessun dato) siano centrate in stampa mobile */
+         #programma-body tr td[colspan="5"] {
+            display: flex !important; /* Forza flexbox anche in stampa mobile */
+            justify-content: center !important;
+            align-items: center !important;
+            text-align: center !important; /* Mantenuto per sicurezza, ma flexbox dovrebbe bastare */
+            flex-direction: row; /* Assicura che elementi (spinner e testo) siano affiancati */
+         }
+      }
+    }
+  </style>
 </head>
 <body>
-  <main>
-    <div id="azienda">Sitec Impianti Srl</div>
-    <h1>Programma di Oggi</h1>
-    <div id="data-oggi"></div>
-    <div id="orario-inizio-giornata"></div> 
+  <main>
+    <div id="azienda">Sitec Impianti Srl</div>
+    <h1>Programma di Oggi</h1>
+    <div id="data-oggi"></div>
+    <div id="orario-inizio-giornata"></div> 
 
-    <div class="modern-search-container">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-      <input type="text" id="search-bar" placeholder="Cerca cantiere, collaboratore..." />
-    </div>
+    <div class="modern-search-container">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" id="search-bar" placeholder="Cerca cantiere, collaboratore..." />
+    </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Cantiere</th>
-          <th>Luogo</th>
-          <th>Lavorazioni</th>
-          <th>Collaboratori</th>
-          <th>Mezzo</th>
-        </tr>
-      </thead>
-      <tbody id="programma-body">
-        <tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>
-      </tbody>
-    </table>
+    <table>
+      <thead>
+        <tr>
+          <th>Cantiere</th>
+          <th>Luogo</th>
+          <th>Lavorazioni</th>
+          <th>Collaboratori</th>
+          <th>Mezzo</th>
+        </tr>
+      </thead>
+      <tbody id="programma-body">
+        <tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>
+      </tbody>
+    </table>
 
-    <div class="button-group">
-        <button class="action-button" onclick="window.print()">Stampa Programma</button>
-        <button class="action-button" id="shareButton">Condividi</button>
-        <button class="action-button" onclick="window.location.href='index.html'">Logout</button>
-    </div>
-  </main>
+    <div class="button-group">
+        <button class="action-button" onclick="window.print()">Stampa Programma</button>
+        <button class="action-button" id="shareButton">Condividi</button>
+    </div>
+  </main>
 
-  <script>
-    function formatDate(date) {
-      const d = date.getDate().toString().padStart(2, '0');
-      const m = (date.getMonth() + 1).toString().padStart(2, '0');
-      const y = date.getFullYear();
-      return `${d}/${m}/${y}`;
-    }
+  <script>
+    function formatDate(date) {
+      const d = date.getDate().toString().padStart(2, '0');
+      const m = (date.getMonth() + 1).toString().padStart(2, '0');
+      const y = date.getFullYear();
+      return `${d}/${m}/${y}`;
+    }
 
-    document.getElementById('data-oggi').textContent = formatDate(new Date());
+    document.getElementById('data-oggi').textContent = formatDate(new Date());
 
-    // URL per i dati del programma (quello che già usi)
-    const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
+    // URL per i dati del programma (quello che già usi)
+    const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
 
-    // NUOVO URL per l'orario (fornito da te)
-    const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
+    // NUOVO URL per l'orario (fornito da te)
+    const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
 
-    const tbody = document.getElementById('programma-body');
-    const orarioInizioGiornataDiv = document.getElementById('orario-inizio-giornata');
+    const tbody = document.getElementById('programma-body');
+    const orarioInizioGiornataDiv = document.getElementById('orario-inizio-giornata');
 
-    // Funzione per mostrare il messaggio di caricamento
-    function showLoadingMessage() {
-      const isMobile = window.matchMedia("(max-width: 768px)").matches;
-      if (isMobile) {
-        tbody.innerHTML = `<tr><td colspan="5">
-                              <div class="spinner"></div>
-                           </td></tr>`; // Solo spinner per mobile
-      } else {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>`;
-      }
-      orarioInizioGiornataDiv.textContent = 'Caricamento orario...'; // Messaggio di caricamento per l'orario
-    }
+    // Funzione per mostrare il messaggio di caricamento
+    function showLoadingMessage() {
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+      if (isMobile) {
+        tbody.innerHTML = `<tr><td colspan="5">
+                              <div class="spinner"></div>
+                           </td></tr>`; // Solo spinner per mobile
+      } else {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Caricamento dati...</td></tr>`;
+      }
+      orarioInizioGiornataDiv.textContent = 'Caricamento orario...'; // Messaggio di caricamento per l'orario
+    }
 
-    // Mostra il messaggio di caricamento all'inizio
-    showLoadingMessage();
+    // Mostra il messaggio di caricamento all'inizio
+    showLoadingMessage();
 
-    // --- FETCH PER I DATI DEL PROGRAMMA ---
-    fetch(PROGRAM_JSON_URL)
-      .then(res => res.json())
-      .then(data => {
-        tbody.innerHTML = ''; // Pulisce il messaggio di caricamento della tabella
+    // --- FETCH PER I DATI DEL PROGRAMMA ---
+    fetch(PROGRAM_JSON_URL)
+      .then(res => res.json())
+      .then(data => {
+        tbody.innerHTML = ''; // Pulisce il messaggio di caricamento della tabella
 
-        if (data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
-          return;
-        }
+        if (data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nessun dato disponibile.</td></tr>`;
+          return;
+        }
 
-        data.forEach((row, index) => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td data-label="Cantiere">${row.Cantiere || ''}</td>
-            <td data-label="Luogo">${row.Luogo || ''}</td>
-            <td data-label="Lavorazioni">${row.Lavorazioni || ''}</td>
-            <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
-            <td data-label="Mezzo">${row.Mezzo || ''}</td>
-          `;
-          tr.style.animationDelay = `${index * 70}ms`;
-          tbody.appendChild(tr);
-        });
-      })
-      .catch(err => {
-        tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore durante il caricamento del programma: ${err.message}</td></tr>`;
-      });
+        data.forEach((row, index) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td data-label="Cantiere">${row.Cantiere || ''}</td>
+            <td data-label="Luogo">${row.Luogo || ''}</td>
+            <td data-label="Lavorazioni">${row.Lavorazioni || ''}</td>
+            <td data-label="Collaboratori">${row.Collaboratori || ''}</td>
+            <td data-label="Mezzo">${row.Mezzo || ''}</td>
+          `;
+          tr.style.animationDelay = `${index * 70}ms`;
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Errore durante il caricamento del programma: ${err.message}</td></tr>`;
+      });
 
-    // --- FETCH SEPARATO PER L'ORARIO ---
-    fetch(TIME_JSON_URL)
-      .then(res => res.json())
-      .then(data => {
-        if (data.error) {
-            orarioInizioGiornataDiv.textContent = `Errore: ${data.error}`;
-        } else {
-            const orarioInizio = data.orarioInizioLavorativa || 'Non disponibile';
-            orarioInizioGiornataDiv.textContent = `Orario inizio giornata lavorativa: ${orarioInizio}`;
-        }
-      })
-      .catch(err => {
-        orarioInizioGiornataDiv.textContent = `Errore durante il caricamento dell'orario: ${err.message}`;
-      });
+    // --- FETCH SEPARATO PER L'ORARIO ---
+    fetch(TIME_JSON_URL)
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+            orarioInizioGiornataDiv.textContent = `Errore: ${data.error}`;
+        } else {
+            const orarioInizio = data.orarioInizioLavorativa || 'Non disponibile';
+            orarioInizioGiornataDiv.textContent = `Orario inizio giornata lavorativa: ${orarioInizio}`;
+        }
+      })
+      .catch(err => {
+        orarioInizioGiornataDiv.textContent = `Errore durante il caricamento dell'orario: ${err.message}`;
+      });
 
 
-    document.getElementById('search-bar').addEventListener('input', function () {
-      const searchTerm = this.value.toLowerCase();
-      const rows = document.querySelectorAll('#programma-body tr');
-      rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        if (row.querySelector('td[colspan="5"]')) {
-            row.style.display = '';
-        } else {
-            row.style.display = text.includes(searchTerm) ? '' : 'none';
-        }
-      });
-    });
+    document.getElementById('search-bar').addEventListener('input', function () {
+      const searchTerm = this.value.toLowerCase();
+      const rows = document.querySelectorAll('#programma-body tr');
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        if (row.querySelector('td[colspan="5"]')) {
+            row.style.display = '';
+        } else {
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        }
+      });
+    });
 
-    // Funzione per il pulsante Condividi
-    document.getElementById('shareButton').addEventListener('click', async () => {
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: 'Programma di Oggi - Sitec Impianti Srl',
-            text: 'Dai un\'occhiata al programma di lavoro di oggi!',
-            url: window.location.href,
-          });
-          console.log('Contenuto condiviso con successo!');
-        } catch (error) {
-          console.error('Errore durante la condivisione:', error);
-        }
-      } else {
-        alert('La tua navigazione non supporta la condivisione web. Puoi copiare il link manualmente.');
-        // Opzionale: fornire un fallback per copiare l'URL negli appunti
-        // navigator.clipboard.writeText(window.location.href);
-      }
-    });
-  </script>
+    // Funzione per il pulsante Condividi
+    document.getElementById('shareButton').addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'Programma di Oggi - Sitec Impianti Srl',
+            text: 'Dai un\'occhiata al programma di lavoro di oggi!',
+            url: window.location.href,
+          });
+          console.log('Contenuto condiviso con successo!');
+        } catch (error) {
+          console.error('Errore durante la condivisione:', error);
+        }
+      } else {
+        alert('La tua navigazione non supporta la condivisione web. Puoi copiare il link manualmente.');
+        // Opzionale: fornire un fallback per copiare l'URL negli appunti
+        // navigator.clipboard.writeText(window.location.href);
+      }
+    });
+  </script>
 </body>
 </html>
