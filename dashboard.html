@@ -453,21 +453,14 @@
     </main>
 
     <script>
-        // --- CONTROLLO AUTENTICAZIONE INIZIALE (OPZIONE 2) ---
-        // Questo codice deve essere la prima cosa ad essere eseguita nello script
-        // per prevenire che la dashboard venga mostrata se l'utente non è loggato.
+        // --- CONTROLLO AUTENTICAZIONE INIZIALE ---
+        // Se il flag 'isLoggedIn' non è impostato su 'true' in localStorage,
+        // reindirizza l'utente alla pagina di login (index.html).
         if (localStorage.getItem('isLoggedIn') !== 'true') {
-            // Se il flag 'isLoggedIn' non è impostato su 'true' in localStorage,
-            // reindirizza l'utente alla pagina di login.
-            // Usiamo window.location.replace() per prevenire che il pulsante
-            // "indietro" del browser riporti l'utente alla dashboard dopo il logout.
-            window.location.replace('login.html'); 
+            window.location.replace('index.html'); 
             // Interrompi l'esecuzione del resto dello script per questa pagina
-            // (potrebbe non essere strettamente necessario con replace, ma è buona pratica).
             throw new Error("Utente non autenticato. Reindirizzamento alla pagina di login.");
         }
-
-        // Il resto del tuo script JavaScript procede solo se l'utente è autenticato
 
         function formatDate(date) {
             const d = date.getDate().toString().padStart(2, '0');
@@ -479,7 +472,7 @@
         document.getElementById('data-oggi').textContent = formatDate(new Date());
 
         const PROGRAM_JSON_URL = 'https://script.google.com/macros/s/AKfycbyoUVY6DWaew3LcPNKC4tE9URflgqnbqQV6LWXTRevcfHduIN4nwbmJin7Bd8LUI3pdhA/exec';
-        const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYutv03Ew0KDwDXfecrKC-2-gys3A/exec';
+        const TIME_JSON_URL = 'https://script.google.com/macros/s/AKfycbz-mtGiTEzu-jHYZ5Eg83S14_7XUCFcoIGry7Y6qfYut03Ew0KDwDXfecrKC-2-gys3A/exec';
 
         const tbody = document.getElementById('programma-body');
         const orarioInizioGiornataDiv = document.getElementById('orario-inizio-giornata');
@@ -570,14 +563,14 @@
             }
         });
 
-        // --- LOGICA DEL PULSANTE LOGOUT (AGGIORNATA PER OPZIONE 2) ---
+        // --- LOGICA DEL PULSANTE LOGOUT (AGGIORNATA PER REINDIRIZZARE A index.html) ---
         document.getElementById('logoutButton').addEventListener('click', function() {
             // 1. Rimuovi il flag di autenticazione dal localStorage.
             localStorage.removeItem('isLoggedIn');
 
-            // 2. Reindirizza l'utente alla pagina di login.
+            // 2. Reindirizza l'utente alla pagina di login (index.html).
             // Usiamo .replace() per pulire la cronologia del browser e impedire il ritorno.
-            window.location.replace('login.html'); 
+            window.location.replace('index.html'); 
         });
 
     </script>
