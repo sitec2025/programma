@@ -97,7 +97,6 @@
             margin-bottom: 40px; /* Spazio sotto il nuovo elemento */
         }
 
-
         .modern-search-container {
             display: flex;
             align-items: center;
@@ -189,19 +188,18 @@
 
         /* Stile specifico per la cella di "Caricamento dati" / "Nessun dato" */
         #programma-body tr td[colspan="5"] {
-            border-radius: 12px !important; /* Forza angoli arrotondati su tutti i lati */
-            border: 1px solid var(--surface-border); /* Assicurati che il bordo sia presente */
-            background: var(--surface-bg); /* Assicurati lo sfondo */
-            box-shadow: 0 8px 25px rgba(44, 62, 80, 0.08); /* E l'ombra */
-            color: #999; /* Colore testo per questi messaggi */
+            border-radius: 12px !important;
+            border: 1px solid var(--surface-border);
+            background: var(--surface-bg);
+            box-shadow: 0 8px 25px rgba(44, 62, 80, 0.08);
+            color: #999;
         }
-
 
         /* Stile per i pulsanti */
         .button-group {
             display: flex;
             justify-content: center;
-            gap: 20px; /* Spazio tra i pulsanti */
+            gap: 20px;
             margin-top: 20px;
         }
 
@@ -210,7 +208,7 @@
             color: white;
             padding: 12px 25px;
             border: none;
-            border-radius: 9999px; /* Rendi il pulsante ovale */
+            border-radius: 9999px;
             font-family: 'Poppins', sans-serif;
             font-size: 1rem;
             font-weight: 600;
@@ -223,7 +221,7 @@
         }
 
         .action-button:hover {
-            background-color: #0056b3; /* Blu più scuro all'hover */
+            background-color: #0056b3;
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
@@ -235,11 +233,11 @@
 
         /* Stile specifico per il pulsante di Logout */
         #logoutButton {
-            background-color: var(--logout-button-color); /* Usa la variabile colore rosso */
+            background-color: var(--logout-button-color);
         }
 
         #logoutButton:hover {
-            background-color: var(--logout-button-hover-color); /* Usa la variabile colore rosso scuro all'hover */
+            background-color: var(--logout-button-hover-color);
         }
 
         /* Stile per la rotella di caricamento */
@@ -294,8 +292,8 @@
 
             /* Centra la rotella per mobile */
             #programma-body tr td[colspan="5"] {
-                display: grid !important; /* Forza grid per il centraggio */
-                place-items: center !important; /* Centra orizzontalmente e verticalmente */
+                display: grid !important;
+                place-items: center !important;
                 width: 100%;
                 padding: 20px;  
                 color: #999;  
@@ -317,15 +315,15 @@
             }
 
             #data-oggi, #orario-inizio-giornata {
-                margin-bottom: 15px; /* Spazio ridotto per mobile */
+                margin-bottom: 15px;
             }
             #orario-inizio-giornata {
-                margin-bottom: 25px; /* Spazio sotto il nuovo elemento per mobile */
+                margin-bottom: 25px;
             }
 
             .button-group {
-                flex-direction: column; /* Impila i pulsanti verticalmente */
-                gap: 10px; /* Meno spazio tra i pulsanti */
+                flex-direction: column;
+                gap: 10px;
             }
         }
 
@@ -334,7 +332,7 @@
             /* Nascondi elementi non necessari */
             .modern-search-container,
             .button-group,
-            .spinner { /* Nascondi la rotella in stampa */
+            .spinner {
                 display: none !important;
             }
             body {
@@ -365,25 +363,25 @@
                 border-spacing: 0;
                 margin-bottom: 0;
                 width: 100%;
-                border-collapse: collapse; /* Forza i bordi a collassare per la stampa */
-                display: table !important; /* Forza display:table per la tabella in stampa */
+                border-collapse: collapse;
+                display: table !important;
             }
             thead {
-                display: table-header-group !important; /* Mostra l'intestazione per la stampa */
+                display: table-header-group !important;
             }
             thead th {
                 background-color: #f2f2f2;
                 color: var(--text-primary);
-                border: 1px solid #ddd; /* Bordi per tutte le celle di intestazione */
+                border: 1px solid #ddd;
                 padding: 8px 10px;
                 font-size: 0.8rem;
-                text-align: left !important; /* Forza allineamento a sinistra */
+                text-align: left !important;
             }
             tbody tr {
                 background: white;
                 box-shadow: none;
                 border-radius: 0;
-                display: table-row !important; /* Forza display:table-row per le righe in stampa */
+                display: table-row !important;
             }
             tbody tr:hover {
                 background: white;
@@ -395,31 +393,27 @@
                 color: var(--text-primary);
                 font-weight: 400;
                 font-size: 0.9rem;
-                border: 1px solid #ddd; /* Bordi per tutte le celle di dati */
-                text-align: left !important; /* Forza allineamento a sinistra */
-                display: table-cell !important; /* Forza display:table-cell per le celle in stampa */
-                /* Rimuoviamo qualsiasi border-radius specifico in stampa */
-                border-top: 1px solid #ddd !important; /* Garantisci il bordo superiore */
-                border-left: 1px solid #ddd !important; /* Garantisci il bordo sinistro */
-                border-right: 1px solid #ddd !important; /* Garantisci il bordo destro */
-                border-bottom: 1px solid #ddd !important; /* Garantisci il bordo inferiore */
+                border: 1px solid #ddd;
+                text-align: left !important;
+                display: table-cell !important;
+                border-top: 1px solid #ddd !important;
+                border-left: 1px solid #ddd !important;
+                border-right: 1px solid #ddd !important;
+                border-bottom: 1px solid #ddd !important;
             }
-            /* Queste regole non dovrebbero più essere necessarie con border-collapse: collapse; */
             tbody tr td:first-child { border-radius: 0 !important; }
             tbody tr td:last-child { border-radius: 0 !important; }
             
-            /* Regole specifiche per la stampa da mobile (all'interno di @media print) */
             @media (max-width: 768px) {
                 tbody td::before {
-                    display: none !important; /* Nascondi le etichette data-label per la stampa mobile */
+                    display: none !important;
                 }
-                /* Garantisci che le celle di stato (caricamento/nessun dato) siano centrate in stampa mobile */
                 #programma-body tr td[colspan="5"] {
-                    display: flex !important; /* Forza flexbox anche in stampa mobile */
+                    display: flex !important;
                     justify-content: center !important;
                     align-items: center !important;
-                    text-align: center !important; /* Mantenuto per sicurezza, ma flexbox dovrebbe bastare */
-                    flex-direction: row; /* Assicura che elementi (spinner e testo) siano affiancati */
+                    text-align: center !important;
+                    flex-direction: row;
                 }
             }
         }
@@ -459,6 +453,22 @@
     </main>
 
     <script>
+        // --- CONTROLLO AUTENTICAZIONE INIZIALE (OPZIONE 2) ---
+        // Questo codice deve essere la prima cosa ad essere eseguita nello script
+        // per prevenire che la dashboard venga mostrata se l'utente non è loggato.
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            // Se il flag 'isLoggedIn' non è impostato su 'true' in localStorage,
+            // reindirizza l'utente alla pagina di login.
+            // Usiamo window.location.replace() per prevenire che il pulsante
+            // "indietro" del browser riporti l'utente alla dashboard dopo il logout.
+            window.location.replace('login.html'); 
+            // Interrompi l'esecuzione del resto dello script per questa pagina
+            // (potrebbe non essere strettamente necessario con replace, ma è buona pratica).
+            throw new Error("Utente non autenticato. Reindirizzamento alla pagina di login.");
+        }
+
+        // Il resto del tuo script JavaScript procede solo se l'utente è autenticato
+
         function formatDate(date) {
             const d = date.getDate().toString().padStart(2, '0');
             const m = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -530,7 +540,6 @@
                 orarioInizioGiornataDiv.textContent = `Errore durante il caricamento dell'orario: ${err.message}`;
             });
 
-
         document.getElementById('search-bar').addEventListener('input', function () {
             const searchTerm = this.value.toLowerCase();
             const rows = document.querySelectorAll('#programma-body tr');
@@ -561,13 +570,14 @@
             }
         });
 
-        // --- LOGICA PER IL PULSANTE DI LOGOUT ---
+        // --- LOGICA DEL PULSANTE LOGOUT (AGGIORNATA PER OPZIONE 2) ---
         document.getElementById('logoutButton').addEventListener('click', function() {
-            // Qui puoi aggiungere la logica di "logout" se necessario (es. eliminazione token sessione)
-            // Esempio: localStorage.removeItem('authToken');
-            
-            // Reindirizza l'utente alla pagina di login
-            window.location.href = 'index.html'; 
+            // 1. Rimuovi il flag di autenticazione dal localStorage.
+            localStorage.removeItem('isLoggedIn');
+
+            // 2. Reindirizza l'utente alla pagina di login.
+            // Usiamo .replace() per pulire la cronologia del browser e impedire il ritorno.
+            window.location.replace('login.html'); 
         });
 
     </script>
