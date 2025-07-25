@@ -1,252 +1,212 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Accedi a Sitec Impianti</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
-    <style>
-        :root {
-            --brand-color: #007bff;
-            --brand-color-light: rgba(0, 123, 255, 0.25);
-            --text-primary: #111827;
-            --text-secondary: #4b5563;
-            --surface-bg: rgba(255, 255, 255, 0.6); /* Bianco traslucido per l'effetto vetro */
-            --surface-border: rgba(255, 255, 255, 0.9);
-            --surface-shadow: rgba(44, 62, 80, 0.15);
-        }
+  <meta charset="UTF-8" />
+  <title>Login - Sitec Impianti</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --brand-color: #007bff;
+      --brand-color-light: rgba(0, 123, 255, 0.25);
+      --text-primary: #111827;
+      --text-secondary: #4b5563;
+      --surface-bg: rgba(255, 255, 255, 0.6);
+      --surface-border: rgba(255, 255, 255, 0.9);
+      --surface-shadow: rgba(44, 62, 80, 0.15);
+    }
 
-        @keyframes animated-gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+    @keyframes animated-gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f3e8ff, #dbeafe, #e0f2fe);
-            background-size: 400% 400%;
-            animation: animated-gradient 15s ease infinite;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        .login-container {
-            width: 100%;
-            max-width: 400px; /* Ridotto per una form più compatta */
-            padding: 40px; /* Aumentato il padding per più respiro */
-            text-align: center;
-            background: var(--surface-bg);
-            border-radius: 24px;
-            border: 1px solid var(--surface-border);
-            box-shadow: 0 20px 50px var(--surface-shadow);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px); /* Supporto per Safari */
-            box-sizing: border-box; /* Assicura che padding e border siano inclusi nella larghezza */
-        }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f3e8ff, #dbeafe, #e0f2fe);
+      background-size: 400% 400%;
+      animation: animated-gradient 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+      color: var(--text-primary);
+    }
 
-        /* Stile per il testo "SITEC IMPIANTI SRL" con ITC Souvenir Demi */
-        .company-name {
-            font-family: 'ITC Souvenir Demi', serif; /* Aggiunto il font ITC Souvenir Demi */
-            font-weight: 700; /* Grassetto */
-            font-size: 1.8rem; /* Dimensione maggiore */
-            color: var(--brand-color); /* Colore del brand */
-            margin-bottom: 25px; /* Spazio sotto */
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
+    .login-container {
+      background: var(--surface-bg);
+      border-radius: 24px;
+      border: 1px solid var(--surface-border);
+      box-shadow: 0 20px 50px var(--surface-shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 40px 50px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      animation: fadeInUp 0.5s ease forwards;
+    }
 
-        h2 {
-            font-weight: 700;
-            font-size: 2rem;
-            margin-bottom: 25px;
-            color: var(--text-primary);
-        }
+    #azienda {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--brand-color);
+      text-transform: uppercase;
+      margin-bottom: 25px;
+      letter-spacing: 0.5px;
+    }
 
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
+    h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
 
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
 
-        .input-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            color: var(--text-primary);
-            background-color: rgba(249, 250, 251, 0.8);
-            transition: all 0.3s ease;
-            box-sizing: border-box; /* Include padding e border nella larghezza totale */
-        }
+    label {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      text-align: left;
+      margin-bottom: 6px;
+      user-select: none;
+    }
 
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--brand-color);
-            box-shadow: 0 0 0 3px var(--brand-color-light);
-        }
+    input[type="text"],
+    input[type="password"] {
+      padding: 12px 16px;
+      border-radius: 9999px;
+      border: 1px solid #e5e7eb;
+      font-size: 1rem;
+      outline-offset: 2px;
+      transition: border-color 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-primary);
+      background-color: rgba(249, 250, 251, 0.8);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    }
 
-        .login-button {
-            width: 100%;
-            padding: 14px 20px;
-            background-color: var(--brand-color);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            margin-top: 15px; /* Spazio sopra il bottone di login */
-        }
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--brand-color);
+      box-shadow: 0 0 0 4px var(--brand-color-light);
+      background-color: #fff;
+    }
 
-        .login-button:hover {
-            background-color: #0056b3; /* Blu più scuro all'hover */
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-        }
+    .login-button {
+      background-color: var(--brand-color);
+      color: white;
+      padding: 14px 25px;
+      border: none;
+      border-radius: 9999px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      user-select: none;
+    }
 
-        .login-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
+    .login-button:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
 
-        #error-message {
-            color: #dc3545;
-            margin-top: 20px;
-            font-size: 0.95rem;
-            min-height: 20px; /* Per evitare salti di layout */
-        }
-        
-        @media (max-width: 480px) {
-            .login-container {
-                margin: 20px;
-                padding: 30px 20px;
-            }
-            .company-name {
-                font-size: 1.5rem;
-            }
-            h2 {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
+    .login-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .forgot-password {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: var(--brand-color);
+      cursor: pointer;
+      user-select: none;
+      text-decoration: underline;
+    }
+
+    .forgot-password:hover {
+      color: #0056b3;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 25px;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="company-name">SITEC IMPIANTI SRL</div>
+  <main class="login-container" role="main" aria-label="Login Sitec Impianti">
+    <div id="azienda">Sitec Impianti Srl</div>
+    <h1>Accedi al tuo account</h1>
+    <form id="loginForm" autocomplete="off" novalidate>
+      <div>
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" placeholder="Inserisci username" required />
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="Inserisci password" required />
+      </div>
+      <button type="submit" class="login-button">Login</button>
+    </form>
+    <div class="forgot-password" tabindex="0" role="button" aria-label="Password dimenticata?">Password dimenticata?</div>
+  </main>
 
-        <h2>Accedi</h2>
-        <div class="input-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" placeholder="Inserisci la tua email" required />
-        </div>
-        <div class="input-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Inserisci la tua password" required />
-        </div>
-        <button type="submit" class="login-button" id="loginButton">Accedi</button>
-        <div id="error-message"></div>
-    </div>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = e.target.username.value.trim();
+      const password = e.target.password.value.trim();
 
-    <script type="module">
-        // Importa le funzioni necessarie dall'SDK di Firebase
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-        import { 
-            getAuth, 
-            signInWithEmailAndPassword, 
-            onAuthStateChanged 
-        } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+      if (!username || !password) {
+        alert('Per favore, compila tutti i campi.');
+        return;
+      }
 
-        // La tua configurazione Firebase (DEVE ESSERE LA STESSA DI dashboard.html)
-        const firebaseConfig = {
-            apiKey: "AIzaSyCDs7iMJjJYFh8qc7LASNwFYSyFAJDJrQ8", // SOSTITUISCI CON LA TUA API KEY REALE
-            authDomain: "programma-sitec-impianti.firebaseapp.com",
-            projectId: "programma-sitec-impianti",
-            storageBucket: "programma-sitec-impianti.firebasestorage.app",
-            messagingSenderId: "87076748220",
-            appId: "1:87076748220:web:351e6806174f18307dc9b9",
-            measurementId: "G-XSSHYE58MD"
-        };
+      // Simulazione login (da sostituire con la tua logica)
+      alert(`Effettuo login per: ${username}`);
+      // Qui potresti fare fetch API per autenticare l'utente
+    });
 
-        // Inizializza Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Riferimenti agli elementi HTML
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const loginButton = document.getElementById('loginButton');
-        const errorMessageDiv = document.getElementById('error-message');
-
-        // Controlla lo stato di autenticazione all'avvio: se già loggato, reindirizza
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log('Utente già loggato, reindirizzo a dashboard.html.');
-                window.location.href = 'dashboard.html'; // Modificato il reindirizzamento
-            }
-        });
-
-        // Gestione del login con email e password
-        loginButton.addEventListener('click', async (e) => {
-            e.preventDefault(); // Previene il comportamento di default del form
-
-            const email = emailInput.value;
-            const password = passwordInput.value;
-
-            errorMessageDiv.textContent = ''; // Pulisce messaggi di errore precedenti
-
-            if (!email || !password) {
-                errorMessageDiv.textContent = 'Per favore, inserisci email e password.';
-                return;
-            }
-
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                console.log('Accesso riuscito!');
-                window.location.href = 'dashboard.html'; // Modificato il reindirizzamento
-            } catch (error) {
-                console.error('Errore di accesso:', error.code, error.message);
-                let message = 'Errore di accesso. Riprova.';
-                switch (error.code) {
-                    case 'auth/invalid-email':
-                        message = 'L\'indirizzo email non è valido.';
-                        break;
-                    case 'auth/user-disabled':
-                        message = 'Questo utente è stato disabilitato.';
-                        break;
-                    case 'auth/user-not-found':
-                    case 'auth/wrong-password':
-                        message = 'Email o password errati.';
-                        break;
-                    case 'auth/invalid-credential': // Nuovo codice per credenziali non valide
-                        message = 'Credenziali non valide. Controlla email e password.';
-                        break;
-                    case 'auth/too-many-requests':
-                        message = 'Troppi tentativi di accesso falliti. Riprova più tardi.';
-                        break;
-                    default:
-                        message = `Errore: ${error.message}`; // Messaggio di fallback più generico
-                }
-                errorMessageDiv.textContent = message;
-            }
-        });
-    </script>
+    // Supporto accessibilità per "Password dimenticata"
+    document.querySelector('.forgot-password').addEventListener('click', () => {
+      alert('Funzionalità di recupero password non ancora implementata.');
+    });
+    document.querySelector('.forgot-password').addEventListener('keypress', e => {
+      if(e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        e.target.click();
+      }
+    });
+  </script>
 </body>
 </html>
